@@ -153,4 +153,7 @@ public class EmailService {
                 "Please click the link below to verify your email:\n" + link + "\n\n" +
                 "Link expires in 24 hours.";
     }
+
+    public void sendEmail(String email, String s, String content) {
+    }
 }

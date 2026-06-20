@@ -55,6 +55,10 @@ public class Account {
     @Builder.Default
     private BigDecimal minimumBalance = BigDecimal.ZERO;
 
+    @Column(nullable = false, precision = 15, scale = 2)
+    @Builder.Default
+    private BigDecimal holdBalance = BigDecimal.ZERO;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     @Builder.Default
@@ -75,4 +79,6 @@ public class Account {
 
     @Column(length = 200)
     private String closureReason;
+
 }
+

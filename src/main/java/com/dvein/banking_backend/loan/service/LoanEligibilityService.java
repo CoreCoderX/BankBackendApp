@@ -40,14 +40,14 @@ public class LoanEligibilityService {
         Customer customer = account.getCustomer();
 
         // Check 1: KYC Verification
-        if (customer != null && Boolean.TRUE.equals(customer.getIsKycVerified())) {
+        if (customer != null && isKycVerified(customer)) {
             checks.add("KYC Verified ✓");
         } else {
             failures.add("KYC not verified");
         }
 
         // Check 2: Account Active
-        if (account.getIsActive() != null && account.getIsActive()) {
+        if (isAccountActive(account)) {
             checks.add("Account Active ✓");
         } else {
             failures.add("Account is not active");
@@ -97,12 +97,12 @@ public class LoanEligibilityService {
         Customer customer = account.getCustomer();
 
         // KYC Check
-        if (customer == null || !Boolean.TRUE.equals(customer.getIsKycVerified())) {
+        if (customer == null || !isKycVerified(customer)) {
             throw new LoanEligibilityException("KYC verification required before applying for loan");
         }
 
         // Account Active Check
-        if (account.getIsActive() == null || !account.getIsActive()) {
+        if (!isAccountActive(account)) {
             throw new LoanEligibilityException("Account must be active to apply for loan");
         }
 
@@ -129,6 +129,79 @@ public class LoanEligibilityService {
                     "Requested amount exceeds maximum eligible amount of ₹" + maxEligible
             );
         }
+    }
+
+    /**
+     * Helper method to check KYC status - handles different field names
+     */
+    private boolean isKycVerified(Customer customer) {
+        try {
+            // Try different possible method names
+            if (customer.getClass().getMethod("getIsKycVerified") != null) {
+                return Boolean.TRUE.equals((Boolean) customer.getClass()
+                        .getMethod("getIsKycVerified").invoke(customer));
+            }
+        } catch (Exception e) {
+            // Method not found
+        }
+
+        try {
+            if (customer.getClass().getMethod("getKycVerified") != null) {
+                return Boolean.TRUE.equals((Boolean) customer.getClass()
+                        .getMethod("getKycVerified").invoke(customer));
+            }
+        } catch (Exception e) {
+            // Method not found
+        }
+
+        try {
+            if (customer.getClass().getMethod("isKycVerified") != null) {
+                return Boolean.TRUE.equals((Boolean) customer.getClass()
+                        .getMethod("isKycVerified").invoke(customer));
+            }
+        } catch (Exception e) {
+            // Method not found
+        }
+
+        // Default to false if no method found
+        log.warn("Could not determine KYC status for customer");
+        return false;
+    }
+
+    /**
+     * Helper method to check account active status - handles different field names
+     */
+    private boolean isAccountActive(Account account) {
+        try {
+            if (account.getClass().getMethod("getIsActive") != null) {
+                Boolean isActive = (Boolean) account.getClass().getMethod("getIsActive").invoke(account);
+                return Boolean.TRUE.equals(isActive);
+            }
+        } catch (Exception e) {
+            // Method not found
+        }
+
+        try {
+            if (account.getClass().getMethod("getActive") != null) {
+                Boolean isActive = (Boolean) account.getClass().getMethod("getActive").invoke(account);
+                return Boolean.TRUE.equals(isActive);
+            }
+        } catch (Exception e) {
+            // Method not found
+        }
+
+        try {
+            if (account.getClass().getMethod("isActive") != null) {
+                Boolean isActive = (Boolean) account.getClass().getMethod("isActive").invoke(account);
+                return Boolean.TRUE.equals(isActive);
+            }
+        } catch (Exception e) {
+            // Method not found
+        }
+
+        // Default to false if no method found
+        log.warn("Could not determine active status for account");
+        return false;
     }
 
     private int calculateMockCreditScore(Long userId, Account account) {

@@ -2216,3 +2216,34 @@ Identify and stop the process that's listening on port 8080 or configure this ap
 2026-06-20T10:39:39.611+05:30  INFO 13716 --- [banking-backend] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-06-20T10:39:39.613+05:30  INFO 13716 --- [banking-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2026-06-20T10:39:39.617+05:30  INFO 13716 --- [banking-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-06-20T14:44:01.362+05:30  INFO 19216 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Starting BankingBackendApplication using Java 21.0.11 with PID 19216 (C:\Users\Lenovo\IdeaProjects\BankBackendApp\target\classes started by YASHWANTH in C:\Users\Lenovo\IdeaProjects\BankBackendApp)
+2026-06-20T14:44:01.364+05:30 DEBUG 19216 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Running with Spring Boot v3.5.15, Spring v6.2.19
+2026-06-20T14:44:01.365+05:30  INFO 19216 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : No active profile set, falling back to 1 default profile: "default"
+2026-06-20T14:44:01.776+05:30  WARN 19216 --- [banking-backend] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.dvein.banking_backend.BankingBackendApplication]
+2026-06-20T14:44:01.795+05:30 ERROR 19216 --- [banking-backend] [main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.dvein.banking_backend.BankingBackendApplication]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:194) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:418) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:290) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:349) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:118) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:792) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:610) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.15.jar:3.5.15]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.15.jar:3.5.15]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.15.jar:3.5.15]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.15.jar:3.5.15]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.15.jar:3.5.15]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.15.jar:3.5.15]
+	at com.dvein.banking_backend.BankingBackendApplication.main(BankingBackendApplication.java:14) ~[classes/:na]
+Caused by: org.springframework.context.annotation.ConflictingBeanDefinitionException: Annotation-specified bean name 'beneficiaryController' for bean class [com.dvein.banking_backend.transaction.controller.BeneficiaryController] conflicts with existing, non-compatible bean definition of same name and class [com.dvein.banking_backend.account.controller.BeneficiaryController]
+	at org.springframework.context.annotation.ClassPathBeanDefinitionScanner.checkCandidate(ClassPathBeanDefinitionScanner.java:361) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.annotation.ClassPathBeanDefinitionScanner.doScan(ClassPathBeanDefinitionScanner.java:288) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.annotation.ComponentScanAnnotationParser.parse(ComponentScanAnnotationParser.java:128) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:348) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:283) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:204) ~[spring-context-6.2.19.jar:6.2.19]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:172) ~[spring-context-6.2.19.jar:6.2.19]
+	... 13 common frames omitted
+
