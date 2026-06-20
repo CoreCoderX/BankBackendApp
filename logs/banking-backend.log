@@ -1,0 +1,2218 @@
+2026-06-20T00:10:18.213+05:30  INFO 137624 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Starting BankingBackendApplication using Java 21.0.11 with PID 137624 (C:\Users\sivap\Downloads\banking-backend\target\classes started by Sivaprakash in C:\Users\sivap\Downloads\banking-backend)
+2026-06-20T00:10:18.218+05:30 DEBUG 137624 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Running with Spring Boot v3.5.15, Spring v6.2.19
+2026-06-20T00:10:18.219+05:30  INFO 137624 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : No active profile set, falling back to 1 default profile: "default"
+2026-06-20T00:10:19.100+05:30  INFO 137624 --- [banking-backend] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-20T00:10:19.193+05:30  INFO 137624 --- [banking-backend] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 82 ms. Found 21 JPA repository interfaces.
+2026-06-20T00:10:19.830+05:30  INFO 137624 --- [banking-backend] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-20T00:10:19.844+05:30  INFO 137624 --- [banking-backend] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-20T00:10:19.844+05:30  INFO 137624 --- [banking-backend] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.55]
+2026-06-20T00:10:19.887+05:30  INFO 137624 --- [banking-backend] [main] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring embedded WebApplicationContext
+2026-06-20T00:10:19.887+05:30  INFO 137624 --- [banking-backend] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1628 ms
+2026-06-20T00:10:20.001+05:30  INFO 137624 --- [banking-backend] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-20T00:10:20.078+05:30  INFO 137624 --- [banking-backend] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.53.Final
+2026-06-20T00:10:20.118+05:30  INFO 137624 --- [banking-backend] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-20T00:10:20.357+05:30  INFO 137624 --- [banking-backend] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-20T00:10:20.384+05:30  INFO 137624 --- [banking-backend] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-20T00:10:20.536+05:30  INFO 137624 --- [banking-backend] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1ac3a6f
+2026-06-20T00:10:20.537+05:30  INFO 137624 --- [banking-backend] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-20T00:10:20.576+05:30  WARN 137624 --- [banking-backend] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-20T00:10:20.595+05:30  INFO 137624 --- [banking-backend] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-20T00:10:21.618+05:30  INFO 137624 --- [banking-backend] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-20T00:10:21.834+05:30  INFO 137624 --- [banking-backend] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-20T00:10:22.093+05:30  INFO 137624 --- [banking-backend] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-20T00:10:22.493+05:30 DEBUG 137624 --- [banking-backend] [main] c.d.b.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2026-06-20T00:10:22.848+05:30  INFO 137624 --- [banking-backend] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-06-20T00:10:22.849+05:30  WARN 137624 --- [banking-backend] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-06-20T00:10:23.042+05:30 DEBUG 137624 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2026-06-20T00:10:23.451+05:30 DEBUG 137624 --- [banking-backend] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-06-20T00:10:23.780+05:30  INFO 137624 --- [banking-backend] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/api/v1'
+2026-06-20T00:10:23.786+05:30  INFO 137624 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Started BankingBackendApplication in 6.002 seconds (process running for 6.436)
+2026-06-20T00:10:23.788+05:30  WARN 137624 --- [banking-backend] [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-20T00:10:54.953+05:30  INFO 137624 --- [banking-backend] [http-nio-8080-exec-1] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-20T00:10:54.953+05:30  INFO 137624 --- [banking-backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-20T00:10:54.955+05:30  INFO 137624 --- [banking-backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-06-20T00:10:54.975+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /customer/profile
+2026-06-20T00:10:55.046+05:30 ERROR 137624 --- [banking-backend] [http-nio-8080-exec-1] c.d.b.c.s.JwtAuthenticationFilter        : Cannot set user authentication: JWT expired at 2026-06-19T18:20:46Z. Current time: 2026-06-19T18:40:55Z, a difference of 1209045 milliseconds.  Allowed clock skew: 0 milliseconds.
+2026-06-20T00:10:55.049+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T00:10:55.053+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-1] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access
+2026-06-20T00:10:55.061+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /error
+2026-06-20T00:10:55.062+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T00:10:55.062+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-1] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access
+2026-06-20T00:11:04.445+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /auth/login
+2026-06-20T00:11:04.448+05:30 ERROR 137624 --- [banking-backend] [http-nio-8080-exec-3] c.d.b.c.s.JwtAuthenticationFilter        : Cannot set user authentication: JWT strings must contain exactly 2 period characters. Found: 0
+2026-06-20T00:11:04.448+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T00:11:04.449+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /auth/login
+2026-06-20T00:11:04.589+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        (
+            u1_0.email=? 
+            or u1_0.phone=?
+        )
+2026-06-20T00:11:04.626+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T00:11:05.031+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:11:05.037+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T00:11:05.425+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2026-06-20T00:11:05.476+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    insert 
+    into
+        login_history
+        (created_at, device_type, failure_reason, ip_address, location, successful, user_id, user_agent) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T00:11:05.499+05:30  INFO 137624 --- [banking-backend] [http-nio-8080-exec-3] c.d.b.auth.service.LoginHistoryService   : Login attempt recorded for user: sivaprakash7223@gmail.com - Success: true
+2026-06-20T00:11:05.507+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        d1_0.id 
+    from
+        devices d1_0 
+    where
+        d1_0.device_id=? 
+    fetch
+        first ? rows only
+2026-06-20T00:11:05.511+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        d1_0.id,
+        d1_0.is_active,
+        d1_0.created_at,
+        d1_0.device_fingerprint,
+        d1_0.device_id,
+        d1_0.device_name,
+        d1_0.ip_address,
+        d1_0.last_used_at,
+        d1_0.is_trusted,
+        d1_0.updated_at,
+        d1_0.user_id,
+        d1_0.user_agent 
+    from
+        devices d1_0 
+    where
+        d1_0.device_id=?
+2026-06-20T00:11:05.548+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    update
+        users 
+    set
+        is_active=?,
+        biometric_enabled=?,
+        email=?,
+        email_verified=?,
+        failed_login_attempts=?,
+        last_login_at=?,
+        is_locked=?,
+        locked_until=?,
+        password=?,
+        password_changed_at=?,
+        phone=?,
+        role=?,
+        totp_enabled=?,
+        updated_at=? 
+    where
+        id=?
+2026-06-20T00:11:05.554+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    update
+        devices 
+    set
+        is_active=?,
+        device_fingerprint=?,
+        device_id=?,
+        device_name=?,
+        ip_address=?,
+        last_used_at=?,
+        is_trusted=?,
+        updated_at=?,
+        user_id=?,
+        user_agent=? 
+    where
+        id=?
+2026-06-20T00:11:05.556+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    select
+        d1_0.id,
+        d1_0.is_active,
+        d1_0.created_at,
+        d1_0.device_fingerprint,
+        d1_0.device_id,
+        d1_0.device_name,
+        d1_0.ip_address,
+        d1_0.last_used_at,
+        d1_0.is_trusted,
+        d1_0.updated_at,
+        d1_0.user_id,
+        d1_0.user_agent 
+    from
+        devices d1_0 
+    where
+        d1_0.device_id=?
+2026-06-20T00:11:05.562+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] org.hibernate.SQL                        : 
+    insert 
+    into
+        sessions
+        (is_active, created_at, device_id, expires_at, ip_address, last_activity_at, refresh_token, user_id, user_agent) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T00:11:05.566+05:30  INFO 137624 --- [banking-backend] [http-nio-8080-exec-3] c.d.b.auth.service.SessionService        : Session created for user: sivaprakash7223@gmail.com - Session ID: 31
+2026-06-20T00:11:05.566+05:30  INFO 137624 --- [banking-backend] [http-nio-8080-exec-3] c.d.b.auth.service.AuthService           : User logged in successfully: sivaprakash7223@gmail.com
+2026-06-20T00:11:05.574+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-3] c.d.b.common.aspect.AuditAspect          : No authenticated user found for audit logging
+2026-06-20T00:11:15.200+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /customer/profile
+2026-06-20T00:11:15.206+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:11:15.210+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T00:11:15.216+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:11:15.221+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] c.d.b.c.s.JwtAuthenticationFilter        : User authenticated: sivaprakash7223@gmail.com
+2026-06-20T00:11:15.222+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /customer/profile
+2026-06-20T00:11:15.225+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:11:15.230+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    left join
+        users u1_0 
+            on u1_0.id=c1_0.user_id 
+    where
+        u1_0.id=?
+2026-06-20T00:11:15.235+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:11:51.028+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /totp/verify
+2026-06-20T00:11:51.031+05:30 ERROR 137624 --- [banking-backend] [http-nio-8080-exec-5] c.d.b.c.s.JwtAuthenticationFilter        : Cannot set user authentication: JWT expired at 2026-06-19T14:52:49Z. Current time: 2026-06-19T18:41:51Z, a difference of 13742030 milliseconds.  Allowed clock skew: 0 milliseconds.
+2026-06-20T00:11:51.031+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T00:11:51.032+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-5] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access
+2026-06-20T00:11:51.034+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /error
+2026-06-20T00:11:51.035+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T00:11:51.035+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-5] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access
+2026-06-20T00:11:58.317+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /totp/verify
+2026-06-20T00:11:58.321+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:11:58.324+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T00:11:58.325+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:11:58.331+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] c.d.b.c.s.JwtAuthenticationFilter        : User authenticated: sivaprakash7223@gmail.com
+2026-06-20T00:11:58.332+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /totp/verify
+2026-06-20T00:11:58.338+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:11:58.346+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:11:58.350+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        ts1_0.id,
+        ts1_0.created_at,
+        ts1_0.is_enabled,
+        ts1_0.enabled_at,
+        ts1_0.last_used_at,
+        ts1_0.secret,
+        ts1_0.user_id 
+    from
+        totp_secrets ts1_0 
+    where
+        ts1_0.user_id=?
+2026-06-20T00:11:58.355+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:11:58.367+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        ts1_0.id,
+        ts1_0.created_at,
+        ts1_0.is_enabled,
+        ts1_0.enabled_at,
+        ts1_0.last_used_at,
+        ts1_0.secret,
+        ts1_0.user_id,
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        totp_secrets ts1_0 
+    join
+        users u1_0 
+            on u1_0.id=ts1_0.user_id 
+    where
+        ts1_0.id=?
+2026-06-20T00:11:58.373+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    update
+        totp_secrets 
+    set
+        is_enabled=?,
+        enabled_at=?,
+        last_used_at=?,
+        secret=?,
+        user_id=? 
+    where
+        id=?
+2026-06-20T00:12:41.321+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /totp/disable
+2026-06-20T00:12:41.324+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:12:41.328+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T00:12:41.329+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:12:41.335+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] c.d.b.c.s.JwtAuthenticationFilter        : User authenticated: sivaprakash7223@gmail.com
+2026-06-20T00:12:41.335+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /totp/disable
+2026-06-20T00:12:41.338+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:12:41.341+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:12:41.344+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        ts1_0.id,
+        ts1_0.created_at,
+        ts1_0.is_enabled,
+        ts1_0.enabled_at,
+        ts1_0.last_used_at,
+        ts1_0.secret,
+        ts1_0.user_id 
+    from
+        totp_secrets ts1_0 
+    where
+        ts1_0.user_id=?
+2026-06-20T00:12:41.345+05:30  INFO 137624 --- [banking-backend] [http-nio-8080-exec-8] c.d.b.auth.service.TotpService           : TOTP disabled for user: sivaprakash7223@gmail.com
+2026-06-20T00:12:41.347+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    update
+        users 
+    set
+        is_active=?,
+        biometric_enabled=?,
+        email=?,
+        email_verified=?,
+        failed_login_attempts=?,
+        last_login_at=?,
+        is_locked=?,
+        locked_until=?,
+        password=?,
+        password_changed_at=?,
+        phone=?,
+        role=?,
+        totp_enabled=?,
+        updated_at=? 
+    where
+        id=?
+2026-06-20T00:12:41.349+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    update
+        totp_secrets 
+    set
+        is_enabled=?,
+        enabled_at=?,
+        last_used_at=?,
+        secret=?,
+        user_id=? 
+    where
+        id=?
+2026-06-20T00:12:41.352+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:12:41.359+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    insert 
+    into
+        audit_logs
+        (action, created_at, description, entity_id, entity_type, ip_address, user_agent, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T00:12:41.362+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] c.d.b.admin.service.AuditService         : Audit log created: UPDATE - TOTP disabled
+2026-06-20T00:12:41.363+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-8] c.d.b.common.aspect.AuditAspect          : Audit log created: sivaprakash7223@gmail.com - UPDATE - TOTP disabled
+2026-06-20T00:13:07.184+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /totp/enable
+2026-06-20T00:13:07.186+05:30 ERROR 137624 --- [banking-backend] [http-nio-8080-exec-7] c.d.b.c.s.JwtAuthenticationFilter        : Cannot set user authentication: JWT expired at 2026-06-19T14:52:49Z. Current time: 2026-06-19T18:43:07Z, a difference of 13818186 milliseconds.  Allowed clock skew: 0 milliseconds.
+2026-06-20T00:13:07.186+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T00:13:07.187+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-7] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access
+2026-06-20T00:13:07.189+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /error
+2026-06-20T00:13:07.189+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T00:13:07.190+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-7] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access
+2026-06-20T00:13:12.938+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing POST /totp/enable
+2026-06-20T00:13:12.944+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:13:12.947+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T00:13:12.949+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:13:12.952+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] c.d.b.c.s.JwtAuthenticationFilter        : User authenticated: sivaprakash7223@gmail.com
+2026-06-20T00:13:12.953+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured POST /totp/enable
+2026-06-20T00:13:12.957+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:13:12.960+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:13:12.962+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    select
+        ts1_0.id,
+        ts1_0.created_at,
+        ts1_0.is_enabled,
+        ts1_0.enabled_at,
+        ts1_0.last_used_at,
+        ts1_0.secret,
+        ts1_0.user_id 
+    from
+        totp_secrets ts1_0 
+    where
+        ts1_0.user_id=?
+2026-06-20T00:13:12.964+05:30  INFO 137624 --- [banking-backend] [http-nio-8080-exec-9] c.d.b.auth.service.TotpService           : TOTP enabled for user: sivaprakash7223@gmail.com
+2026-06-20T00:13:12.965+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    update
+        users 
+    set
+        is_active=?,
+        biometric_enabled=?,
+        email=?,
+        email_verified=?,
+        failed_login_attempts=?,
+        last_login_at=?,
+        is_locked=?,
+        locked_until=?,
+        password=?,
+        password_changed_at=?,
+        phone=?,
+        role=?,
+        totp_enabled=?,
+        updated_at=? 
+    where
+        id=?
+2026-06-20T00:13:12.967+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    update
+        totp_secrets 
+    set
+        is_enabled=?,
+        enabled_at=?,
+        last_used_at=?,
+        secret=?,
+        user_id=? 
+    where
+        id=?
+2026-06-20T00:13:12.971+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:13:12.973+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] org.hibernate.SQL                        : 
+    insert 
+    into
+        audit_logs
+        (action, created_at, description, entity_id, entity_type, ip_address, user_agent, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T00:13:12.974+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] c.d.b.admin.service.AuditService         : Audit log created: UPDATE - TOTP enabled
+2026-06-20T00:13:12.975+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-9] c.d.b.common.aspect.AuditAspect          : Audit log created: sivaprakash7223@gmail.com - UPDATE - TOTP enabled
+2026-06-20T00:13:23.023+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing POST /totp/setup
+2026-06-20T00:13:23.027+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:13:23.030+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T00:13:23.032+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:13:23.038+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-10] c.d.b.c.s.JwtAuthenticationFilter        : User authenticated: sivaprakash7223@gmail.com
+2026-06-20T00:13:23.038+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured POST /totp/setup
+2026-06-20T00:13:23.041+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T00:13:23.043+05:30 DEBUG 137624 --- [banking-backend] [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2026-06-20T00:13:23.050+05:30 ERROR 137624 --- [banking-backend] [http-nio-8080-exec-10] c.d.b.c.e.GlobalExceptionHandler         : Custom exception: TOTP is already enabled
+2026-06-20T00:18:30.163+05:30  INFO 137624 --- [banking-backend] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-20T00:18:30.163+05:30  INFO 137624 --- [banking-backend] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-06-20T00:18:30.169+05:30  INFO 137624 --- [banking-backend] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-20T00:18:30.169+05:30  INFO 137624 --- [banking-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-06-20T00:18:30.169+05:30  INFO 137624 --- [banking-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-06-20T10:25:55.005+05:30  INFO 19436 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Starting BankingBackendApplication using Java 21.0.11 with PID 19436 (C:\Users\Lenovo\IdeaProjects\BankBackendApp\target\classes started by YASHWANTH in C:\Users\Lenovo\IdeaProjects\BankBackendApp)
+2026-06-20T10:25:55.006+05:30 DEBUG 19436 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Running with Spring Boot v3.5.15, Spring v6.2.19
+2026-06-20T10:25:55.007+05:30  INFO 19436 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : No active profile set, falling back to 1 default profile: "default"
+2026-06-20T10:25:56.263+05:30  INFO 19436 --- [banking-backend] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-20T10:25:56.455+05:30  INFO 19436 --- [banking-backend] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 179 ms. Found 21 JPA repository interfaces.
+2026-06-20T10:25:57.357+05:30  INFO 19436 --- [banking-backend] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-20T10:25:57.391+05:30  INFO 19436 --- [banking-backend] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-20T10:25:57.392+05:30  INFO 19436 --- [banking-backend] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.55]
+2026-06-20T10:25:57.462+05:30  INFO 19436 --- [banking-backend] [main] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring embedded WebApplicationContext
+2026-06-20T10:25:57.463+05:30  INFO 19436 --- [banking-backend] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2405 ms
+2026-06-20T10:25:57.664+05:30  INFO 19436 --- [banking-backend] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-20T10:25:57.742+05:30  INFO 19436 --- [banking-backend] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.53.Final
+2026-06-20T10:25:57.784+05:30  INFO 19436 --- [banking-backend] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-20T10:25:58.100+05:30  INFO 19436 --- [banking-backend] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-20T10:25:58.134+05:30  INFO 19436 --- [banking-backend] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-20T10:25:58.334+05:30  INFO 19436 --- [banking-backend] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@612ac38b
+2026-06-20T10:25:58.337+05:30  INFO 19436 --- [banking-backend] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-20T10:25:58.380+05:30  WARN 19436 --- [banking-backend] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-20T10:25:58.399+05:30  INFO 19436 --- [banking-backend] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-20T10:25:59.893+05:30  INFO 19436 --- [banking-backend] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-20T10:25:59.972+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table accounts (
+        id bigint generated by default as identity,
+        account_number varchar(20) not null,
+        account_type varchar(20) not null check (account_type in ('SAVINGS','CURRENT')),
+        balance numeric(15,2) not null,
+        branch_code varchar(10) not null,
+        branch_name varchar(50),
+        closed_at timestamp(6),
+        closure_reason varchar(200),
+        created_at timestamp(6) not null,
+        ifsc_code varchar(20) not null,
+        minimum_balance numeric(15,2) not null,
+        is_primary boolean not null,
+        status varchar(20) not null check (status in ('ACTIVE','INACTIVE','FROZEN','BLOCKED','CLOSED')),
+        updated_at timestamp(6),
+        customer_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.043+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table audit_logs (
+        id bigint generated by default as identity,
+        action varchar(50) not null check (action in ('CREATE','UPDATE','DELETE','LOGIN','LOGOUT','PASSWORD_CHANGE','ACCOUNT_LOCK','ACCOUNT_UNLOCK','KYC_APPROVE','KYC_REJECT','CARD_ISSUE','CARD_BLOCK')),
+        created_at timestamp(6) not null,
+        description varchar(500),
+        entity_id bigint,
+        entity_type varchar(100),
+        ip_address varchar(100),
+        user_agent varchar(500),
+        user_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.050+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table beneficiaries (
+        id bigint generated by default as identity,
+        bank_name varchar(100),
+        beneficiary_account_number varchar(20) not null,
+        beneficiary_name varchar(100) not null,
+        created_at timestamp(6) not null,
+        ifsc_code varchar(20) not null,
+        remarks varchar(500),
+        is_verified boolean not null,
+        account_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.057+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table card_security_settings (
+        id bigint generated by default as identity,
+        allowed_countries varchar(200),
+        atm_withdrawal_allowed boolean not null,
+        blocked_countries varchar(200),
+        card_id bigint not null,
+        card_type varchar(20) not null,
+        contactless_payment_allowed boolean not null,
+        created_at timestamp(6) not null,
+        daily_transaction_limit numeric(15,2),
+        daily_withdrawal_limit numeric(15,2),
+        international_transaction_allowed boolean not null,
+        monthly_transaction_limit numeric(15,2),
+        online_transaction_allowed boolean not null,
+        updated_at timestamp(6),
+        primary key (id)
+    )
+2026-06-20T10:26:00.062+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table consents (
+        id bigint generated by default as identity,
+        is_accepted boolean not null,
+        accepted_at timestamp(6),
+        consent_type varchar(100) not null,
+        consent_version varchar(50) not null,
+        created_at timestamp(6) not null,
+        ip_address varchar(200),
+        user_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.067+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table credit_cards (
+        id bigint generated by default as identity,
+        activated_at timestamp(6),
+        is_approved boolean not null,
+        approved_at timestamp(6),
+        available_credit numeric(15,2) not null,
+        billing_due_date date,
+        block_reason varchar(200),
+        blocked_at timestamp(6),
+        card_holder_name varchar(100) not null,
+        card_number varchar(16) not null,
+        created_at timestamp(6) not null,
+        credit_limit numeric(15,2) not null,
+        cvv varchar(4) not null,
+        expiry_date date not null,
+        interest_rate numeric(5,2) not null,
+        outstanding_balance numeric(15,2) not null,
+        pin varchar(4),
+        pin_hash varchar(64),
+        rejected_at timestamp(6),
+        rejection_reason varchar(200),
+        status varchar(20) not null check (status in ('ACTIVE','INACTIVE','BLOCKED','EXPIRED','LOST','DAMAGED')),
+        updated_at timestamp(6),
+        account_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.075+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table customers (
+        id bigint generated by default as identity,
+        aadhaar varchar(20),
+        address varchar(200),
+        city varchar(50),
+        country varchar(50),
+        created_at timestamp(6) not null,
+        date_of_birth date,
+        first_name varchar(50) not null,
+        last_name varchar(50) not null,
+        middle_name varchar(50),
+        pan varchar(20),
+        postal_code varchar(10),
+        profile_photo_url varchar(255),
+        state varchar(50),
+        status varchar(20) not null check (status in ('ACTIVE','INACTIVE','SUSPENDED','BLOCKED')),
+        suspended_at timestamp(6),
+        suspension_reason varchar(500),
+        updated_at timestamp(6),
+        user_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.081+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table debit_cards (
+        id bigint generated by default as identity,
+        activated_at timestamp(6),
+        atm_withdrawal_enabled boolean not null,
+        block_reason varchar(200),
+        blocked_at timestamp(6),
+        card_holder_name varchar(100) not null,
+        card_number varchar(16) not null,
+        created_at timestamp(6) not null,
+        cvv varchar(4) not null,
+        expiry_date date not null,
+        international_enabled boolean not null,
+        online_transaction_enabled boolean not null,
+        pin varchar(4),
+        pin_hash varchar(64),
+        status varchar(20) not null check (status in ('ACTIVE','INACTIVE','BLOCKED','EXPIRED','LOST','DAMAGED')),
+        updated_at timestamp(6),
+        account_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.087+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table devices (
+        id bigint generated by default as identity,
+        is_active boolean not null,
+        created_at timestamp(6) not null,
+        device_fingerprint varchar(500),
+        device_id varchar(255) not null,
+        device_name varchar(255) not null,
+        ip_address varchar(100),
+        last_used_at timestamp(6),
+        is_trusted boolean not null,
+        updated_at timestamp(6),
+        user_agent varchar(500),
+        user_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.094+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table documents (
+        id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        document_number varchar(200) not null,
+        document_type varchar(50) not null check (document_type in ('AADHAAR','PAN_CARD','PASSPORT','DRIVING_LICENSE','VOTER_ID','BANK_STATEMENT','UTILITY_BILL','PHOTO')),
+        document_url varchar(500) not null,
+        expiry_date date,
+        issue_date date,
+        issuing_authority varchar(100),
+        is_verified boolean not null,
+        customer_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.102+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table kyc_records (
+        id bigint generated by default as identity,
+        approved_at timestamp(6),
+        approved_by varchar(100),
+        created_at timestamp(6) not null,
+        expiry_date date,
+        rejected_at timestamp(6),
+        rejection_reason varchar(200),
+        status varchar(20) not null check (status in ('PENDING','SUBMITTED','UNDER_REVIEW','VERIFIED','REJECTED','EXPIRED')),
+        submitted_at timestamp(6),
+        updated_at timestamp(6),
+        customer_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.108+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table login_history (
+        id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        device_type varchar(50),
+        failure_reason varchar(200),
+        ip_address varchar(100),
+        location varchar(100),
+        successful boolean not null,
+        user_agent varchar(500),
+        user_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.116+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table mpins (
+        id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        failed_attempts integer not null,
+        last_used_at timestamp(6),
+        is_locked boolean not null,
+        locked_until timestamp(6),
+        pin_hash varchar(255) not null,
+        updated_at timestamp(6),
+        user_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.125+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table nominees (
+        id bigint generated by default as identity,
+        is_active boolean not null,
+        created_at timestamp(6) not null,
+        nominee_address varchar(200),
+        nominee_date_of_birth date,
+        nominee_email varchar(100),
+        nominee_name varchar(100) not null,
+        nominee_phone varchar(20),
+        nominee_relationship varchar(100),
+        percentage numeric(5,2) not null,
+        updated_at timestamp(6),
+        account_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.135+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table otps (
+        id bigint generated by default as identity,
+        code varchar(6) not null,
+        created_at timestamp(6) not null,
+        email varchar(100) not null,
+        expires_at timestamp(6) not null,
+        otp_type varchar(30) not null check (otp_type in ('EMAIL_VERIFICATION','PASSWORD_RESET','TRANSACTION_VERIFICATION','LOGIN_VERIFICATION')),
+        retry_count integer not null,
+        verified boolean not null,
+        verified_at timestamp(6),
+        primary key (id)
+    )
+2026-06-20T10:26:00.141+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table permissions (
+        id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        description varchar(200),
+        module varchar(50) not null,
+        name varchar(100) not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.146+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table role_permissions (
+        id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        permission_id bigint not null,
+        role_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.153+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table roles (
+        id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        description varchar(200),
+        name varchar(50) not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.158+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table sessions (
+        id bigint generated by default as identity,
+        is_active boolean not null,
+        created_at timestamp(6) not null,
+        expires_at timestamp(6) not null,
+        ip_address varchar(100),
+        last_activity_at timestamp(6),
+        refresh_token varchar(500) not null,
+        user_agent varchar(500),
+        device_id bigint,
+        user_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.164+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table totp_secrets (
+        id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        is_enabled boolean not null,
+        enabled_at timestamp(6),
+        last_used_at timestamp(6),
+        secret varchar(255) not null,
+        user_id bigint not null,
+        primary key (id)
+    )
+2026-06-20T10:26:00.169+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create table users (
+        id bigint generated by default as identity,
+        is_active boolean not null,
+        biometric_enabled boolean not null,
+        created_at timestamp(6) not null,
+        email varchar(100) not null,
+        email_verified boolean not null,
+        failed_login_attempts integer not null,
+        last_login_at timestamp(6),
+        is_locked boolean not null,
+        locked_until timestamp(6),
+        password varchar(255) not null,
+        password_changed_at timestamp(6),
+        phone varchar(15),
+        role varchar(20) not null check (role in ('CUSTOMER','ADMIN','SUPER_ADMIN')),
+        totp_enabled boolean not null,
+        updated_at timestamp(6),
+        primary key (id)
+    )
+2026-06-20T10:26:00.175+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists accounts 
+       drop constraint if exists UK6kplolsdtr3slnvx97xsy2kc8
+2026-06-20T10:26:00.179+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.180+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk6kplolsdtr3slnvx97xsy2kc8" of relation "accounts" does not exist, skipping
+2026-06-20T10:26:00.180+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists accounts 
+       add constraint UK6kplolsdtr3slnvx97xsy2kc8 unique (account_number)
+2026-06-20T10:26:00.182+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists card_security_settings 
+       drop constraint if exists UK7loybxscm9yl0vwyuhcr56vm5
+2026-06-20T10:26:00.184+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.184+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk7loybxscm9yl0vwyuhcr56vm5" of relation "card_security_settings" does not exist, skipping
+2026-06-20T10:26:00.184+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists card_security_settings 
+       add constraint UK7loybxscm9yl0vwyuhcr56vm5 unique (card_id)
+2026-06-20T10:26:00.186+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists credit_cards 
+       drop constraint if exists UKrsfixpi1crklj327162ylmq5h
+2026-06-20T10:26:00.188+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.189+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukrsfixpi1crklj327162ylmq5h" of relation "credit_cards" does not exist, skipping
+2026-06-20T10:26:00.189+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists credit_cards 
+       add constraint UKrsfixpi1crklj327162ylmq5h unique (card_number)
+2026-06-20T10:26:00.191+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists customers 
+       drop constraint if exists UKtjwtvyhn94olmi2qsj2kglpd0
+2026-06-20T10:26:00.192+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.192+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uktjwtvyhn94olmi2qsj2kglpd0" of relation "customers" does not exist, skipping
+2026-06-20T10:26:00.192+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists customers 
+       add constraint UKtjwtvyhn94olmi2qsj2kglpd0 unique (aadhaar)
+2026-06-20T10:26:00.195+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists customers 
+       drop constraint if exists UK40nrvyfri58wxyn3e43u9e8sh
+2026-06-20T10:26:00.196+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.196+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk40nrvyfri58wxyn3e43u9e8sh" of relation "customers" does not exist, skipping
+2026-06-20T10:26:00.196+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists customers 
+       add constraint UK40nrvyfri58wxyn3e43u9e8sh unique (pan)
+2026-06-20T10:26:00.199+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists customers 
+       drop constraint if exists UKeuat1oase6eqv195jvb71a93s
+2026-06-20T10:26:00.201+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.201+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukeuat1oase6eqv195jvb71a93s" of relation "customers" does not exist, skipping
+2026-06-20T10:26:00.202+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists customers 
+       add constraint UKeuat1oase6eqv195jvb71a93s unique (user_id)
+2026-06-20T10:26:00.204+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists debit_cards 
+       drop constraint if exists UKnioyng2mw9dwghujygj555dmp
+2026-06-20T10:26:00.205+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.205+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uknioyng2mw9dwghujygj555dmp" of relation "debit_cards" does not exist, skipping
+2026-06-20T10:26:00.205+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists debit_cards 
+       add constraint UKnioyng2mw9dwghujygj555dmp unique (card_number)
+2026-06-20T10:26:00.208+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists devices 
+       drop constraint if exists UKkl1viut5wsyxgnd1t3wqf9hbu
+2026-06-20T10:26:00.209+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.210+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukkl1viut5wsyxgnd1t3wqf9hbu" of relation "devices" does not exist, skipping
+2026-06-20T10:26:00.210+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists devices 
+       add constraint UKkl1viut5wsyxgnd1t3wqf9hbu unique (device_id)
+2026-06-20T10:26:00.212+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists kyc_records 
+       drop constraint if exists UKd4fagm1p4j25y11swxie6axp8
+2026-06-20T10:26:00.213+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.213+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukd4fagm1p4j25y11swxie6axp8" of relation "kyc_records" does not exist, skipping
+2026-06-20T10:26:00.213+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists kyc_records 
+       add constraint UKd4fagm1p4j25y11swxie6axp8 unique (customer_id)
+2026-06-20T10:26:00.217+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists mpins 
+       drop constraint if exists UKjqop3mj21i6sn4nkmymgoygbf
+2026-06-20T10:26:00.217+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.218+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukjqop3mj21i6sn4nkmymgoygbf" of relation "mpins" does not exist, skipping
+2026-06-20T10:26:00.218+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists mpins 
+       add constraint UKjqop3mj21i6sn4nkmymgoygbf unique (user_id)
+2026-06-20T10:26:00.221+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    create index idx_email_type 
+       on otps (email, otp_type)
+2026-06-20T10:26:00.224+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists permissions 
+       drop constraint if exists UKpnvtwliis6p05pn6i3ndjrqt2
+2026-06-20T10:26:00.224+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.224+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukpnvtwliis6p05pn6i3ndjrqt2" of relation "permissions" does not exist, skipping
+2026-06-20T10:26:00.225+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists permissions 
+       add constraint UKpnvtwliis6p05pn6i3ndjrqt2 unique (name)
+2026-06-20T10:26:00.227+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists roles 
+       drop constraint if exists UKofx66keruapi6vyqpv6f2or37
+2026-06-20T10:26:00.228+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.228+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukofx66keruapi6vyqpv6f2or37" of relation "roles" does not exist, skipping
+2026-06-20T10:26:00.228+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists roles 
+       add constraint UKofx66keruapi6vyqpv6f2or37 unique (name)
+2026-06-20T10:26:00.230+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists sessions 
+       drop constraint if exists UK5tv2ais75eg4bct8kl44w0ktx
+2026-06-20T10:26:00.230+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.230+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk5tv2ais75eg4bct8kl44w0ktx" of relation "sessions" does not exist, skipping
+2026-06-20T10:26:00.232+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists sessions 
+       add constraint UK5tv2ais75eg4bct8kl44w0ktx unique (refresh_token)
+2026-06-20T10:26:00.234+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists totp_secrets 
+       drop constraint if exists UKiyoh46tlnyj6jpl6x32sc83nm
+2026-06-20T10:26:00.235+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.235+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukiyoh46tlnyj6jpl6x32sc83nm" of relation "totp_secrets" does not exist, skipping
+2026-06-20T10:26:00.235+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists totp_secrets 
+       add constraint UKiyoh46tlnyj6jpl6x32sc83nm unique (secret)
+2026-06-20T10:26:00.237+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists totp_secrets 
+       drop constraint if exists UK24bml7gf14aiqauvtlhibs8d7
+2026-06-20T10:26:00.238+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.238+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk24bml7gf14aiqauvtlhibs8d7" of relation "totp_secrets" does not exist, skipping
+2026-06-20T10:26:00.238+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists totp_secrets 
+       add constraint UK24bml7gf14aiqauvtlhibs8d7 unique (user_id)
+2026-06-20T10:26:00.240+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists users 
+       drop constraint if exists UK6dotkott2kjsp8vw4d0m25fb7
+2026-06-20T10:26:00.241+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.241+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk6dotkott2kjsp8vw4d0m25fb7" of relation "users" does not exist, skipping
+2026-06-20T10:26:00.241+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists users 
+       add constraint UK6dotkott2kjsp8vw4d0m25fb7 unique (email)
+2026-06-20T10:26:00.244+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists users 
+       drop constraint if exists UKdu5v5sr43g5bfnji4vb8hg5s3
+2026-06-20T10:26:00.245+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-06-20T10:26:00.245+05:30  WARN 19436 --- [banking-backend] [main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukdu5v5sr43g5bfnji4vb8hg5s3" of relation "users" does not exist, skipping
+2026-06-20T10:26:00.245+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists users 
+       add constraint UKdu5v5sr43g5bfnji4vb8hg5s3 unique (phone)
+2026-06-20T10:26:00.247+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists accounts 
+       add constraint FKn6x8pdp50os8bq5rbb792upse 
+       foreign key (customer_id) 
+       references customers
+2026-06-20T10:26:00.255+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists beneficiaries 
+       add constraint FKkhalmfgo61kor4gjx3t26ka0 
+       foreign key (account_id) 
+       references accounts
+2026-06-20T10:26:00.257+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists consents 
+       add constraint FKqg1anyon46sc4pd953w0v28 
+       foreign key (user_id) 
+       references users
+2026-06-20T10:26:00.261+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists credit_cards 
+       add constraint FKpoiwc648guywrxht2hb5hmv4f 
+       foreign key (account_id) 
+       references accounts
+2026-06-20T10:26:00.264+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists customers 
+       add constraint FKrh1g1a20omjmn6kurd35o3eit 
+       foreign key (user_id) 
+       references users
+2026-06-20T10:26:00.266+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists debit_cards 
+       add constraint FKacxl58y1ntvah5oxxkk2yv26i 
+       foreign key (account_id) 
+       references accounts
+2026-06-20T10:26:00.269+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists devices 
+       add constraint FKrfbri1ymrwywdydc4dgywe1bt 
+       foreign key (user_id) 
+       references users
+2026-06-20T10:26:00.271+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists documents 
+       add constraint FKdhsw73353i2q16yiltbdqcmfh 
+       foreign key (customer_id) 
+       references customers
+2026-06-20T10:26:00.273+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists kyc_records 
+       add constraint FK95wk8b370gyd9cytedm6mny96 
+       foreign key (customer_id) 
+       references customers
+2026-06-20T10:26:00.276+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists login_history 
+       add constraint FK20v0mimmdegh2afs39uixlxpm 
+       foreign key (user_id) 
+       references users
+2026-06-20T10:26:00.279+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists mpins 
+       add constraint FKifg73p9kwhihsubi6256qso3o 
+       foreign key (user_id) 
+       references users
+2026-06-20T10:26:00.281+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists nominees 
+       add constraint FKrc30ecflgnqrd3rcuf2ymd84l 
+       foreign key (account_id) 
+       references accounts
+2026-06-20T10:26:00.283+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists role_permissions 
+       add constraint FKegdk29eiy7mdtefy5c7eirr6e 
+       foreign key (permission_id) 
+       references permissions
+2026-06-20T10:26:00.287+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists role_permissions 
+       add constraint FKn5fotdgk8d1xvo8nav9uv3muc 
+       foreign key (role_id) 
+       references roles
+2026-06-20T10:26:00.290+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists sessions 
+       add constraint FKebt6qme74mxef65v1lr3ck7so 
+       foreign key (device_id) 
+       references devices
+2026-06-20T10:26:00.293+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists sessions 
+       add constraint FKruie73rneumyyd1bgo6qw8vjt 
+       foreign key (user_id) 
+       references users
+2026-06-20T10:26:00.295+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    alter table if exists totp_secrets 
+       add constraint FK3y28un1iib4airw82n94j8jxk 
+       foreign key (user_id) 
+       references users
+2026-06-20T10:26:00.300+05:30  INFO 19436 --- [banking-backend] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-20T10:26:00.649+05:30  INFO 19436 --- [banking-backend] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-20T10:26:01.170+05:30 DEBUG 19436 --- [banking-backend] [main] c.d.b.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2026-06-20T10:26:01.683+05:30  INFO 19436 --- [banking-backend] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-06-20T10:26:01.683+05:30  WARN 19436 --- [banking-backend] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-06-20T10:26:01.978+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2026-06-20T10:26:02.357+05:30 DEBUG 19436 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    insert 
+    into
+        users
+        (is_active, biometric_enabled, created_at, email, email_verified, failed_login_attempts, last_login_at, is_locked, locked_until, password, password_changed_at, phone, role, totp_enabled, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T10:26:02.962+05:30 DEBUG 19436 --- [banking-backend] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-06-20T10:26:03.466+05:30  WARN 19436 --- [banking-backend] [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-06-20T10:26:03.472+05:30  INFO 19436 --- [banking-backend] [main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-20T10:26:03.475+05:30  INFO 19436 --- [banking-backend] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-06-20T10:26:03.478+05:30  INFO 19436 --- [banking-backend] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-06-20T10:26:03.496+05:30  INFO 19436 --- [banking-backend] [main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-06-20T10:26:03.513+05:30 ERROR 19436 --- [banking-backend] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-06-20T10:26:47.309+05:30  INFO 13716 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Starting BankingBackendApplication using Java 21.0.11 with PID 13716 (C:\Users\Lenovo\IdeaProjects\BankBackendApp\target\classes started by YASHWANTH in C:\Users\Lenovo\IdeaProjects\BankBackendApp)
+2026-06-20T10:26:47.311+05:30 DEBUG 13716 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Running with Spring Boot v3.5.15, Spring v6.2.19
+2026-06-20T10:26:47.311+05:30  INFO 13716 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : No active profile set, falling back to 1 default profile: "default"
+2026-06-20T10:26:48.329+05:30  INFO 13716 --- [banking-backend] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-20T10:26:48.443+05:30  INFO 13716 --- [banking-backend] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 106 ms. Found 21 JPA repository interfaces.
+2026-06-20T10:26:49.179+05:30  INFO 13716 --- [banking-backend] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2026-06-20T10:26:49.210+05:30  INFO 13716 --- [banking-backend] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-20T10:26:49.211+05:30  INFO 13716 --- [banking-backend] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.55]
+2026-06-20T10:26:49.273+05:30  INFO 13716 --- [banking-backend] [main] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring embedded WebApplicationContext
+2026-06-20T10:26:49.273+05:30  INFO 13716 --- [banking-backend] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1912 ms
+2026-06-20T10:26:49.451+05:30  INFO 13716 --- [banking-backend] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-20T10:26:49.504+05:30  INFO 13716 --- [banking-backend] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.53.Final
+2026-06-20T10:26:49.538+05:30  INFO 13716 --- [banking-backend] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-20T10:26:49.792+05:30  INFO 13716 --- [banking-backend] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-20T10:26:49.823+05:30  INFO 13716 --- [banking-backend] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-20T10:26:50.009+05:30  INFO 13716 --- [banking-backend] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2cd5b19c
+2026-06-20T10:26:50.011+05:30  INFO 13716 --- [banking-backend] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-20T10:26:50.050+05:30  WARN 13716 --- [banking-backend] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-20T10:26:50.071+05:30  INFO 13716 --- [banking-backend] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-20T10:26:51.463+05:30  INFO 13716 --- [banking-backend] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-20T10:26:51.661+05:30  INFO 13716 --- [banking-backend] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-20T10:26:51.929+05:30  INFO 13716 --- [banking-backend] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-20T10:26:52.407+05:30 DEBUG 13716 --- [banking-backend] [main] c.d.b.c.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2026-06-20T10:26:52.907+05:30  INFO 13716 --- [banking-backend] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-06-20T10:26:52.907+05:30  WARN 13716 --- [banking-backend] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-06-20T10:26:53.179+05:30 DEBUG 13716 --- [banking-backend] [main] org.hibernate.SQL                        : 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2026-06-20T10:26:53.720+05:30 DEBUG 13716 --- [banking-backend] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-06-20T10:26:54.198+05:30  INFO 13716 --- [banking-backend] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/api/v1'
+2026-06-20T10:26:54.208+05:30  INFO 13716 --- [banking-backend] [main] c.d.b.BankingBackendApplication          : Started BankingBackendApplication in 7.45 seconds (process running for 7.893)
+2026-06-20T10:26:54.211+05:30  WARN 13716 --- [banking-backend] [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-20T10:27:31.072+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-1] o.a.c.c.C.[.[localhost].[/api/v1]        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-20T10:27:31.072+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-20T10:27:31.075+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-06-20T10:27:31.102+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/index.html
+2026-06-20T10:27:31.114+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.118+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/index.html
+2026-06-20T10:27:31.176+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/index.css
+2026-06-20T10:27:31.176+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-ui.css
+2026-06-20T10:27:31.176+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.178+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/index.css
+2026-06-20T10:27:31.178+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.179+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-initializer.js
+2026-06-20T10:27:31.179+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-ui.css
+2026-06-20T10:27:31.180+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-6] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.181+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-initializer.js
+2026-06-20T10:27:31.181+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-ui-standalone-preset.js
+2026-06-20T10:27:31.181+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.182+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-ui-standalone-preset.js
+2026-06-20T10:27:31.182+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/swagger-ui-bundle.js
+2026-06-20T10:27:31.182+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.183+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/swagger-ui-bundle.js
+2026-06-20T10:27:31.336+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api-docs/swagger-config
+2026-06-20T10:27:31.338+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.339+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api-docs/swagger-config
+2026-06-20T10:27:31.340+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /swagger-ui/favicon-32x32.png
+2026-06-20T10:27:31.340+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.340+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /swagger-ui/favicon-32x32.png
+2026-06-20T10:27:31.404+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api-docs
+2026-06-20T10:27:31.404+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:31.405+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api-docs
+2026-06-20T10:27:32.778+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-9] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 1359 ms
+2026-06-20T10:27:56.080+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-10] o.s.security.web.FilterChainProxy        : Securing GET /api-docs
+2026-06-20T10:27:56.082+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:27:56.082+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-10] o.s.security.web.FilterChainProxy        : Secured GET /api-docs
+2026-06-20T10:31:38.590+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-7] o.s.security.web.FilterChainProxy        : Securing POST /auth/login
+2026-06-20T10:31:38.622+05:30 ERROR 13716 --- [banking-backend] [http-nio-8081-exec-7] c.d.b.c.s.JwtAuthenticationFilter        : Cannot set user authentication: JWT strings must contain exactly 2 period characters. Found: 0
+2026-06-20T10:31:38.623+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-7] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:31:38.623+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-7] o.s.security.web.FilterChainProxy        : Secured POST /auth/login
+2026-06-20T10:31:38.698+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-7] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        (
+            u1_0.email=? 
+            or u1_0.phone=?
+        )
+2026-06-20T10:31:38.715+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-7] c.d.b.common.aspect.AuditAspect          : No authenticated user found for audit logging
+2026-06-20T10:31:38.718+05:30 ERROR 13716 --- [banking-backend] [http-nio-8081-exec-7] c.d.b.c.e.GlobalExceptionHandler         : Unauthorized exception: Invalid credentials
+2026-06-20T10:32:38.871+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] o.s.security.web.FilterChainProxy        : Securing POST /auth/register
+2026-06-20T10:32:38.873+05:30 ERROR 13716 --- [banking-backend] [http-nio-8081-exec-1] c.d.b.c.s.JwtAuthenticationFilter        : Cannot set user authentication: JWT strings must contain exactly 2 period characters. Found: 0
+2026-06-20T10:32:38.874+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:32:38.874+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] o.s.security.web.FilterChainProxy        : Secured POST /auth/register
+2026-06-20T10:32:38.897+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] org.hibernate.SQL                        : 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2026-06-20T10:32:38.900+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] org.hibernate.SQL                        : 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.phone=? 
+    fetch
+        first ? rows only
+2026-06-20T10:32:39.269+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] org.hibernate.SQL                        : 
+    insert 
+    into
+        users
+        (is_active, biometric_enabled, created_at, email, email_verified, failed_login_attempts, last_login_at, is_locked, locked_until, password, password_changed_at, phone, role, totp_enabled, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T10:32:39.292+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] org.hibernate.SQL                        : 
+    insert 
+    into
+        customers
+        (aadhaar, address, city, country, created_at, date_of_birth, first_name, last_name, middle_name, pan, postal_code, profile_photo_url, state, status, suspended_at, suspension_reason, updated_at, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T10:32:39.305+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] org.hibernate.SQL                        : 
+    select
+        o1_0.id,
+        o1_0.code,
+        o1_0.created_at,
+        o1_0.email,
+        o1_0.expires_at,
+        o1_0.otp_type,
+        o1_0.retry_count,
+        o1_0.verified,
+        o1_0.verified_at 
+    from
+        otps o1_0 
+    where
+        o1_0.email=? 
+        and o1_0.otp_type=? 
+    order by
+        o1_0.created_at desc 
+    fetch
+        first ? rows only
+2026-06-20T10:32:39.319+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] org.hibernate.SQL                        : 
+    delete 
+    from
+        otps o1_0 
+    where
+        o1_0.email=? 
+        and o1_0.otp_type=?
+2026-06-20T10:32:39.324+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] org.hibernate.SQL                        : 
+    insert 
+    into
+        otps
+        (code, created_at, email, expires_at, otp_type, retry_count, verified, verified_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T10:32:39.331+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-1] c.d.b.auth.service.OtpService            : OTP generated and sent to email: yashwanth4625@gmailcom for type: EMAIL_VERIFICATION
+2026-06-20T10:32:39.331+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-1] c.d.b.auth.service.AuthService           : User registered successfully: yashwanth4625@gmailcom
+2026-06-20T10:32:39.335+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-1] c.d.b.common.aspect.AuditAspect          : No authenticated user found for audit logging
+2026-06-20T10:32:44.580+05:30  INFO 13716 --- [banking-backend] [banking-async-1] c.d.b.notification.service.EmailService  : OTP email sent to: yashwanth4625@gmailcom
+2026-06-20T10:33:34.897+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] o.s.security.web.FilterChainProxy        : Securing POST /auth/verify-email
+2026-06-20T10:33:34.898+05:30 ERROR 13716 --- [banking-backend] [http-nio-8081-exec-3] c.d.b.c.s.JwtAuthenticationFilter        : Cannot set user authentication: JWT strings must contain exactly 2 period characters. Found: 0
+2026-06-20T10:33:34.898+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:33:34.898+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] o.s.security.web.FilterChainProxy        : Secured POST /auth/verify-email
+2026-06-20T10:33:34.906+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T10:33:34.915+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] org.hibernate.SQL                        : 
+    select
+        o1_0.id,
+        o1_0.code,
+        o1_0.created_at,
+        o1_0.email,
+        o1_0.expires_at,
+        o1_0.otp_type,
+        o1_0.retry_count,
+        o1_0.verified,
+        o1_0.verified_at 
+    from
+        otps o1_0 
+    where
+        o1_0.email=? 
+        and o1_0.otp_type=? 
+        and not(o1_0.verified)
+2026-06-20T10:33:34.918+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-3] c.d.b.auth.service.OtpService            : OTP verified successfully for email: yashwanth4625@gmailcom and type: EMAIL_VERIFICATION
+2026-06-20T10:33:34.918+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-3] c.d.b.auth.service.AuthService           : Email verified for user: yashwanth4625@gmailcom
+2026-06-20T10:33:34.926+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] org.hibernate.SQL                        : 
+    update
+        users 
+    set
+        is_active=?,
+        biometric_enabled=?,
+        email=?,
+        email_verified=?,
+        failed_login_attempts=?,
+        last_login_at=?,
+        is_locked=?,
+        locked_until=?,
+        password=?,
+        password_changed_at=?,
+        phone=?,
+        role=?,
+        totp_enabled=?,
+        updated_at=? 
+    where
+        id=?
+2026-06-20T10:33:34.929+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] org.hibernate.SQL                        : 
+    update
+        otps 
+    set
+        code=?,
+        email=?,
+        expires_at=?,
+        otp_type=?,
+        retry_count=?,
+        verified=?,
+        verified_at=? 
+    where
+        id=?
+2026-06-20T10:33:34.937+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-3] c.d.b.common.aspect.AuditAspect          : No authenticated user found for audit logging
+2026-06-20T10:34:02.490+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /auth/login
+2026-06-20T10:34:02.493+05:30 ERROR 13716 --- [banking-backend] [http-nio-8081-exec-2] c.d.b.c.s.JwtAuthenticationFilter        : Cannot set user authentication: JWT strings must contain exactly 2 period characters. Found: 0
+2026-06-20T10:34:02.493+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2026-06-20T10:34:02.493+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /auth/login
+2026-06-20T10:34:02.495+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        (
+            u1_0.email=? 
+            or u1_0.phone=?
+        )
+2026-06-20T10:34:02.502+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T10:34:02.794+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.is_active,
+        u1_0.biometric_enabled,
+        u1_0.created_at,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.failed_login_attempts,
+        u1_0.last_login_at,
+        u1_0.is_locked,
+        u1_0.locked_until,
+        u1_0.password,
+        u1_0.password_changed_at,
+        u1_0.phone,
+        u1_0.role,
+        u1_0.totp_enabled,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-06-20T10:34:02.798+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.id,
+        c1_0.aadhaar,
+        c1_0.address,
+        c1_0.city,
+        c1_0.country,
+        c1_0.created_at,
+        c1_0.date_of_birth,
+        c1_0.first_name,
+        c1_0.last_name,
+        c1_0.middle_name,
+        c1_0.pan,
+        c1_0.postal_code,
+        c1_0.profile_photo_url,
+        c1_0.state,
+        c1_0.status,
+        c1_0.suspended_at,
+        c1_0.suspension_reason,
+        c1_0.updated_at,
+        c1_0.user_id 
+    from
+        customers c1_0 
+    where
+        c1_0.user_id=?
+2026-06-20T10:34:03.083+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2026-06-20T10:34:03.088+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    insert 
+    into
+        login_history
+        (created_at, device_type, failure_reason, ip_address, location, successful, user_id, user_agent) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T10:34:03.092+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-2] c.d.b.auth.service.LoginHistoryService   : Login attempt recorded for user: yashwanth4625@gmailcom - Success: true
+2026-06-20T10:34:03.096+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        d1_0.id 
+    from
+        devices d1_0 
+    where
+        d1_0.device_id=? 
+    fetch
+        first ? rows only
+2026-06-20T10:34:03.109+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        d1_0.id 
+    from
+        devices d1_0 
+    where
+        d1_0.device_id=? 
+    fetch
+        first ? rows only
+2026-06-20T10:34:03.117+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        count(d1_0.id) 
+    from
+        devices d1_0 
+    where
+        d1_0.user_id=? 
+        and d1_0.is_active
+2026-06-20T10:34:03.122+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    insert 
+    into
+        devices
+        (is_active, created_at, device_fingerprint, device_id, device_name, ip_address, last_used_at, is_trusted, updated_at, user_id, user_agent) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T10:34:03.125+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-2] c.d.b.auth.service.DeviceService         : Device registered for user: yashwanth4625@gmailcom - Device: Chrome on Windows
+2026-06-20T10:34:03.128+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        d1_0.id,
+        d1_0.is_active,
+        d1_0.created_at,
+        d1_0.device_fingerprint,
+        d1_0.device_id,
+        d1_0.device_name,
+        d1_0.ip_address,
+        d1_0.last_used_at,
+        d1_0.is_trusted,
+        d1_0.updated_at,
+        d1_0.user_id,
+        d1_0.user_agent 
+    from
+        devices d1_0 
+    where
+        d1_0.device_id=?
+2026-06-20T10:34:03.144+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    update
+        users 
+    set
+        is_active=?,
+        biometric_enabled=?,
+        email=?,
+        email_verified=?,
+        failed_login_attempts=?,
+        last_login_at=?,
+        is_locked=?,
+        locked_until=?,
+        password=?,
+        password_changed_at=?,
+        phone=?,
+        role=?,
+        totp_enabled=?,
+        updated_at=? 
+    where
+        id=?
+2026-06-20T10:34:03.147+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    update
+        devices 
+    set
+        is_active=?,
+        device_fingerprint=?,
+        device_id=?,
+        device_name=?,
+        ip_address=?,
+        last_used_at=?,
+        is_trusted=?,
+        updated_at=?,
+        user_id=?,
+        user_agent=? 
+    where
+        id=?
+2026-06-20T10:34:03.150+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    select
+        d1_0.id,
+        d1_0.is_active,
+        d1_0.created_at,
+        d1_0.device_fingerprint,
+        d1_0.device_id,
+        d1_0.device_name,
+        d1_0.ip_address,
+        d1_0.last_used_at,
+        d1_0.is_trusted,
+        d1_0.updated_at,
+        d1_0.user_id,
+        d1_0.user_agent 
+    from
+        devices d1_0 
+    where
+        d1_0.device_id=?
+2026-06-20T10:34:03.154+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] org.hibernate.SQL                        : 
+    insert 
+    into
+        sessions
+        (is_active, created_at, device_id, expires_at, ip_address, last_activity_at, refresh_token, user_id, user_agent) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20T10:34:03.157+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-2] c.d.b.auth.service.SessionService        : Session created for user: yashwanth4625@gmailcom - Session ID: 1
+2026-06-20T10:34:03.158+05:30  INFO 13716 --- [banking-backend] [http-nio-8081-exec-2] c.d.b.auth.service.AuthService           : User logged in successfully: yashwanth4625@gmailcom
+2026-06-20T10:34:03.159+05:30 DEBUG 13716 --- [banking-backend] [http-nio-8081-exec-2] c.d.b.common.aspect.AuditAspect          : No authenticated user found for audit logging
+2026-06-20T10:39:39.596+05:30  INFO 13716 --- [banking-backend] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-20T10:39:39.603+05:30  INFO 13716 --- [banking-backend] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-06-20T10:39:39.611+05:30  INFO 13716 --- [banking-backend] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-20T10:39:39.613+05:30  INFO 13716 --- [banking-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-06-20T10:39:39.617+05:30  INFO 13716 --- [banking-backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
