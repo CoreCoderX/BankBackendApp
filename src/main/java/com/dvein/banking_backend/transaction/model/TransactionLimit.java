@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "transaction_limits", indexes = {
         @Index(name = "idx_limit_user", columnList = "user_id"),
-        @Index(name = "idx_limit_date", columnList = "currentDate")
+        @Index(name = "idx_limit_date", columnList = "limit_Date")
 })
 @Getter
 @Setter
@@ -45,7 +45,7 @@ public class TransactionLimit {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal monthlyUsed = BigDecimal.ZERO;
 
-    @Column(name = "effective_date", nullable = false)
+    @Column(name = "limit_date", nullable = false)
     private LocalDate currentDate = LocalDate.now();
 
     @Column(nullable = false)

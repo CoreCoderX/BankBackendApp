@@ -16,8 +16,8 @@ CREATE TABLE users (
                        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                        updated_at TIMESTAMP,
                        last_login_at TIMESTAMP,
-                       INDEX idx_email (email),
-                       INDEX idx_phone (phone)
+                       CREATE INDEX idx_users_email ON users (email),
+                       CREATE INDEX idx_users_phone ON users (phone)
 );
 
 -- Customers Table
@@ -41,9 +41,9 @@ CREATE TABLE customers (
                            suspended_at TIMESTAMP,
                            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            updated_at TIMESTAMP,
-                           INDEX idx_user_id (user_id),
-                           INDEX idx_pan (pan),
-                           INDEX idx_aadhaar (aadhaar)
+                           CREATE INDEX idx_user_id ON customers(user_id),
+                           CREATE INDEX idx_customers_pan ON customers(pan),
+                           CREATE INDEX idx_customers_aadhaar ON customers(aadhaar)
 );
 
 -- Accounts Table
@@ -58,14 +58,14 @@ CREATE TABLE accounts (
                           balance NUMERIC(15,2) DEFAULT 0,
                           minimum_balance NUMERIC(15,2) DEFAULT 0,
                           status VARCHAR(20) DEFAULT 'ACTIVE',
-                          primary BOOLEAN DEFAULT FALSE,
+                          is_primary BOOLEAN DEFAULT FALSE,
                           created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                           updated_at TIMESTAMP,
                           closed_at TIMESTAMP,
                           closure_reason VARCHAR(200),
                           INDEX idx_account_number (account_number),
-                          INDEX idx_customer_id (customer_id),
-                          INDEX idx_status (status)
+                          CREATE INDEX idx_customer_id (customer_id),
+                          CREATE INDEX idx_status (status)
 );
 
 -- OTPs Table
@@ -79,7 +79,7 @@ CREATE TABLE otps (
                       retry_count INT DEFAULT 0,
                       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                       verified_at TIMESTAMP,
-                      INDEX idx_email_type (email, otp_type)
+                      CREATE INDEX idx_email_type (email, otp_type)
 );
 
 -- TOTP Secrets Table
@@ -135,8 +135,8 @@ CREATE TABLE sessions (
                           active BOOLEAN DEFAULT TRUE,
                           created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                           last_activity_at TIMESTAMP,
-                          INDEX idx_user_active (user_id, active),
-                          INDEX idx_token (refresh_token)
+                          CREATE INDEX idx_user_active (user_id, active),
+                          CREATE INDEX idx_token (refresh_token)
 );
 
 -- Login History Table
@@ -150,7 +150,7 @@ CREATE TABLE login_history (
                                successful BOOLEAN DEFAULT TRUE,
                                failure_reason VARCHAR(200),
                                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                               INDEX idx_user_created (user_id, created_at)
+                               CREATE INDEX idx_user_created (user_id, created_at)
 );
 
 -- Beneficiaries Table
@@ -164,8 +164,8 @@ CREATE TABLE beneficiaries (
                                verified BOOLEAN DEFAULT FALSE,
                                remarks VARCHAR(500),
                                created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                               INDEX idx_account_id (account_id),
-                               INDEX idx_beneficiary_account (beneficiary_account_number)
+                               CREATE INDEX idx_account_id (account_id),
+                               CREATE INDEX idx_beneficiary_account (beneficiary_account_number)
 );
 
 -- Nominees Table
@@ -182,7 +182,7 @@ CREATE TABLE nominees (
                           active BOOLEAN DEFAULT TRUE,
                           created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                           updated_at TIMESTAMP,
-                          INDEX idx_account_id (account_id)
+                          CREATE INDEX idx_account_id (account_id)
 );
 
 -- Documents Table
@@ -197,8 +197,8 @@ CREATE TABLE documents (
                            issuing_authority VARCHAR(100),
                            verified BOOLEAN DEFAULT FALSE,
                            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                           INDEX idx_customer_id (customer_id),
-                           INDEX idx_document_type (document_type)
+                           CREATE INDEX idx_customer_id (customer_id),
+                           CREATE INDEX idx_document_type (document_type)
 );
 
 -- KYC Records Table
@@ -214,8 +214,8 @@ CREATE TABLE kyc_records (
                              rejected_at TIMESTAMP,
                              expiry_date TIMESTAMP,
                              approved_by VARCHAR(100),
-                             INDEX idx_customer_id (customer_id),
-                             INDEX idx_kyc_status (status)
+                             CREATE INDEX idx_customer_id (customer_id),
+                             CREATE INDEX idx_kyc_status (status)
 );
 
 -- Consents Table
@@ -228,8 +228,8 @@ CREATE TABLE consents (
                           created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                           accepted_at TIMESTAMP,
                           ip_address VARCHAR(200),
-                          INDEX idx_user_id (user_id),
-                          INDEX idx_consent_type (consent_type)
+                          CREATE INDEX idx_user_id (user_id),
+                          CREATE INDEX idx_consent_type (consent_type)
 );
 
 -- Debit Cards Table
@@ -251,8 +251,8 @@ CREATE TABLE debit_cards (
                              activated_at TIMESTAMP,
                              blocked_at TIMESTAMP,
                              block_reason VARCHAR(200),
-                             INDEX idx_account_id (account_id),
-                             INDEX idx_card_number (card_number)
+                             CREATE INDEX idx_account_id (account_id),
+                             CREATE INDEX idx_card_number (card_number)
 );
 
 -- Credit Cards Table
@@ -280,9 +280,9 @@ CREATE TABLE credit_cards (
                               rejection_reason VARCHAR(200),
                               rejected_at TIMESTAMP,
                               billing_due_date DATE,
-                              INDEX idx_account_id (account_id),
-                              INDEX idx_card_number (card_number),
-                              INDEX idx_status (status)
+                              CREATE INDEX idx_account_id (account_id),
+                              CREATE INDEX idx_card_number (card_number),
+                              CREATE INDEX idx_status (status)
 );
 
 -- Card Security Settings Table
@@ -339,9 +339,9 @@ CREATE TABLE audit_logs (
                             ip_address VARCHAR(100),
                             user_agent VARCHAR(500),
                             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                            INDEX idx_user_id (user_id),
-                            INDEX idx_action (action),
-                            INDEX idx_created_at (created_at)
+                            CREATE INDEX idx_user_id (user_id),
+                            CREATE INDEX idx_action (action),
+                            CREATE INDEX idx_created_at (created_at)
 );
 
 -- Insert Default Roles

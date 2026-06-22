@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface TransactionLimitRepository extends JpaRepository<TransactionLimit, Long> {
 
-    Optional<TransactionLimit> findByUserIdAndCurrentDate(Long userId, LocalDate currentDate);
+    Optional<TransactionLimit> findByUserIdAndCurrentDate(Long userId, LocalDate limitDate);
 
     @Query("SELECT tl FROM TransactionLimit tl WHERE tl.user.id = :userId AND tl.currentMonth = :month AND tl.currentYear = :year")
     Optional<TransactionLimit> findByUserIdAndMonth(

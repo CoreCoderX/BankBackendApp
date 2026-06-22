@@ -131,7 +131,7 @@ COMMENT ON COLUMN transactions.transaction_id IS 'Unique transaction identifier 
 COMMENT ON COLUMN transactions.reference_number IS 'Bank reference number for the transaction';
 COMMENT ON COLUMN transactions.is_flagged IS 'Indicates if transaction is flagged for fraud detection';
 COMMENT ON COLUMN transactions.channel IS 'Channel through which transaction was initiated';
-COMMENT ON COLUMN transactions.hold_balance IS 'Amount temporarily held during transaction processing';
+COMMENT ON COLUMN accounts.hold_balance IS 'Amount temporarily held during transaction processing';
 
 -- ------------------------------------------------------------------------------
 -- USER BENEFICIARIES TABLE (Separate from existing account beneficiaries)
@@ -198,7 +198,7 @@ CREATE TABLE transaction_limits (
                                     monthly_used NUMERIC(15,2) NOT NULL DEFAULT 0.00,
 
     -- Time Tracking
-                                    current_date DATE NOT NULL,
+                                    limit_date DATE NOT NULL,
                                     current_month INTEGER NOT NULL CHECK (current_month BETWEEN 1 AND 12),
                                     current_year INTEGER NOT NULL CHECK (current_year >= 2020),
 
@@ -217,12 +217,12 @@ CREATE TABLE transaction_limits (
                                         per_transaction_limit <= daily_limit AND
                                         daily_limit <= monthly_limit
                                         ),
-                                    CONSTRAINT unique_user_date UNIQUE(user_id, current_date)
+                                    CONSTRAINT unique_user_date UNIQUE(user_id, limit_date)
 );
 
 -- Indexes for transaction_limits
 CREATE INDEX idx_limit_user ON transaction_limits(user_id);
-CREATE INDEX idx_limit_date ON transaction_limits(current_date);
+CREATE INDEX idx_limit_date ON transaction_limits(limit_date);
 CREATE INDEX idx_limit_user_month ON transaction_limits(user_id, current_month, current_year);
 
 COMMENT ON TABLE transaction_limits IS 'Tracks daily and monthly transaction limits per user';
@@ -742,7 +742,7 @@ COMMENT ON VIEW v_user_loan_summary IS 'Per-user loan account summary';
 -- ==============================================================================
 
 -- Insert default transaction limits for existing users
-INSERT INTO transaction_limits (user_id, current_date, current_month, current_year)
+INSERT INTO transaction_limits (user_id, limit_date, current_month, current_year)
 SELECT
     id,
     CURRENT_DATE,
@@ -750,7 +750,10 @@ SELECT
     EXTRACT(YEAR FROM CURRENT_DATE)::INTEGER
 FROM users
 WHERE id NOT IN (SELECT user_id FROM transaction_limits)
-    ON CONFLICT (user_id, current_date) DO NOTHING;
+    ON CONFLICT (user_id, limit_date) DO NOTHING;
+IF NEW.limit_date != OLD.limit_date THEN
+  NEW.daily_used := 0;
+END IF;
 
 
 -- ==============================================================================
@@ -758,7 +761,7 @@ WHERE id NOT IN (SELECT user_id FROM transaction_limits)
 -- ==============================================================================
 
 -- Rename old beneficiaries table to avoid conflict
-ALTER TABLE beneficiaries RENAME TO account_beneficiaries;
+
 
 -- Update indexes
 ALTER INDEX idx_account_id RENAME TO idx_account_beneficiary_account;
