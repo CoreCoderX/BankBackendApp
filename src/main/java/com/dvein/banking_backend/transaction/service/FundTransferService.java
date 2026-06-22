@@ -16,8 +16,6 @@ import com.dvein.banking_backend.transaction.dto.response.TransactionResponse;
 import com.dvein.banking_backend.transaction.enums.PaymentChannel;
 import com.dvein.banking_backend.transaction.enums.TransactionStatus;
 import com.dvein.banking_backend.transaction.enums.TransactionType;
-import com.dvein.banking_backend.transaction.exception.InsufficientBalanceException;
-import com.dvein.banking_backend.transaction.exception.TransferLimitExceededException;
 import com.dvein.banking_backend.transaction.mapper.TransactionMapper;
 import com.dvein.banking_backend.transaction.model.Beneficiary;
 import com.dvein.banking_backend.transaction.model.Transaction;

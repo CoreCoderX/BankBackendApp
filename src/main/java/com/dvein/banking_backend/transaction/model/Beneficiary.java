@@ -9,13 +9,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "beneficiaries",
+@Table(name = "user_beneficiaries",
         uniqueConstraints = @UniqueConstraint(
                 columnNames = {"user_id", "accountNumber"}
         ),
         indexes = {
-                @Index(name = "idx_beneficiary_user", columnList = "user_id"),
-                @Index(name = "idx_beneficiary_account", columnList = "accountNumber")
+                @Index(name = "idx_user_beneficiary_user", columnList = "user_id"),
+                @Index(name = "idx_user_beneficiary_account", columnList = "accountNumber")
         }
 )
 @Getter
@@ -40,7 +40,7 @@ public class Beneficiary {
     private String ifscCode;
 
     @Column(nullable = false, length = 200)
-    private String bankName;
+    private String bank_name;
 
     @Column(length = 200)
     private String branchName;

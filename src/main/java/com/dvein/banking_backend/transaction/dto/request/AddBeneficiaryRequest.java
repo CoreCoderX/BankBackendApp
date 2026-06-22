@@ -24,7 +24,7 @@ public class AddBeneficiaryRequest {
 
     @NotBlank(message = "Bank name is required")
     @Size(max = 200, message = "Bank name cannot exceed 200 characters")
-    private String bankName;
+    private String bank_name;
 
     @Size(max = 200, message = "Branch name cannot exceed 200 characters")
     private String branchName;

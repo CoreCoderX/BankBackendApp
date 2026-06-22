@@ -45,7 +45,7 @@ public class TransactionLimit {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal monthlyUsed = BigDecimal.ZERO;
 
-    @Column(nullable = false)
+    @Column(name = "effective_date", nullable = false)
     private LocalDate currentDate = LocalDate.now();
 
     @Column(nullable = false)

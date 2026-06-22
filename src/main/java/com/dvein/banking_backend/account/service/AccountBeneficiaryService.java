@@ -3,15 +3,16 @@ package com.dvein.banking_backend.account.service;
 import com.dvein.banking_backend.account.dto.request.AddBeneficiaryRequest;
 import com.dvein.banking_backend.account.dto.response.BeneficiaryResponse;
 import com.dvein.banking_backend.account.model.Account;
-import com.dvein.banking_backend.account.model.Beneficiary;
-import com.dvein.banking_backend.account.repository.AccountRepository;
+import com.dvein.banking_backend.account.model.AccountBeneficiary;
 import com.dvein.banking_backend.account.repository.BeneficiaryRepository;
+import com.dvein.banking_backend.account.repository.AccountRepository;
 import com.dvein.banking_backend.common.exception.DuplicateResourceException;
 import com.dvein.banking_backend.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +20,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BeneficiaryService {
+@RestController
+public class AccountBeneficiaryService {
 
     private final BeneficiaryRepository beneficiaryRepository;
     private final AccountRepository accountRepository;
@@ -34,7 +36,7 @@ public class BeneficiaryService {
             throw new DuplicateResourceException("Beneficiary", "account number");
         }
 
-        Beneficiary beneficiary = Beneficiary.builder()
+        AccountBeneficiary accountBeneficiary = AccountBeneficiary.builder()
                 .account(account)
                 .beneficiaryName(request.getBeneficiaryName())
                 .beneficiaryAccountNumber(request.getBeneficiaryAccountNumber())
@@ -43,18 +45,18 @@ public class BeneficiaryService {
                 .remarks(request.getRemarks())
                 .build();
 
-        beneficiary = beneficiaryRepository.save(beneficiary);
+        accountBeneficiary = beneficiaryRepository.save(accountBeneficiary);
 
         log.info("Beneficiary added for account: {}", accountId);
 
-        return mapToBeneficiaryResponse(beneficiary);
+        return mapToBeneficiaryResponse(accountBeneficiary);
     }
 
     public List<BeneficiaryResponse> getAccountBeneficiaries(Long accountId) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
-        List<Beneficiary> beneficiaries = beneficiaryRepository.findByAccount(account);
+        List<AccountBeneficiary> beneficiaries = beneficiaryRepository.findByAccount(account);
 
         return beneficiaries.stream()
                 .map(this::mapToBeneficiaryResponse)
@@ -66,39 +68,39 @@ public class BeneficiaryService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
-        Beneficiary beneficiary = beneficiaryRepository.findById(beneficiaryId)
+        AccountBeneficiary accountBeneficiary = beneficiaryRepository.findById(beneficiaryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Beneficiary", "id", beneficiaryId));
 
-        if (!beneficiary.getAccount().getId().equals(accountId)) {
+        if (!accountBeneficiary.getAccount().getId().equals(accountId)) {
             throw new ResourceNotFoundException("Beneficiary not found for account");
         }
 
-        beneficiaryRepository.delete(beneficiary);
+        beneficiaryRepository.delete(accountBeneficiary);
 
         log.info("Beneficiary removed: {} from account: {}", beneficiaryId, accountId);
     }
 
     @Transactional
     public void verifyBeneficiary(Long beneficiaryId) {
-        Beneficiary beneficiary = beneficiaryRepository.findById(beneficiaryId)
+        AccountBeneficiary accountBeneficiary = beneficiaryRepository.findById(beneficiaryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Beneficiary", "id", beneficiaryId));
 
-        beneficiary.setVerified(true);
-        beneficiaryRepository.save(beneficiary);
+        accountBeneficiary.setVerified(true);
+        beneficiaryRepository.save(accountBeneficiary);
 
         log.info("Beneficiary verified: {}", beneficiaryId);
     }
 
-    private BeneficiaryResponse mapToBeneficiaryResponse(Beneficiary beneficiary) {
+    private BeneficiaryResponse mapToBeneficiaryResponse(AccountBeneficiary accountBeneficiary) {
         return BeneficiaryResponse.builder()
-                .beneficiaryId(beneficiary.getId())
-                .beneficiaryName(beneficiary.getBeneficiaryName())
-                .beneficiaryAccountNumber(beneficiary.getBeneficiaryAccountNumber())
-                .ifscCode(beneficiary.getIfscCode())
-                .bankName(beneficiary.getBankName())
-                .verified(beneficiary.isVerified())
-                .remarks(beneficiary.getRemarks())
-                .createdAt(beneficiary.getCreatedAt())
+                .beneficiaryId(accountBeneficiary.getId())
+                .beneficiaryName(accountBeneficiary.getBeneficiaryName())
+                .beneficiaryAccountNumber(accountBeneficiary.getBeneficiaryAccountNumber())
+                .ifscCode(accountBeneficiary.getIfscCode())
+                .bankName(accountBeneficiary.getBankName())
+                .verified(accountBeneficiary.isVerified())
+                .remarks(accountBeneficiary.getRemarks())
+                .createdAt(accountBeneficiary.getCreatedAt())
                 .build();
     }
 }

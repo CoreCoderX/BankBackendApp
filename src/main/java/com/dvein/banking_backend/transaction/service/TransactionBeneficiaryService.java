@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BeneficiaryService {
+public class TransactionBeneficiaryService {
 
     private final BeneficiaryRepository beneficiaryRepository;
     private final UserRepository userRepository;
@@ -44,7 +44,7 @@ public class BeneficiaryService {
                 .nickname(request.getNickname())
                 .accountNumber(request.getAccountNumber())
                 .ifscCode(request.getIfscCode())
-                .bankName(request.getBankName())
+                .bank_name(request.getBank_name())
                 .branchName(request.getBranchName())
                 .isActive(true)
                 .isVerified(false)

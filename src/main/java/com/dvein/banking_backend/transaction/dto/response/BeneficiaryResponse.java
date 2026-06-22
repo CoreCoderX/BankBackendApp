@@ -15,7 +15,7 @@ public class BeneficiaryResponse {
     private String nickname;
     private String accountNumber;
     private String ifscCode;
-    private String bankName;
+    private String bank_name;
     private String branchName;
     private Boolean isActive;
     private Boolean isVerified;

@@ -3,7 +3,7 @@ package com.dvein.banking_backend.transaction.controller;
 import com.dvein.banking_backend.common.dto.ApiResponse;
 import com.dvein.banking_backend.transaction.dto.request.AddBeneficiaryRequest;
 import com.dvein.banking_backend.transaction.dto.response.BeneficiaryResponse;
-import com.dvein.banking_backend.transaction.service.BeneficiaryService;
+import com.dvein.banking_backend.transaction.service.TransactionBeneficiaryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+
 @RequestMapping("/api/beneficiary")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
+@RestController("transactionBeneficiaryController")
 public class BeneficiaryController {
 
-    private final BeneficiaryService beneficiaryService;
+    private final TransactionBeneficiaryService beneficiaryService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<BeneficiaryResponse>> addBeneficiary(

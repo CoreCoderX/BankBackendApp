@@ -13,7 +13,7 @@ public class BeneficiaryMapper {
                 .nickname(beneficiary.getNickname())
                 .accountNumber(beneficiary.getAccountNumber())
                 .ifscCode(beneficiary.getIfscCode())
-                .bankName(beneficiary.getBankName())
+                .bank_name(beneficiary.getBank_name())
                 .branchName(beneficiary.getBranchName())
                 .isActive(beneficiary.getIsActive())
                 .isVerified(beneficiary.getIsVerified())

@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "beneficiaries")
+@Table(name = "account_beneficiaries")
 @EntityListeners(AuditingEntityListener.class)
-public class Beneficiary {
+public class AccountBeneficiary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

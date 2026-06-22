@@ -2,7 +2,7 @@ package com.dvein.banking_backend.account.controller;
 
 import com.dvein.banking_backend.account.dto.request.AddBeneficiaryRequest;
 import com.dvein.banking_backend.account.dto.response.BeneficiaryResponse;
-import com.dvein.banking_backend.account.service.BeneficiaryService;
+import com.dvein.banking_backend.account.service.AccountBeneficiaryService;
 import com.dvein.banking_backend.common.annotation.Audited;
 import com.dvein.banking_backend.common.annotation.RateLimited;
 import com.dvein.banking_backend.common.annotation.RequireRole;
@@ -20,14 +20,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+
 @RequestMapping("/beneficiary")
 @RequiredArgsConstructor
 @RequireRole(UserRole.CUSTOMER)
 @Tag(name = "Beneficiary Management", description = "Beneficiary management endpoints")
+@RestController
 public class BeneficiaryController {
 
-    private final BeneficiaryService beneficiaryService;
+    private final AccountBeneficiaryService beneficiaryService;
 
     @PostMapping("/{accountId}")
     @Operation(summary = "Add beneficiary", description = "Add new beneficiary to account")
