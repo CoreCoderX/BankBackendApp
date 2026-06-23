@@ -22,6 +22,21 @@ public class JwtTokenProvider {
     private final JwtConfig jwtConfig;
 
     /**
+     * Generate pre-authentication token (limited validity, for MFA completion)
+     */
+    public String generatePreAuthToken(String username, Long userId, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId);
+        claims.put("role", role);
+        claims.put("type", "PRE_AUTH");
+        claims.put("scope", "MFA_COMPLETION");
+
+        // Pre-auth tokens expire in 5 minutes
+        long preAuthExpiry = 300000L; // 5 minutes in milliseconds
+        return createToken(claims, username, preAuthExpiry);
+    }
+
+    /**
      * Generate access token from UserDetails
      */
     public String generateAccessToken(UserDetails userDetails, Long userId, String role) {
@@ -29,6 +44,7 @@ public class JwtTokenProvider {
         claims.put("userId", userId);
         claims.put("role", role);
         claims.put("type", "ACCESS");
+        claims.put("scope", "FULL_ACCESS");
 
         return createToken(claims, userDetails.getUsername(), jwtConfig.getAccessTokenExpiry());
     }
@@ -41,6 +57,7 @@ public class JwtTokenProvider {
         claims.put("userId", userId);
         claims.put("role", role);
         claims.put("type", "ACCESS");
+        claims.put("scope", "FULL_ACCESS");
 
         return createToken(claims, username, jwtConfig.getAccessTokenExpiry());
     }
@@ -93,6 +110,14 @@ public class JwtTokenProvider {
         return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
+    public String extractTokenType(String token) {
+        return extractClaim(token, claims -> claims.get("type", String.class));
+    }
+
+    public String extractScope(String token) {
+        return extractClaim(token, claims -> claims.get("scope", String.class));
+    }
+
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -120,11 +145,25 @@ public class JwtTokenProvider {
         return (tokenUsername.equals(username) && !isTokenExpired(token));
     }
 
+    public boolean isPreAuthToken(String token) {
+        String tokenType = extractTokenType(token);
+        return "PRE_AUTH".equals(tokenType);
+    }
+
+    public boolean isAccessToken(String token) {
+        String tokenType = extractTokenType(token);
+        return "ACCESS".equals(tokenType);
+    }
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes());
+    }
+
+    public Long getAccessTokenExpirySeconds() {
+        return jwtConfig.getAccessTokenExpiry() / 1000;
     }
 }

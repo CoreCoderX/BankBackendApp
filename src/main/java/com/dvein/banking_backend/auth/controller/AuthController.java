@@ -6,6 +6,7 @@ import com.dvein.banking_backend.auth.dto.response.RegisterResponse;
 import com.dvein.banking_backend.auth.model.User;
 import com.dvein.banking_backend.auth.repository.UserRepository;
 import com.dvein.banking_backend.auth.service.AuthService;
+import com.dvein.banking_backend.auth.service.TokenBlacklistService;
 import com.dvein.banking_backend.common.annotation.Audited;
 import com.dvein.banking_backend.common.annotation.RateLimited;
 import com.dvein.banking_backend.common.constant.SuccessMessages;
@@ -31,6 +32,7 @@ public class AuthController {
     private final AuthService authService;
     private final SecurityContextHelper securityContextHelper;
     private final UserRepository userRepository;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @PostMapping("/register")
     @Operation(summary = "Register new customer", description = "Create new customer account and send verification OTP")
@@ -62,7 +64,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Customer login", description = "Login with email/phone and password")
+    @Operation(summary = "Customer login",
+            description = "Step 1: Login with email/phone and password. Returns pre-auth token if MFA required, or full JWT if no MFA.")
     @RateLimited(limit = 5, duration = 300, keyType = RateLimited.KeyType.IP,
             message = "Too many login attempts. Please try again in 5 minutes.")
     @Audited(action = AuditAction.LOGIN, entityType = "User", description = "User login")
@@ -71,7 +74,31 @@ public class AuthController {
             HttpServletRequest httpRequest,
             HttpServletResponse response) {
         LoginResponse loginResponse = authService.login(request, httpRequest);
-        return ResponseEntity.ok(ApiResponse.success(SuccessMessages.LOGIN_SUCCESS, loginResponse));
+        return ResponseEntity.ok(ApiResponse.success("Login initiated", loginResponse));
+    }
+
+    @PostMapping("/verify-device")
+    @Operation(summary = "Verify device",
+            description = "Step 2 (if required): Verify device using OTP sent to email")
+    @RateLimited(limit = 5, duration = 300, keyType = RateLimited.KeyType.IP)
+    @Audited(action = AuditAction.UPDATE, entityType = "Device", description = "Device verified")
+    public ResponseEntity<ApiResponse<LoginResponse>> verifyDevice(
+            @Valid @RequestBody VerifyDeviceRequest request,
+            HttpServletRequest httpRequest) {
+        LoginResponse loginResponse = authService.verifyDeviceForLogin(request, httpRequest);
+        return ResponseEntity.ok(ApiResponse.success("Device verified", loginResponse));
+    }
+
+    @PostMapping("/verify-totp")
+    @Operation(summary = "Verify TOTP for login",
+            description = "Step 2/3 (if required): Verify TOTP code to complete authentication")
+    @RateLimited(limit = 5, duration = 300, keyType = RateLimited.KeyType.IP)
+    @Audited(action = AuditAction.UPDATE, entityType = "TOTP", description = "TOTP verified for login")
+    public ResponseEntity<ApiResponse<LoginResponse>> verifyTotpForLogin(
+            @Valid @RequestBody VerifyTotpRequest request,
+            HttpServletRequest httpRequest) {
+        LoginResponse loginResponse = authService.verifyTotpForLogin(request, httpRequest);
+        return ResponseEntity.ok(ApiResponse.success("Authentication complete", loginResponse));
     }
 
     @PostMapping("/logout")
@@ -84,6 +111,11 @@ public class AuthController {
         if (userEmail != null && sessionId != null) {
             User user = userRepository.findByEmail(userEmail).orElse(null);
             if (user != null) {
+                String authHeader = request.getHeader("Authorization");
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                    String token = authHeader.substring(7);
+                    tokenBlacklistService.blacklistToken(token, user.getId(), "USER_LOGOUT");
+                }
                 authService.logout(user.getId(), sessionId);
             }
         }
@@ -120,5 +152,16 @@ public class AuthController {
             }
         }
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.PASSWORD_CHANGED, null));
+    }
+
+    @PostMapping("/refresh-token")
+    @Operation(summary = "Refresh access token", description = "Get new access token using refresh token")
+    @RateLimited(limit = 10, duration = 60, keyType = RateLimited.KeyType.IP)
+    public ResponseEntity<ApiResponse<LoginResponse>> refreshToken(
+            @RequestBody RefreshTokenRequest request,
+            HttpServletRequest httpRequest) {
+
+        LoginResponse response = authService.refreshAccessToken(request.getRefreshToken(), httpRequest);
+        return ResponseEntity.ok(ApiResponse.success("Token refreshed successfully", response));
     }
 }

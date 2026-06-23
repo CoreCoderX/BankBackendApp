@@ -28,16 +28,16 @@ public class OtpService {
     private final EmailService emailService;
     private final RandomUtil randomUtil;
 
-    @Value("${otp.expiry}")
+    @Value("${otp.expiry:300000}")
     private long otpExpiry;
 
-    @Value("${otp.max-retry}")
+    @Value("${otp.max-retry:3}")
     private int maxRetry;
 
-    @Value("${otp.length}")
+    @Value("${otp.length:6}")
     private int otpLength;
 
-    @Value("${otp.resend-cooldown}")
+    @Value("${otp.resend-cooldown:60000}")
     private long resendCooldown;
 
     @Transactional
@@ -120,8 +120,10 @@ public class OtpService {
         return switch (otpType) {
             case EMAIL_VERIFICATION -> "Verify Your Email - DVein Bank";
             case PASSWORD_RESET -> "Reset Your Password - DVein Bank";
-            case LOGIN_VERIFICATION -> "Login Verification - DVein Bank";
+            case DEVICE_VERIFICATION -> "Device Verification - DVein Bank";
             case TRANSACTION_VERIFICATION -> "Transaction Verification - DVein Bank";
+            case LOGIN_VERIFICATION -> "Login Verification - DVein Bank";
+            case TWO_FACTOR_AUTH -> "Two-Factor Authentication - DVein Bank";
         };
     }
 
@@ -129,8 +131,10 @@ public class OtpService {
         return switch (otpType) {
             case EMAIL_VERIFICATION -> "Your email verification code is: " + code;
             case PASSWORD_RESET -> "Your password reset code is: " + code;
-            case LOGIN_VERIFICATION -> "Your login verification code is: " + code;
+            case DEVICE_VERIFICATION -> "Your device verification code is: " + code;
             case TRANSACTION_VERIFICATION -> "Your transaction verification code is: " + code;
+            case LOGIN_VERIFICATION -> "Your login verification code is: " + code;
+            case TWO_FACTOR_AUTH -> "Your two-factor authentication code is: " + code;
         };
     }
 

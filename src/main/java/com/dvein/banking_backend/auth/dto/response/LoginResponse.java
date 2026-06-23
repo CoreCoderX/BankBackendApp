@@ -1,5 +1,6 @@
 package com.dvein.banking_backend.auth.dto.response;
 
+import com.dvein.banking_backend.common.enums.AuthenticationState;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -15,8 +16,17 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Login response")
 public class LoginResponse {
 
-    @Schema(description = "Access token (JWT)")
+    @Schema(description = "Authentication state", example = "FULLY_AUTHENTICATED")
+    private AuthenticationState authenticationState;
+
+    @Schema(description = "Pre-authentication token (for MFA completion)")
+    private String preAuthToken;
+
+    @Schema(description = "Access token (JWT) - only provided after full authentication")
     private String accessToken;
+
+    @Schema(description = "Refresh token - only provided after full authentication")
+    private String refreshToken;
 
     @Schema(description = "Token type", example = "Bearer")
     @Builder.Default
@@ -39,6 +49,15 @@ public class LoginResponse {
     @Builder.Default
     private boolean requiresDeviceVerification = false;
 
-    @Schema(description = "Session ID", example = "1")
+    @Schema(description = "Session ID - only provided after full authentication")
     private Long sessionId;
+
+    @Schema(description = "Pre-auth session ID - for MFA completion")
+    private Long preAuthSessionId;
+
+    @Schema(description = "Message for user guidance")
+    private String message;
+
+    @Schema(description = "Token expiry time in seconds")
+    private Long expiresIn;
 }

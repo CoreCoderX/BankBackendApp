@@ -28,9 +28,9 @@ public class DocumentService {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Transactional
-    public DocumentResponse uploadDocument(Long customerId, UploadDocumentRequest request) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public DocumentResponse uploadDocument(Long userId, UploadDocumentRequest request) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
 
         // Generate document URL (simulated)
         String documentUrl = "uploads/docs/" + UUID.randomUUID() + ".pdf";
@@ -49,14 +49,14 @@ public class DocumentService {
 
         document = documentRepository.save(document);
 
-        log.info("Document uploaded for customer: {} - Type: {}", customerId, request.getDocumentType());
+        log.info("Document uploaded for customer: {} - Type: {}", userId, request.getDocumentType());
 
         return mapToDocumentResponse(document);
     }
 
-    public List<DocumentResponse> getCustomerDocuments(Long customerId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public List<DocumentResponse> getCustomerDocuments(Long userId) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
 
         List<Document> documents = documentRepository.findByCustomer(customer);
 

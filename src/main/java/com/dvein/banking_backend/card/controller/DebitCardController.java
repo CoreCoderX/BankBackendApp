@@ -43,7 +43,10 @@ public class DebitCardController {
     @Audited(action = AuditAction.CARD_ISSUE, entityType = "DebitCard", description = "Debit card generated")
     public ResponseEntity<ApiResponse<DebitCardResponse>> generateDebitCard(
             @Valid @RequestBody GenerateDebitCardRequest request) {
-        DebitCardResponse card = debitCardService.generateDebitCard(request.getAccountId());
+
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+
+        DebitCardResponse card = debitCardService.generateDebitCard(request.getAccountId(), email);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(SuccessMessages.CARD_GENERATED, card));
     }
@@ -53,7 +56,8 @@ public class DebitCardController {
     @RateLimited(limit = 30, duration = 60, keyType = RateLimited.KeyType.USER)
     public ResponseEntity<ApiResponse<List<DebitCardResponse>>> getDebitCards(
             @PathVariable Long accountId) {
-        List<DebitCardResponse> cards = debitCardService.getAccountDebitCards(accountId);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        List<DebitCardResponse> cards = debitCardService.getAccountDebitCards(accountId, email);
         return ResponseEntity.ok(ApiResponse.success(cards));
     }
 
@@ -62,7 +66,8 @@ public class DebitCardController {
     @RateLimited(limit = 5, duration = 3600, keyType = RateLimited.KeyType.USER)
     @Audited(action = AuditAction.UPDATE, entityType = "DebitCard", description = "Debit card activated")
     public ResponseEntity<ApiResponse<Void>> activateDebitCard(@PathVariable Long cardId) {
-        debitCardService.activateDebitCard(cardId);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        debitCardService.activateDebitCard(cardId, email);
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.CARD_ACTIVATED, null));
     }
 
@@ -73,7 +78,8 @@ public class DebitCardController {
     public ResponseEntity<ApiResponse<Void>> blockDebitCard(
             @PathVariable Long cardId,
             @Valid @RequestBody BlockCardRequest request) {
-        debitCardService.blockDebitCard(cardId, request.getReason());
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        debitCardService.blockDebitCard(cardId, email, request.getReason());
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.CARD_BLOCKED, null));
     }
 
@@ -91,7 +97,9 @@ public class DebitCardController {
     public ResponseEntity<ApiResponse<Void>> unblockDebitCard(
             @PathVariable Long cardId) {
 
-        debitCardService.unblockDebitCard(cardId);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+
+        debitCardService.unblockDebitCard(cardId, email);
 
         return ResponseEntity.ok(
                 ApiResponse.success("Card unblocked successfully", null)
@@ -105,7 +113,10 @@ public class DebitCardController {
     public ResponseEntity<ApiResponse<Void>> setCardPin(
             @PathVariable Long cardId,
             @Valid @RequestBody SetCardPinRequest request) {
-        debitCardService.setCardPin(cardId, request);
+
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+
+        debitCardService.setCardPin(cardId, email, request);
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.CARD_PIN_SET, null));
     }
 }

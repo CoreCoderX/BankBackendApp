@@ -85,7 +85,7 @@ public class AdminCustomerService {
     }
 
     public CustomerProfileResponse getCustomerDetails(Long customerId) {
-        return customerService.getCustomerProfile(customerId);
+        return customerService.getCustomerProfileByCustomerId(customerId);
     }
 
     private CustomerProfileResponse mapToProfileResponse(Customer customer) {

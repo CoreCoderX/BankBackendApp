@@ -8,6 +8,7 @@ public class SuccessMessages {
     public static final String LOGOUT_SUCCESS = "Logged out successfully";
     public static final String PASSWORD_CHANGED = "Password changed successfully";
     public static final String PASSWORD_RESET = "Password reset successfully";
+    public static final String AUTHENTICATION_COMPLETE = "Authentication completed successfully";
 
     // OTP
     public static final String OTP_SENT = "OTP sent to your email";
@@ -39,12 +40,14 @@ public class SuccessMessages {
     // TOTP
     public static final String TOTP_ENABLED = "Two-factor authentication enabled successfully";
     public static final String TOTP_DISABLED = "Two-factor authentication disabled successfully";
+    public static final String TOTP_VERIFIED = "TOTP verified successfully";
 
     // MPIN
     public static final String MPIN_CREATED = "MPIN created successfully";
     public static final String MPIN_CHANGED = "MPIN changed successfully";
 
     // Device
+    public static final String DEVICE_VERIFIED = "Device verified successfully";
     public static final String DEVICE_REGISTERED = "Device registered successfully";
     public static final String DEVICE_REMOVED = "Device removed successfully";
 
@@ -52,4 +55,5 @@ public class SuccessMessages {
     public static final String KYC_SUBMITTED = "KYC documents submitted successfully";
     public static final String KYC_APPROVED = "KYC approved successfully";
     public static final String KYC_REJECTED = "KYC rejected";
+    public static final String CARD_UNBLOCKED = "Card Unblocked";
 }

@@ -11,6 +11,11 @@ public class ErrorCodes {
     public static final String AUTH_006 = "Session expired";
     public static final String AUTH_007 = "Account not activated";
     public static final String AUTH_008 = "Email not verified";
+    public static final String AUTH_009 = "Pre-authentication session expired";
+    public static final String AUTH_010 = "Device verification required";
+    public static final String AUTH_011 = "TOTP verification required";
+    public static final String AUTH_012 = "Invalid pre-authentication token";
+    public static final String AUTH_013 = "Authentication incomplete";
 
     // OTP Errors (OTP_XXX)
     public static final String OTP_001 = "Invalid OTP";
@@ -65,7 +70,7 @@ public class ErrorCodes {
     public static final String DEV_003 = "Maximum device limit reached";
 
     // Validation Errors (VAL_XXX)
-    public static final String VAL_001 = "Invalid input data";
+    public static final String VAL_001 = "Validation failed";
     public static final String VAL_002 = "Required field missing";
     public static final String VAL_003 = "Invalid file format";
     public static final String VAL_004 = "File size exceeds limit";

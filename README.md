@@ -9,23 +9,27 @@
 ```text
 auth/
 ├── controller (6)
-├── dto/request (12)
+├── dto/request (14)
 ├── dto/response (6)
-├── model (10)
-├── repository (10)
-└── service (8)
+├── model (12)
+├── repository (12)
+└── service (10)
 ```
 
 #### Features
 
-- Registration/Login
-- OTP
-- Password Reset
-- MPIN
-- TOTP
-- Device Management
-- Session Management
-- Login History
+* Registration & Login
+* PRE_AUTH Authentication Flow
+* Device Verification
+* OTP Verification
+* TOTP (MFA)
+* Password Reset
+* MPIN Management
+* Device Management
+* Session Management
+* Login History
+* Token Blacklisting
+* Authentication Cleanup Jobs
 
 ---
 
@@ -34,6 +38,8 @@ auth/
 ```text
 account/
 ├── controller (7)
+├── dto/request (7)
+├── dto/response (7)
 ├── model (7)
 ├── repository (7)
 └── service (7)
@@ -41,13 +47,13 @@ account/
 
 #### Features
 
-- Customer Profile
-- Bank Accounts
-- Beneficiaries
-- Nominees
-- Documents
-- KYC
-- Verification APIs
+* Customer Profile Management
+* Bank Account Management
+* Beneficiary Management
+* Nominee Management
+* Document Management
+* KYC Processing
+* Account Verification APIs
 
 ---
 
@@ -56,6 +62,8 @@ account/
 ```text
 card/
 ├── controller (2)
+├── dto/request (5)
+├── dto/response (2)
 ├── model (3)
 ├── repository (3)
 └── service (2)
@@ -63,10 +71,10 @@ card/
 
 #### Features
 
-- Debit Cards
-- Credit Cards
-- PIN Management
-- Card Security
+* Debit Card Management
+* Credit Card Management
+* Card PIN Management
+* Card Security Settings
 
 ---
 
@@ -75,6 +83,8 @@ card/
 ```text
 admin/
 ├── controller (5)
+├── dto/request (8)
+├── dto/response (6)
 ├── model (1)
 ├── repository (1)
 └── service (4)
@@ -82,12 +92,12 @@ admin/
 
 #### Features
 
-- Admin Authentication
-- Customer Management
-- KYC Approval
-- Credit Card Approval
-- Dashboard
-- Audit Logs
+* Admin Authentication
+* Customer Management
+* KYC Approval & Rejection
+* Credit Card Approval & Rejection
+* Dashboard & Analytics
+* Audit Logs
 
 ---
 
@@ -95,15 +105,49 @@ admin/
 
 ```text
 common/
-├── security
-├── config
-├── exception
 ├── annotation
 ├── aspect
-├── util
-├── enums
+├── config
+├── constant
 ├── dto
-└── constants
+├── enums
+├── exception
+├── security
+└── util
+```
+
+#### Features
+
+* JWT Security
+* Role-Based Authorization
+* Device Fingerprinting
+* Global Exception Handling
+* Audit Logging Support
+* Rate Limiting
+* Utility Classes
+* Application Configuration
+* Common DTOs & Constants
+* Authentication State Management
+
+---
+
+### Database Migration
+
+```text
+resources/db/migration/
+├── V1__initial_schema.sql
+├── V2__add_authentication_enhancements.sql
+└── V3__fix_schema_constraints.sql
+```
+
+#### Features
+
+* FlywayDB Integration
+* Versioned Database Migrations
+* Authentication Schema Enhancements
+* Database Constraint Fixes
+
+``` 
 ```
 
 ---
@@ -112,7 +156,7 @@ common/
 
 ```text
 Folder PATH listing for volume Windows-SSD
-Volume serial number is C20D-95B5
+Volume serial number is 0000018C C20D:95B5
 C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 +---main
 ª   +---java
@@ -234,9 +278,11 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª   ª               ª   ª   ª       EnableTotpRequest.java
 ª   ª               ª   ª   ª       ForgotPasswordRequest.java
 ª   ª               ª   ª   ª       LoginRequest.java
+ª   ª               ª   ª   ª       RefreshTokenRequest.java
 ª   ª               ª   ª   ª       RegisterDeviceRequest.java
 ª   ª               ª   ª   ª       RegisterRequest.java
 ª   ª               ª   ª   ª       ResetPasswordRequest.java
+ª   ª               ª   ª   ª       VerifyDeviceRequest.java
 ª   ª               ª   ª   ª       VerifyMpinRequest.java
 ª   ª               ª   ª   ª       VerifyOtpRequest.java
 ª   ª               ª   ª   ª       VerifyTotpRequest.java
@@ -255,9 +301,11 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª   ª               ª   ª       Mpin.java
 ª   ª               ª   ª       Otp.java
 ª   ª               ª   ª       Permission.java
+ª   ª               ª   ª       PreAuthenticationSession.java
 ª   ª               ª   ª       Role.java
 ª   ª               ª   ª       RolePermission.java
 ª   ª               ª   ª       Session.java
+ª   ª               ª   ª       TokenBlacklist.java
 ª   ª               ª   ª       TotpSecret.java
 ª   ª               ª   ª       User.java
 ª   ª               ª   ª       
@@ -267,13 +315,16 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª   ª               ª   ª       MpinRepository.java
 ª   ª               ª   ª       OtpRepository.java
 ª   ª               ª   ª       PermissionRepository.java
+ª   ª               ª   ª       PreAuthenticationSessionRepository.java
 ª   ª               ª   ª       RolePermissionRepository.java
 ª   ª               ª   ª       RoleRepository.java
 ª   ª               ª   ª       SessionRepository.java
+ª   ª               ª   ª       TokenBlacklistRepository.java
 ª   ª               ª   ª       TotpSecretRepository.java
 ª   ª               ª   ª       UserRepository.java
 ª   ª               ª   ª       
 ª   ª               ª   +---service
+ª   ª               ª           AuthenticationCleanupService.java
 ª   ª               ª           AuthService.java
 ª   ª               ª           BiometricService.java
 ª   ª               ª           DeviceService.java
@@ -281,6 +332,7 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª   ª               ª           MpinService.java
 ª   ª               ª           OtpService.java
 ª   ª               ª           SessionService.java
+ª   ª               ª           TokenBlacklistService.java
 ª   ª               ª           TotpService.java
 ª   ª               ª           
 ª   ª               +---card
@@ -347,6 +399,7 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª   ª               ª   ª       AccountStatus.java
 ª   ª               ª   ª       AccountType.java
 ª   ª               ª   ª       AuditAction.java
+ª   ª               ª   ª       AuthenticationState.java
 ª   ª               ª   ª       CardStatus.java
 ª   ª               ª   ª       CustomerStatus.java
 ª   ª               ª   ª       DocumentType.java
@@ -399,6 +452,8 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª       +---db
 ª       ª   +---migration
 ª       ª           V1__initial_schema.sql
+ª       ª           V2__add_authentication_enhancements.sql
+ª       ª           V3__fix_schema_constraints.sql
 ª       ª           
 ª       +---static
 ª       +---templates
@@ -414,7 +469,7 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
             +---dvein
                 +---banking_backend
                         BankingBackendApplicationTests.java
-                        
+ 
 ```
 
 > Complete detailed structure available in the source project.
@@ -456,7 +511,7 @@ Open terminal:
 Run these commends
 ```properties
 >psql -U postgres
->postgres: CREATE DATABASE bankdb
+>postgres: CREATE DATABASE bankdb;
 ```
 
 
@@ -561,21 +616,148 @@ Use generated TOTP codes for verification APIs.
 
 ---
 
-## Module - 2 (Yeshwanth)
+# Second Push Updates
 
-- Will be written by Yeshwanth
+## Database Improvements
 
----
-
-## Module - 3 (Ajai)
-
-- Will be written by Ajai
+* Integrated **FlywayDB** for database schema versioning and migration management.
+* Ensures consistent database structure across development, testing, and production environments.
+* Supports controlled and trackable database changes.
 
 ---
 
-## Module - 4 (Novin Kumar)
+## Authentication Flow Redesign
 
-- Will be written by Novin Kumar
+### Previous Flow
+
+```text
+Login
+↓
+JWT Issued
+↓
+TOTP Verification
+```
+
+**Issue:**
+A user could potentially receive an access token before completing Multi-Factor Authentication (MFA).
+
+### New Secure Authentication Flow
+
+#### Known Device
+
+```text
+Email + Password
+↓
+TOTP Verification
+↓
+Access Token Issued
+```
+
+#### New Device
+
+```text
+Email + Password
+↓
+Device Verification
+↓
+TOTP Verification
+↓
+Access Token Issued
+```
+
+### Authentication State Flow
+
+```text
+Login
+↓
+PRE_AUTH Token
+↓
+Device Verification
+↓
+TOTP Verification
+↓
+FULLY_AUTHENTICATED
+↓
+Access Token Issued
+```
+
+### Security Benefits
+
+* Access tokens are no longer issued before MFA completion.
+* Introduced **PRE_AUTH** authentication state.
+* Device trust verification is enforced for new devices.
+* Reduced risk of unauthorized account access.
+
+---
+
+## Enhanced Authentication Validation
+
+### Previous Implementation
+
+* Authentication relied primarily on **userId** validation.
+
+### Current Implementation
+
+* Authentication now validates both:
+
+    * **Email**
+    * **User ID**
+
+### Benefits
+
+* Additional identity verification layer.
+* Reduced risk of user impersonation.
+* Stronger authentication integrity.
+
+---
+
+## Bug Fixes
+
+### User & Customer Mapping Fix
+
+Resolved issues where:
+
+* `userId`
+* `customerId`
+
+were not consistently handled across services and authentication flows.
+
+Both identifiers now behave correctly throughout the application.
+
+---
+
+## Additional Service Layer Validation
+
+Implemented extra validation checks across service-layer operations to:
+
+* Prevent invalid request processing.
+* Improve data integrity.
+* Enforce stricter business rules.
+* Enhance application security and reliability.
+
+---
+
+## Summary
+
+### Added
+
+* FlywayDB migration support.
+* PRE_AUTH authentication mechanism.
+* Device verification workflow.
+* Additional service-layer validations.
+
+### Improved
+
+* MFA authentication flow.
+* Identity verification using Email + User ID.
+* Overall application security.
+* Pre-Auth Token is Implemented
+* RefreshToken is added in separate endpoint
+
+### Fixed
+
+* User ID and Customer ID mapping inconsistencies.
+
 
 ---
 

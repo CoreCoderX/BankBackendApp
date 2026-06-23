@@ -32,8 +32,10 @@ public class DebitCardService {
     private final EncryptionUtil encryptionUtil;
 
     @Transactional
-    public DebitCardResponse generateDebitCard(Long accountId) {
-        Account account = accountRepository.findById(accountId)
+    public DebitCardResponse generateDebitCard(Long accountId, String email) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(
+                        accountId,
+                        email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         // Check if account already has active debit card
@@ -64,8 +66,10 @@ public class DebitCardService {
         return mapToDebitCardResponse(debitCard);
     }
 
-    public List<DebitCardResponse> getAccountDebitCards(Long accountId) {
-        Account account = accountRepository.findById(accountId)
+    public List<DebitCardResponse> getAccountDebitCards(Long accountId, String email) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(
+                accountId,
+                email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         List<DebitCard> cards = debitCardRepository.findByAccount(account);
@@ -76,8 +80,10 @@ public class DebitCardService {
     }
 
     @Transactional
-    public void activateDebitCard(Long cardId) {
-        DebitCard card = debitCardRepository.findById(cardId)
+    public void activateDebitCard(Long cardId, String email) {
+        DebitCard card = debitCardRepository.findByIdAndAccountCustomerUserEmail(
+                        cardId,
+                        email)
                 .orElseThrow(() -> new ResourceNotFoundException("Debit card", "id", cardId));
 
         if (card.getStatus() != CardStatus.INACTIVE) {
@@ -92,8 +98,10 @@ public class DebitCardService {
     }
 
     @Transactional
-    public void blockDebitCard(Long cardId, String reason) {
-        DebitCard card = debitCardRepository.findById(cardId)
+    public void blockDebitCard(Long cardId, String email, String reason) {
+        DebitCard card = debitCardRepository.findByIdAndAccountCustomerUserEmail(
+                        cardId,
+                        email)
                 .orElseThrow(() -> new ResourceNotFoundException("Debit card", "id", cardId));
 
         if (card.getStatus() != CardStatus.ACTIVE) {
@@ -110,8 +118,10 @@ public class DebitCardService {
     }
 
     @Transactional
-    public void unblockDebitCard(Long cardId) {
-        DebitCard card = debitCardRepository.findById(cardId)
+    public void unblockDebitCard(Long cardId, String email) {
+        DebitCard card = debitCardRepository.findByIdAndAccountCustomerUserEmail(
+                        cardId,
+                        email)
                 .orElseThrow(() -> new ResourceNotFoundException("Debit card", "id", cardId));
 
         if (card.getStatus() != CardStatus.BLOCKED) {
@@ -127,8 +137,10 @@ public class DebitCardService {
     }
 
     @Transactional
-    public void setCardPin(Long cardId, SetCardPinRequest request) {
-        DebitCard card = debitCardRepository.findById(cardId)
+    public void setCardPin(Long cardId, String email, SetCardPinRequest request) {
+        DebitCard card = debitCardRepository.findByIdAndAccountCustomerUserEmail(
+                        cardId,
+                        email)
                 .orElseThrow(() -> new ResourceNotFoundException("Debit card", "id", cardId));
 
         if (card.getStatus() != CardStatus.ACTIVE) {
@@ -149,8 +161,10 @@ public class DebitCardService {
     }
 
     @Transactional
-    public void toggleInternationalTransaction(Long cardId, boolean enable) {
-        DebitCard card = debitCardRepository.findById(cardId)
+    public void toggleInternationalTransaction(Long cardId, String email, boolean enable) {
+        DebitCard card = debitCardRepository.findByIdAndAccountCustomerUserEmail(
+                        cardId,
+                        email)
                 .orElseThrow(() -> new ResourceNotFoundException("Debit card", "id", cardId));
 
         card.setInternationalEnabled(enable);

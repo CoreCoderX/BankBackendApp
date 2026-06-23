@@ -8,11 +8,13 @@ import com.dvein.banking_backend.auth.repository.DeviceRepository;
 import com.dvein.banking_backend.auth.repository.SessionRepository;
 import com.dvein.banking_backend.auth.repository.UserRepository;
 import com.dvein.banking_backend.common.config.JwtConfig;
+import com.dvein.banking_backend.common.exception.CustomException;
 import com.dvein.banking_backend.common.exception.ResourceNotFoundException;
 import com.dvein.banking_backend.common.security.DeviceFingerprint;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,17 +33,51 @@ public class SessionService {
     private final DeviceRepository deviceRepository;
     private final DeviceFingerprint deviceFingerprint;
     private final JwtConfig jwtConfig;
+    private final TokenBlacklistService tokenBlacklistService;
+
+
+    @Value("${security.max-concurrent-sessions:3}")
+    private int maxConcurrentSessions;
 
     @Transactional
     public Session createSession(User user, String refreshToken, String deviceId, HttpServletRequest request) {
+
+        // Check and enforce max concurrent sessions
+        List<Session> activeSessions = sessionRepository.findByUserAndActiveTrue(user);
+
+        if (activeSessions.size() >= maxConcurrentSessions) {
+            // Find oldest session
+            Session oldestSession = activeSessions.stream()
+                    .min((s1, s2) -> s1.getCreatedAt().compareTo(s2.getCreatedAt()))
+                    .orElse(null);
+
+            if (oldestSession != null) {
+                // Invalidate oldest session
+                oldestSession.invalidate();
+                sessionRepository.save(oldestSession);
+
+                // Blacklist its refresh token
+                tokenBlacklistService.blacklistToken(
+                        oldestSession.getRefreshToken(),
+                        user.getId(),
+                        "MAX_CONCURRENT_SESSIONS_EXCEEDED"
+                );
+
+                log.warn("Oldest session force-closed for user: {} due to max session limit", user.getEmail());
+            }
+        }
+
+        // Find device if provided
         Device device = null;
         if (deviceId != null) {
             device = deviceRepository.findByDeviceId(deviceId).orElse(null);
         }
 
+        // Calculate expiry time
         LocalDateTime expiryTime = LocalDateTime.now()
                 .plusSeconds(jwtConfig.getRefreshTokenExpiry() / 1000);
 
+        // Create new session
         Session session = Session.builder()
                 .user(user)
                 .refreshToken(refreshToken)
@@ -54,7 +90,8 @@ public class SessionService {
 
         session = sessionRepository.save(session);
 
-        log.info("Session created for user: {} - Session ID: {}", user.getEmail(), session.getId());
+        log.info("Session created for user: {} - Session ID: {} - Total active: {}",
+                user.getEmail(), session.getId(), activeSessions.size() + 1);
 
         return session;
     }
@@ -76,13 +113,21 @@ public class SessionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Session", "id", sessionId));
 
         if (!session.getUser().getId().equals(userId)) {
-            throw new ResourceNotFoundException("Session not found for user");
+            throw new CustomException("Session does not belong to user", "SESSION_001");
         }
 
+        // Invalidate session
         session.invalidate();
         sessionRepository.save(session);
 
-        log.info("Session logged out - Session ID: {}", sessionId);
+        // Blacklist the refresh token
+        tokenBlacklistService.blacklistToken(
+                session.getRefreshToken(),
+                userId,
+                "USER_LOGOUT"
+        );
+
+        log.info("Session logged out - Session ID: {} for User ID: {}", sessionId, userId);
     }
 
     @Transactional
@@ -90,9 +135,22 @@ public class SessionService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
-        sessionRepository.invalidateAllUserSessions(user);
+        List<Session> activeSessions = sessionRepository.findByUserAndActiveTrue(user);
 
-        log.info("All sessions logged out for user: {}", user.getEmail());
+        for (Session session : activeSessions) {
+            session.invalidate();
+
+            // Blacklist each refresh token
+            tokenBlacklistService.blacklistToken(
+                    session.getRefreshToken(),
+                    userId,
+                    "LOGOUT_ALL_SESSIONS"
+            );
+        }
+
+        sessionRepository.saveAll(activeSessions);
+
+        log.info("All {} sessions logged out for user: {}", activeSessions.size(), user.getEmail());
     }
 
     @Transactional
@@ -100,31 +158,79 @@ public class SessionService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
-        sessionRepository.invalidateOtherUserSessions(user, currentSessionId);
+        List<Session> otherSessions = sessionRepository.findByUserAndActiveTrue(user).stream()
+                .filter(session -> !session.getId().equals(currentSessionId))
+                .collect(Collectors.toList());
 
-        log.info("Other sessions logged out for user: {}", user.getEmail());
+        for (Session session : otherSessions) {
+            session.invalidate();
+
+            // Blacklist each refresh token
+            tokenBlacklistService.blacklistToken(
+                    session.getRefreshToken(),
+                    userId,
+                    "LOGOUT_OTHER_SESSIONS"
+            );
+        }
+
+        sessionRepository.saveAll(otherSessions);
+
+        log.info("{} other sessions logged out for user: {}", otherSessions.size(), user.getEmail());
     }
 
     @Transactional
     public void updateSessionActivity(String refreshToken) {
         sessionRepository.findByRefreshToken(refreshToken).ifPresent(session -> {
-            session.updateActivity();
-            sessionRepository.save(session);
+            if (session.isActive() && !session.isExpired()) {
+                session.updateActivity();
+                sessionRepository.save(session);
+            }
         });
     }
 
-    @Transactional
     public boolean isSessionValid(String refreshToken) {
+        // Check if token is blacklisted
+        if (tokenBlacklistService.isTokenBlacklisted(refreshToken)) {
+            return false;
+        }
+
         return sessionRepository.findByRefreshToken(refreshToken)
                 .map(session -> session.isActive() && !session.isExpired())
                 .orElse(false);
     }
 
     @Transactional
-    @Scheduled(cron = "0 0 */6 * * *") // Run every 6 hours
+    @Scheduled(cron = "0 0 */2 * * *") // Run every 2 hours
     public void cleanupExpiredSessions() {
-        sessionRepository.deleteExpiredAndInactiveSessions(LocalDateTime.now());
-        log.info("Cleaned up expired and inactive sessions");
+        LocalDateTime now = LocalDateTime.now();
+
+        // Find all expired sessions
+        List<Session> expiredSessions = sessionRepository.findByUserAndActiveTrue(null).stream()
+                .filter(session -> session.isExpired() || !session.isActive())
+                .collect(Collectors.toList());
+
+        // Invalidate and blacklist tokens
+        for (Session session : expiredSessions) {
+            if (session.isActive()) {
+                session.invalidate();
+
+                // Blacklist expired refresh tokens
+                tokenBlacklistService.blacklistToken(
+                        session.getRefreshToken(),
+                        session.getUser().getId(),
+                        "SESSION_EXPIRED"
+                );
+            }
+        }
+
+        if (!expiredSessions.isEmpty()) {
+            sessionRepository.saveAll(expiredSessions);
+        }
+
+        // Delete old inactive sessions (older than 30 days)
+        sessionRepository.deleteExpiredAndInactiveSessions(now.minusDays(30));
+
+        log.info("Cleaned up {} expired sessions", expiredSessions.size());
     }
 
     private SessionResponse mapToSessionResponse(Session session) {
@@ -136,6 +242,7 @@ public class SessionService {
                 .createdAt(session.getCreatedAt())
                 .lastActivityAt(session.getLastActivityAt())
                 .expiresAt(session.getExpiresAt())
+                .current(false) // Will be set by controller
                 .build();
     }
 }

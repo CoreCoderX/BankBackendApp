@@ -53,8 +53,14 @@ public class AccountController {
     @GetMapping("/{accountId}")
     @Operation(summary = "Get account details", description = "Get specific account details")
     @RateLimited(limit = 30, duration = 60, keyType = RateLimited.KeyType.USER)
-    public ResponseEntity<ApiResponse<AccountResponse>> getAccount(@PathVariable Long accountId) {
-        AccountResponse account = accountService.getAccount(accountId);
+    public ResponseEntity<ApiResponse<AccountResponse>> getAccount(
+            @PathVariable Long accountId) {
+
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+
+        AccountResponse account =
+                accountService.getAccount(accountId, email);
+
         return ResponseEntity.ok(ApiResponse.success(account));
     }
 
@@ -91,7 +97,8 @@ public class AccountController {
     public ResponseEntity<ApiResponse<Void>> closeAccount(
             @PathVariable Long accountId,
             @RequestParam String reason) {
-        accountService.closeAccount(accountId, reason);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        accountService.closeAccount(accountId, reason, email);
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.ACCOUNT_CLOSED, null));
     }
 }

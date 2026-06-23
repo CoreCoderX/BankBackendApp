@@ -27,8 +27,8 @@ public class NomineeService {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Transactional
-    public NomineeResponse addNominee(Long accountId, AddNomineeRequest request) {
-        Account account = accountRepository.findById(accountId)
+    public NomineeResponse addNominee(Long accountId, String email, AddNomineeRequest request) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(accountId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         Nominee nominee = Nominee.builder()
@@ -50,8 +50,8 @@ public class NomineeService {
         return mapToNomineeResponse(nominee);
     }
 
-    public List<NomineeResponse> getAccountNominees(Long accountId) {
-        Account account = accountRepository.findById(accountId)
+    public List<NomineeResponse> getAccountNominees(Long accountId, String email) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(accountId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         List<Nominee> nominees = nomineeRepository.findByAccountAndActiveTrue(account);
@@ -62,8 +62,8 @@ public class NomineeService {
     }
 
     @Transactional
-    public void removeNominee(Long accountId, Long nomineeId) {
-        Account account = accountRepository.findById(accountId)
+    public void removeNominee(Long accountId, Long nomineeId, String email) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(accountId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         Nominee nominee = nomineeRepository.findById(nomineeId)

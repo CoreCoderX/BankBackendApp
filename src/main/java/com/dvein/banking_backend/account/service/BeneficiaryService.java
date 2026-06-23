@@ -25,8 +25,8 @@ public class BeneficiaryService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public BeneficiaryResponse addBeneficiary(Long accountId, AddBeneficiaryRequest request) {
-        Account account = accountRepository.findById(accountId)
+    public BeneficiaryResponse addBeneficiary(Long accountId, AddBeneficiaryRequest request, String email) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(accountId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         // Check if beneficiary already exists
@@ -50,8 +50,8 @@ public class BeneficiaryService {
         return mapToBeneficiaryResponse(beneficiary);
     }
 
-    public List<BeneficiaryResponse> getAccountBeneficiaries(Long accountId) {
-        Account account = accountRepository.findById(accountId)
+    public List<BeneficiaryResponse> getAccountBeneficiaries(Long accountId, String email) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(accountId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         List<Beneficiary> beneficiaries = beneficiaryRepository.findByAccount(account);
@@ -62,8 +62,8 @@ public class BeneficiaryService {
     }
 
     @Transactional
-    public void removeBeneficiary(Long accountId, Long beneficiaryId) {
-        Account account = accountRepository.findById(accountId)
+    public void removeBeneficiary(Long accountId, Long beneficiaryId, String email) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(accountId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         Beneficiary beneficiary = beneficiaryRepository.findById(beneficiaryId)

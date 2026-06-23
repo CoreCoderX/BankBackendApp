@@ -18,6 +18,10 @@ public interface DebitCardRepository extends JpaRepository<DebitCard, Long> {
 
     List<DebitCard> findByAccountAndStatus(Account account, CardStatus status);
 
+    Optional<DebitCard> findByIdAndAccountCustomerUserEmail(
+            Long id,
+            String email);
+
     long countByAccount(Account account);
 
     boolean existsByCardNumber(String cardNumber);

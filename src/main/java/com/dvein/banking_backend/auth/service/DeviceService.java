@@ -103,6 +103,17 @@ public class DeviceService {
         });
     }
 
+    @Transactional
+    public void updateDeviceTrustStatus(String deviceId, boolean trusted) {
+        Device device = deviceRepository.findByDeviceId(deviceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Device", "deviceId", deviceId));
+
+        device.setTrusted(trusted);
+        deviceRepository.save(device);
+
+        log.info("Device trust status updated: {} - Trusted: {}", deviceId, trusted);
+    }
+
     public boolean isDeviceTrusted(Long userId, String deviceId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));

@@ -10,6 +10,7 @@ import com.dvein.banking_backend.common.constant.SuccessMessages;
 import com.dvein.banking_backend.common.dto.ApiResponse;
 import com.dvein.banking_backend.common.enums.AuditAction;
 import com.dvein.banking_backend.common.enums.UserRole;
+import com.dvein.banking_backend.common.security.SecurityContextHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ import java.util.List;
 public class BeneficiaryController {
 
     private final BeneficiaryService beneficiaryService;
+    private final SecurityContextHelper securityContextHelper;
 
     @PostMapping("/{accountId}")
     @Operation(summary = "Add beneficiary", description = "Add new beneficiary to account")
@@ -36,7 +38,8 @@ public class BeneficiaryController {
     public ResponseEntity<ApiResponse<BeneficiaryResponse>> addBeneficiary(
             @PathVariable Long accountId,
             @Valid @RequestBody AddBeneficiaryRequest request) {
-        BeneficiaryResponse beneficiary = beneficiaryService.addBeneficiary(accountId, request);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        BeneficiaryResponse beneficiary = beneficiaryService.addBeneficiary(accountId, request, email);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(SuccessMessages.BENEFICIARY_ADDED, beneficiary));
     }
@@ -46,7 +49,8 @@ public class BeneficiaryController {
     @RateLimited(limit = 30, duration = 60, keyType = RateLimited.KeyType.USER)
     public ResponseEntity<ApiResponse<List<BeneficiaryResponse>>> getBeneficiaries(
             @PathVariable Long accountId) {
-        List<BeneficiaryResponse> beneficiaries = beneficiaryService.getAccountBeneficiaries(accountId);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        List<BeneficiaryResponse> beneficiaries = beneficiaryService.getAccountBeneficiaries(accountId, email);
         return ResponseEntity.ok(ApiResponse.success(beneficiaries));
     }
 
@@ -57,7 +61,8 @@ public class BeneficiaryController {
     public ResponseEntity<ApiResponse<Void>> removeBeneficiary(
             @PathVariable Long accountId,
             @PathVariable Long beneficiaryId) {
-        beneficiaryService.removeBeneficiary(accountId, beneficiaryId);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        beneficiaryService.removeBeneficiary(accountId, beneficiaryId, email);
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.BENEFICIARY_REMOVED, null));
     }
 }

@@ -28,9 +28,9 @@ public class KycService {
     private final CustomerRepository customerRepository;
 
     @Transactional
-    public KycStatusResponse submitKyc(Long customerId, KycSubmissionRequest request) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public KycStatusResponse submitKyc(Long userId, KycSubmissionRequest request) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", userId));
 
         Kyc kyc = kycRepository.findByCustomer(customer)
                 .orElse(Kyc.builder()
@@ -51,29 +51,29 @@ public class KycService {
         kyc.setSubmittedAt(LocalDateTime.now());
         kyc = kycRepository.save(kyc);
 
-        log.info("KYC submitted for customer: {}", customerId);
+        log.info("KYC submitted for customer: {}", userId);
 
         return mapToKycStatusResponse(kyc);
     }
 
-    public KycStatusResponse getKycStatus(Long customerId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public KycStatusResponse getKycStatus(Long userId) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
 
         Kyc kyc = kycRepository.findByCustomer(customer)
-                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", userId));
 
         return mapToKycStatusResponse(kyc);
     }
 
     @Transactional
     @Audited(action = AuditAction.KYC_APPROVE, entityType = "KYC", description = "KYC approved")
-    public void approveKyc(Long customerId, String approvedBy) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public void approveKyc(Long userId, String approvedBy) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
 
         Kyc kyc = kycRepository.findByCustomer(customer)
-                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", userId));
 
         kyc.setStatus(KycStatus.VERIFIED);
         kyc.setApprovedAt(LocalDateTime.now());
@@ -81,24 +81,24 @@ public class KycService {
         kyc.setExpiryDate(LocalDate.now().plusYears(1));
         kycRepository.save(kyc);
 
-        log.info("KYC approved for customer: {} by {}", customerId, approvedBy);
+        log.info("KYC approved for customer: {} by {}", userId, approvedBy);
     }
 
     @Transactional
     @Audited(action = AuditAction.KYC_REJECT, entityType = "KYC", description = "KYC rejected")
-    public void rejectKyc(Long customerId, String reason) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public void rejectKyc(Long userId, String reason) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
 
         Kyc kyc = kycRepository.findByCustomer(customer)
-                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", customerId));
+                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", userId));
 
         kyc.setStatus(KycStatus.REJECTED);
         kyc.setRejectionReason(reason);
         kyc.setRejectedAt(LocalDateTime.now());
         kycRepository.save(kyc);
 
-        log.info("KYC rejected for customer: {} - Reason: {}", customerId, reason);
+        log.info("KYC rejected for customer: {} - Reason: {}", userId, reason);
     }
 
     private KycStatusResponse mapToKycStatusResponse(Kyc kyc) {

@@ -35,6 +35,18 @@ public class CustomerService {
         return mapToProfileResponse(customer);
     }
 
+    public CustomerProfileResponse getCustomerProfileByCustomerId(Long customerId) {
+
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Customer",
+                                "id",
+                                customerId));
+
+        return mapToProfileResponse(customer);
+    }
+
     @Transactional
     public CustomerProfileResponse updateCustomerProfile(Long userId,
                                                          UpdateProfileRequest request) {

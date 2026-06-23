@@ -30,9 +30,9 @@ public class AccountService {
     private final AccountNumberGenerator accountNumberGenerator;
 
     @Transactional
-    public AccountResponse createAccount(Long customerId, CreateAccountRequest request) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public AccountResponse createAccount(Long userId, CreateAccountRequest request) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
 
         // Check if customer already has max accounts
         long accountCount = accountRepository.countByCustomer(customer);
@@ -61,14 +61,19 @@ public class AccountService {
 
         account = accountRepository.save(account);
 
-        log.info("Account created for customer: {} - Account Number: {}", customerId, accountNumber);
+        log.info("Account created for customer: {} - Account Number: {}", userId, accountNumber);
 
         return mapToAccountResponse(account);
     }
 
-    public AccountResponse getAccount(Long accountId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
+    public AccountResponse getAccount(Long accountId, String email) {
+        Account account = accountRepository
+                .findByIdAndCustomerUserEmail(accountId, email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Account",
+                                "id",
+                                accountId));
 
         return mapToAccountResponse(account);
     }
@@ -80,9 +85,9 @@ public class AccountService {
         return mapToAccountResponse(account);
     }
 
-    public List<AccountResponse> getCustomerAccounts(Long customerId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public List<AccountResponse> getCustomerAccounts(Long userId) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
 
         List<Account> accounts = accountRepository.findByCustomer(customer);
 
@@ -103,14 +108,14 @@ public class AccountService {
     }
 
     @Transactional
-    public void setPrimaryAccount(Long customerId, Long accountId) {
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
+    public void setPrimaryAccount(Long userId, Long accountId) {
+        Customer customer = customerRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userId", userId));
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
-        if (!account.getCustomer().getId().equals(customerId)) {
+        if (!account.getCustomer().getId().equals(customer.getId())) {
             throw new InvalidRequestException("Account does not belong to customer");
         }
 
@@ -123,12 +128,12 @@ public class AccountService {
         account.setPrimary(true);
         accountRepository.save(account);
 
-        log.info("Primary account set: {} for customer: {}", accountId, customerId);
+        log.info("Primary account set: {} for customer: {}", accountId, userId);
     }
 
     @Transactional
-    public void closeAccount(Long accountId, String reason) {
-        Account account = accountRepository.findById(accountId)
+    public void closeAccount(Long accountId, String reason, String email) {
+        Account account = accountRepository.findByIdAndCustomerUserEmail(accountId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
         if (!account.getBalance().equals(BigDecimal.ZERO)) {

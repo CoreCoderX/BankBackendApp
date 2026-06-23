@@ -23,6 +23,10 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findByCustomerAndPrimaryTrue(Customer customer);
 
+    Optional<Account> findByIdAndCustomerUserEmail(
+            Long accountId,
+            String email);
+
     long countByCustomer(Customer customer);
 
     boolean existsByAccountNumber(String accountNumber);

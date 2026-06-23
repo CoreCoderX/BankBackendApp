@@ -46,14 +46,22 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
                                 "/api-docs/**",
-                                "/actuator/**"
+                                "/actuator/**",
+                                "/auth/refresh-token"
                         ).permitAll()
+
+                        // MFA completion endpoints (require pre-auth token)
+                        .requestMatchers(
+                                "/auth/verify-device",
+                                "/auth/verify-totp"
+                        ).authenticated()
 
                         // Admin endpoints
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
 
-                        // Customer endpoints
-                        .requestMatchers("/customer/**", "/accounts/**", "/cards/**", "/beneficiary/**").hasRole("CUSTOMER")
+                        // Customer endpoints (require full authentication)
+                        .requestMatchers("/customer/**", "/accounts/**", "/cards/**", "/beneficiary/**")
+                        .hasRole("CUSTOMER")
 
                         // All other endpoints require authentication
                         .anyRequest().authenticated()

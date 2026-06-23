@@ -9,6 +9,7 @@ import com.dvein.banking_backend.common.annotation.RequireRole;
 import com.dvein.banking_backend.common.dto.ApiResponse;
 import com.dvein.banking_backend.common.enums.AuditAction;
 import com.dvein.banking_backend.common.enums.UserRole;
+import com.dvein.banking_backend.common.security.SecurityContextHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -27,6 +28,7 @@ import java.util.List;
 public class NomineeController {
 
     private final NomineeService nomineeService;
+    private final SecurityContextHelper securityContextHelper;
 
     @PostMapping("/{accountId}")
     @Operation(summary = "Add nominee", description = "Add new nominee to account")
@@ -35,7 +37,8 @@ public class NomineeController {
     public ResponseEntity<ApiResponse<NomineeResponse>> addNominee(
             @PathVariable Long accountId,
             @Valid @RequestBody AddNomineeRequest request) {
-        NomineeResponse nominee = nomineeService.addNominee(accountId, request);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        NomineeResponse nominee = nomineeService.addNominee(accountId, email, request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success("Nominee added successfully", nominee));
     }
@@ -45,7 +48,8 @@ public class NomineeController {
     @RateLimited(limit = 30, duration = 60, keyType = RateLimited.KeyType.USER)
     public ResponseEntity<ApiResponse<List<NomineeResponse>>> getNominees(
             @PathVariable Long accountId) {
-        List<NomineeResponse> nominees = nomineeService.getAccountNominees(accountId);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        List<NomineeResponse> nominees = nomineeService.getAccountNominees(accountId, email);
         return ResponseEntity.ok(ApiResponse.success(nominees));
     }
 
@@ -56,7 +60,8 @@ public class NomineeController {
     public ResponseEntity<ApiResponse<Void>> removeNominee(
             @PathVariable Long accountId,
             @PathVariable Long nomineeId) {
-        nomineeService.removeNominee(accountId, nomineeId);
+        String email = securityContextHelper.getCurrentUserEmailOrThrow();
+        nomineeService.removeNominee(accountId, nomineeId, email);
         return ResponseEntity.ok(ApiResponse.success("Nominee removed successfully", null));
     }
 }

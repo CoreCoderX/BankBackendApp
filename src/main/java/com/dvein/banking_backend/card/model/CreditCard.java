@@ -50,18 +50,18 @@ public class CreditCard {
     @Column(name = "pin_hash", length = 64)
     private String pinHash;
 
-    @Column(name = "credit_limit", nullable = false, precision = 15, scale = 2)
+    @Column(name = "credit_limit", nullable = false, precision = 18, scale = 2)
     private BigDecimal creditLimit;
 
-    @Column(name = "available_credit", nullable = false, precision = 15, scale = 2)
+    @Column(name = "available_credit", nullable = false, precision = 18, scale = 2)
     @Builder.Default
     private BigDecimal availableCredit = BigDecimal.ZERO;
 
-    @Column(name = "outstanding_balance", nullable = false, precision = 15, scale = 2)
+    @Column(name = "outstanding_balance", nullable = false, precision = 18, scale = 2)
     @Builder.Default
     private BigDecimal outstandingBalance = BigDecimal.ZERO;
 
-    @Column(name = "interest_rate", nullable = false, precision = 5, scale = 2)
+    @Column(name = "interest_rate", nullable = false, precision = 6, scale = 2)
     @Builder.Default
     private BigDecimal interestRate = BigDecimal.valueOf(18.5);
 
@@ -103,6 +103,7 @@ public class CreditCard {
     private LocalDate billingDueDate;
 
     public boolean isExpired() {
-        return LocalDate.now().isAfter(expiryDate);
+        return expiryDate != null &&
+                LocalDate.now().isAfter(expiryDate);
     }
 }

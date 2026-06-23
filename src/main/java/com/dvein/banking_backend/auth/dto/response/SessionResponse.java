@@ -25,6 +25,9 @@ public class SessionResponse {
     @Schema(description = "IP address", example = "192.168.1.1")
     private String ipAddress;
 
+    @Schema(description = "User agent string")
+    private String userAgent;  // ADD THIS FIELD
+
     @Schema(description = "Whether session is active", example = "true")
     private boolean active;
 

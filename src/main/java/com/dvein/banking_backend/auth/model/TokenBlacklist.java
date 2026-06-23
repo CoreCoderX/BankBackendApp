@@ -1,6 +1,5 @@
-package com.dvein.banking_backend.admin.model;
+package com.dvein.banking_backend.auth.model;
 
-import com.dvein.banking_backend.common.enums.AuditAction;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,35 +15,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "audit_logs")
+@Table(name = "token_blacklist")
 @EntityListeners(AuditingEntityListener.class)
-public class AuditLog {
+public class TokenBlacklist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "token", nullable = false, length = 500, unique = true)
+    private String token;
+
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    private AuditAction action;
+    @Column(name = "reason", length = 100)
+    private String reason;
 
-    @Column(length = 100)
-    private String entityType;
-
-    private Long entityId;
-
-    @Column(length = 500)
-    private String description;
-
-    @Column(length = 100)
-    private String ipAddress;
-
-    @Column(name = "user_agent", length = 2000)
-    private String userAgent;
-
+    @Column(name = "expires_at", nullable = false)
+    private LocalDateTime expiresAt;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

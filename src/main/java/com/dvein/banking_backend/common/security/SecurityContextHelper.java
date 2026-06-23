@@ -34,4 +34,14 @@ public class SecurityContextHelper {
         return authentication.getAuthorities().stream()
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_" + role));
     }
+
+    public String getCurrentUserEmailOrThrow() {
+        String email = getCurrentUserEmail();
+
+        if (email == null) {
+            throw new RuntimeException("No authenticated user found");
+        }
+
+        return email;
+    }
 }
