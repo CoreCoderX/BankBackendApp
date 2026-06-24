@@ -152,16 +152,9 @@ public class CreditCardService {
 
     @Transactional
     public void activateCreditCard(Long cardId, String email) {
-        CreditCard card = creditCardRepository.findById(cardId)
+        // FIX IDOR: use scoped query — only fetches if the card belongs to this user's account
+        CreditCard card = creditCardRepository.findByIdAndAccountCustomerUserEmail(cardId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("CreditCard", "id", cardId));
-
-        if (!card.getAccount()
-                .getCustomer()
-                .getUser()
-                .getEmail()
-                .equals(email)) {
-            throw new CustomException("Card does not belong to account", "CARD_001");
-        }
 
         if (!card.isApproved()) {
             throw new InvalidRequestException("Card is not approved yet. Please wait for admin approval.");
@@ -192,16 +185,9 @@ public class CreditCardService {
             String email,
             BlockCardRequest request) {
 
-        CreditCard card = creditCardRepository.findById(cardId)
+        // FIX IDOR: use scoped query
+        CreditCard card = creditCardRepository.findByIdAndAccountCustomerUserEmail(cardId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("CreditCard", "id", cardId));
-
-        if (!card.getAccount()
-                .getCustomer()
-                .getUser()
-                .getEmail()
-                .equals(email)) {
-            throw new CustomException("Card does not belong to account", "CARD_001");
-        }
 
         if (card.getStatus() == CardStatus.BLOCKED) {
             throw new InvalidRequestException("Card is already blocked");
@@ -217,16 +203,9 @@ public class CreditCardService {
 
     @Transactional
     public void unblockCreditCard(Long cardId, String email) {
-        CreditCard card = creditCardRepository.findById(cardId)
+        // FIX IDOR: use scoped query
+        CreditCard card = creditCardRepository.findByIdAndAccountCustomerUserEmail(cardId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("CreditCard", "id", cardId));
-
-        if (!card.getAccount()
-                .getCustomer()
-                .getUser()
-                .getEmail()
-                .equals(email)) {
-            throw new CustomException("Card does not belong to account", "CARD_001");
-        }
 
         if (card.getStatus() != CardStatus.BLOCKED) {
             throw new InvalidRequestException("Card is not blocked");
@@ -245,16 +224,9 @@ public class CreditCardService {
             Long cardId,
             String email,
             SetCardPinRequest request) {
-        CreditCard card = creditCardRepository.findById(cardId)
+        // FIX IDOR: use scoped query
+        CreditCard card = creditCardRepository.findByIdAndAccountCustomerUserEmail(cardId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("CreditCard", "id", cardId));
-
-        if (!card.getAccount()
-                .getCustomer()
-                .getUser()
-                .getEmail()
-                .equals(email)) {
-            throw new CustomException("Card does not belong to account", "CARD_001");
-        }
 
         if (!card.isApproved()) {
             throw new InvalidRequestException("Cannot set PIN for unapproved card");
@@ -325,34 +297,6 @@ public class CreditCardService {
                 .build();
     }
 
-    // ADD this new method to your existing CreditCardService.java:
-
-    @Transactional
-    public void approveCreditCardApplication(Long cardId, BigDecimal approvedLimit) {
-        CreditCard card = creditCardRepository.findById(cardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Credit card", "id", cardId));
-
-        if (card.isApproved()) {
-            throw new InvalidRequestException("Already approved");
-        }
-
-        // NOW generate card number
-        String cardNumber = cardNumberGenerator.generateUniqueCardNumber(
-                num -> creditCardRepository.existsByCardNumber(num)
-        );
-        String cvv = cardNumberGenerator.generateCVV();
-
-        card.setCardNumber(cardNumber);
-        card.setCvv(cvv);
-        card.setExpiryDate(cardNumberGenerator.generateExpiryDate());
-        card.setCreditLimit(approvedLimit);
-        card.setAvailableCredit(approvedLimit);
-        card.setApproved(true);
-        card.setApprovedAt(LocalDateTime.now());
-        card.setBillingDueDate(LocalDate.now().plusMonths(1));
-
-        creditCardRepository.save(card);
-
-        log.info("Credit card APPROVED - Card ID: {}", cardId);
-    }
-}
+    // Removed: approveCreditCardApplication — was dead code (incomplete duplicate of approveCreditCard).
+    // All admin card approvals should go through approveCreditCard(cardId, approvedLimit, interestRate, approvedBy).
+}

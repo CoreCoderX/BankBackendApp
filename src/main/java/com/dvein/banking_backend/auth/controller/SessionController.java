@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sessions")
 @RequiredArgsConstructor
-@RequireRole(UserRole.CUSTOMER)
+@RequireRole({UserRole.CUSTOMER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
 @Tag(name = "Session Management", description = "Session management endpoints")
 public class SessionController {
 

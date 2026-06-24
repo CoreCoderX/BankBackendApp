@@ -620,6 +620,11 @@ public class AuthService {
         user.setPasswordChangedAt(LocalDateTime.now());
         userRepository.save(user);
 
+        // SECURITY: Invalidate ALL active sessions after password change.
+        // Any stolen session tokens are now useless.
+        sessionService.logoutAllSessions(userId);
+        log.info("All sessions invalidated after password change for userId: {}", userId);
+
         log.info("Password changed successfully for user: {}", user.getEmail());
     }
 

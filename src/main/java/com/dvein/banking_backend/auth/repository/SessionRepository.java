@@ -22,6 +22,14 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
 
     long countByUserAndActiveTrue(User user);
 
+    /** Aggregate count of all active, non-expired sessions (for dashboard) */
+    @Query("SELECT COUNT(s) FROM Session s WHERE s.active = true AND s.expiresAt > :now")
+    long countActiveSessions(LocalDateTime now);
+
+    /** All sessions that are still active but have passed their expiry time */
+    @Query("SELECT s FROM Session s WHERE s.active = true AND s.expiresAt <= :now")
+    List<Session> findExpiredActiveSessions(LocalDateTime now);
+
     @Modifying
     @Query("UPDATE Session s SET s.active = false WHERE s.user = :user")
     void invalidateAllUserSessions(User user);

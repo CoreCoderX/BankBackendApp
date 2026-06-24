@@ -7,6 +7,7 @@ import com.dvein.banking_backend.account.repository.CustomerRepository;
 import com.dvein.banking_backend.auth.model.User;
 import com.dvein.banking_backend.auth.repository.UserRepository;
 import com.dvein.banking_backend.common.enums.CustomerStatus;
+import com.dvein.banking_backend.common.exception.DuplicateResourceException;
 import com.dvein.banking_backend.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,10 +65,18 @@ public class CustomerService {
         customer.setPostalCode(request.getPostalCode());
         customer.setCountry(request.getCountry());
 
-        // Update user phone
-        User user = customer.getUser();
-        user.setPhone(request.getPhone());
-        userRepository.save(user);
+        // Update user phone — only if a new phone was provided and it's not already taken
+        if (request.getPhone() != null && !request.getPhone().isBlank()) {
+            User user = customer.getUser();
+            boolean phoneChanged = !request.getPhone().equals(user.getPhone());
+            if (phoneChanged) {
+                if (userRepository.existsByPhone(request.getPhone())) {
+                    throw new DuplicateResourceException("User", "phone");
+                }
+                user.setPhone(request.getPhone());
+                userRepository.save(user);
+            }
+        }
 
         customer = customerRepository.save(customer);
 

@@ -9,6 +9,8 @@ import com.dvein.banking_backend.common.constant.SuccessMessages;
 import com.dvein.banking_backend.common.dto.ApiResponse;
 import com.dvein.banking_backend.common.enums.AuditAction;
 import com.dvein.banking_backend.common.security.SecurityContextHelper;
+import com.dvein.banking_backend.common.annotation.RequireRole;
+import com.dvein.banking_backend.common.enums.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin/cards")
 @RequiredArgsConstructor
+@RequireRole({UserRole.ADMIN, UserRole.SUPER_ADMIN})
 @Tag(name = "Admin Card Management", description = "Admin card approval and management endpoints")
 public class AdminCardController {
 

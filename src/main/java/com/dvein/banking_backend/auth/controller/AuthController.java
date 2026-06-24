@@ -58,7 +58,7 @@ public class AuthController {
     @Operation(summary = "Resend OTP", description = "Resend OTP to registered email")
     @RateLimited(limit = 3, duration = 300, keyType = RateLimited.KeyType.IP,
             message = "Too many OTP requests. Please wait 5 minutes.")
-    public ResponseEntity<ApiResponse<Void>> resendOtp(@Valid @RequestBody ForgotPasswordRequest request) {
+    public ResponseEntity<ApiResponse<Void>> resendOtp(@Valid @RequestBody ResendOtpRequest request) {
         authService.resendOtp(request.getEmail());
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.OTP_SENT, null));
     }
@@ -102,23 +102,33 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    @Operation(summary = "Logout", description = "Logout current session")
+    @Operation(summary = "Logout", description = "Logout current session. The Bearer access token is always invalidated. If sessionId is provided, the refresh token for that session is also blacklisted.")
     @Audited(action = AuditAction.LOGOUT, entityType = "User", description = "User logout")
     public ResponseEntity<ApiResponse<Void>> logout(
             @RequestParam(required = false) Long sessionId,
             HttpServletRequest request) {
+
         String userEmail = securityContextHelper.getCurrentUserEmail();
-        if (userEmail != null && sessionId != null) {
-            User user = userRepository.findByEmail(userEmail).orElse(null);
-            if (user != null) {
-                String authHeader = request.getHeader("Authorization");
-                if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                    String token = authHeader.substring(7);
-                    tokenBlacklistService.blacklistToken(token, user.getId(), "USER_LOGOUT");
-                }
-                authService.logout(user.getId(), sessionId);
-            }
+        if (userEmail == null) {
+            // Not authenticated — token is invalid/missing; nothing to blacklist
+            return ResponseEntity.ok(ApiResponse.success(SuccessMessages.LOGOUT_SUCCESS, null));
         }
+
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new com.dvein.banking_backend.common.exception.ResourceNotFoundException("User", "email", userEmail));
+
+        // ALWAYS blacklist the current Bearer access token — this is the core logout action
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String accessToken = authHeader.substring(7);
+            tokenBlacklistService.blacklistToken(accessToken, user.getId(), "USER_LOGOUT");
+        }
+
+        // ADDITIONALLY: if sessionId is provided, also invalidate the session and its refresh token
+        if (sessionId != null) {
+            authService.logout(user.getId(), sessionId);
+        }
+
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.LOGOUT_SUCCESS, null));
     }
 
@@ -140,17 +150,14 @@ public class AuthController {
     }
 
     @PostMapping("/change-password")
-    @Operation(summary = "Change password", description = "Change password after login")
+    @Operation(summary = "Change password", description = "Change password for the currently authenticated user")
     @RateLimited(limit = 5, duration = 3600, keyType = RateLimited.KeyType.USER)
     @Audited(action = AuditAction.PASSWORD_CHANGE, entityType = "User", description = "Password changed")
     public ResponseEntity<ApiResponse<Void>> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
-        String userEmail = securityContextHelper.getCurrentUserEmail();
-        if (userEmail != null) {
-            User user = userRepository.findByEmail(userEmail).orElse(null);
-            if (user != null) {
-                authService.changePassword(user.getId(), request);
-            }
-        }
+        String userEmail = securityContextHelper.getCurrentUserEmailOrThrow();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new com.dvein.banking_backend.common.exception.ResourceNotFoundException("User", "email", userEmail));
+        authService.changePassword(user.getId(), request);
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.PASSWORD_CHANGED, null));
     }
 

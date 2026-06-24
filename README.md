@@ -155,8 +155,9 @@ resources/db/migration/
 ## Final Folder Structure
 
 ```text
+PS $tree src /F > structure.txt    
 Folder PATH listing for volume Windows-SSD
-Volume serial number is 0000018C C20D:95B5
+Volume serial number is 0000014E C20D:95B5
 C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 +---main
 ª   +---java
@@ -281,6 +282,7 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª   ª               ª   ª   ª       RefreshTokenRequest.java
 ª   ª               ª   ª   ª       RegisterDeviceRequest.java
 ª   ª               ª   ª   ª       RegisterRequest.java
+ª   ª               ª   ª   ª       ResendOtpRequest.java
 ª   ª               ª   ª   ª       ResetPasswordRequest.java
 ª   ª               ª   ª   ª       VerifyDeviceRequest.java
 ª   ª               ª   ª   ª       VerifyMpinRequest.java
@@ -469,16 +471,12 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
             +---dvein
                 +---banking_backend
                         BankingBackendApplicationTests.java
- 
+                        
 ```
 
 > Complete detailed structure available in the source project.
 
 ---
-
-## Notes
-
-All tests are verified and core business logic is working successfully.
 
 ### Pending Items
 
@@ -761,11 +759,422 @@ Implemented extra validation checks across service-layer operations to:
 
 ---
 
-## Contributors
+# Third Push Updates
 
-| Module | Owner |
-|----------|----------|
-| Module 1 | Sivaprakash |
-| Module 2 | Yeshwanth |
-| Module 3 | Ajai |
-| Module 4 | Novin Kumar |
+## Security Hardening & Critical Bug Fixes
+
+This update focuses on security improvements, authentication hardening, authorization fixes, session management enhancements, and multiple production bug fixes discovered during testing and review.
+
+---
+
+## Critical Security Fixes
+
+### Secure Logout & Token Revocation
+
+#### Issue
+
+Previously, access tokens were blacklisted only when a valid `sessionId` was provided during logout.
+
+#### Risk
+
+Users could remain authenticated after logout under certain conditions.
+
+#### Fix
+
+* Logout now always blacklists the active access token.
+* Token revocation is enforced regardless of session state.
+* Eliminates token reuse after logout.
+
+---
+
+### Encryption Upgrade
+
+#### Previous Implementation
+
+```text
+AES/ECB
+```
+
+#### Current Implementation
+
+```text
+AES/GCM
+```
+
+#### Improvements
+
+* Authenticated encryption support.
+* Random IV generated for every encryption operation.
+* Protection against ciphertext manipulation.
+* Eliminates ECB pattern leakage vulnerabilities.
+
+---
+
+
+### Authorization Hardening
+
+#### IDOR (Insecure Direct Object Reference) Fixes
+
+Resolved multiple authorization bypass vulnerabilities across:
+
+* Account Services
+* Credit Card Services
+
+#### Improvements
+
+* Ownership validation enforced.
+* Database queries scoped to authenticated users.
+* Prevents unauthorized access to other customer resources.
+
+---
+
+### Admin Endpoint Protection
+
+#### Issue
+
+`AdminCardController` endpoints were missing role enforcement.
+
+#### Risk
+
+Authenticated customers could potentially access card approval operations.
+
+#### Fix
+
+* Added `@RequireRole(ADMIN)` protection.
+* Restricted approval and rejection workflows to administrators only.
+
+---
+
+### Password Change Security
+
+#### Improvements
+
+Changing a password now:
+
+* Invalidates all active sessions.
+* Revokes existing authentication tokens.
+* Forces re-authentication on every device.
+
+#### Benefit
+
+Protects users from stolen or previously compromised sessions.
+
+---
+
+## Logic Bug Fixes
+
+### Dashboard Metrics Correction
+
+#### Issue
+
+Approved credit card applications were incorrectly counted as pending.
+
+#### Root Cause
+
+Dashboard used:
+
+```java
+count()
+```
+
+instead of pending-only filtering.
+
+#### Fix
+
+```java
+countByApprovedFalseAndRejectionReasonIsNull()
+```
+
+#### Result
+
+Pending application statistics now display correctly.
+
+---
+
+### KYC Approval Workflow Fix
+
+#### Issue
+
+KYC approval could return:
+
+```text
+Customer not found
+```
+
+even for valid requests.
+
+#### Root Cause
+
+Admin `customerId` was incorrectly passed to:
+
+```java
+findByUserId()
+```
+
+#### Fix
+
+Introduced:
+
+```java
+approveKycByCustomerId()
+```
+
+which correctly uses:
+
+```java
+findById(customerId)
+```
+
+#### Result
+
+KYC approval process now works reliably.
+
+---
+
+### Session Response Fix
+
+#### Issue
+
+All sessions were incorrectly reported as:
+
+```json
+{
+  "current": false
+}
+```
+
+#### Root Cause
+
+`userAgent` was not mapped into session responses.
+
+#### Fix
+
+Added:
+
+```java
+.userAgent(session.getUserAgent())
+```
+
+#### Result
+
+Current device/session detection works correctly.
+
+---
+
+### Session Cleanup Scheduler Fix
+
+#### Issue
+
+Expired session cleanup job executed successfully but never removed sessions.
+
+#### Root Cause
+
+The scheduler queried:
+
+```java
+findByUserAndActiveTrue(null)
+```
+
+which always returned an empty result set.
+
+#### Fix
+
+Updated cleanup logic to correctly target active expired sessions.
+
+#### Result
+
+Expired sessions are now removed as expected.
+
+---
+
+### Monetary Validation Fix
+
+#### Issue
+
+`BigDecimal.equals(BigDecimal.ZERO)` failed when scales differed.
+
+Example:
+
+```java
+new BigDecimal("0.00")
+```
+
+is not equal to:
+
+```java
+BigDecimal.ZERO
+```
+
+#### Fix
+
+Replaced with:
+
+```java
+compareTo(BigDecimal.ZERO) != 0
+```
+
+#### Result
+
+Reliable monetary comparisons regardless of scale.
+
+---
+
+### Async Processing Fix
+
+#### Issue
+
+`@Async` was applied to a private method.
+
+#### Impact
+
+Method execution remained synchronous and could block request threads.
+
+#### Fix
+
+Method visibility updated to allow Spring proxy interception.
+
+#### Result
+
+Async execution now functions correctly.
+
+---
+
+## Code Quality Improvements
+
+### OTP Request Refactoring
+
+Added dedicated DTO:
+
+```java
+ResendOtpRequest
+```
+
+#### Benefit
+
+Removes misuse of unrelated request models and improves API clarity.
+
+---
+
+### Profile Update Validation
+
+Added phone number uniqueness validation before database updates.
+
+#### Benefits
+
+* Prevents duplicate phone numbers.
+* Avoids unnecessary database writes.
+* Improves validation feedback.
+
+---
+
+### Exception Handling Enhancements
+
+Added global handling for:
+
+```java
+DataIntegrityViolationException
+```
+
+and
+
+```java
+InvalidRequestException
+```
+
+#### Benefits
+
+* Consistent API error responses.
+* Improved debugging and client-side handling.
+
+---
+
+### Authentication Error Handling
+
+#### Previous Behavior
+
+```java
+RuntimeException
+```
+
+could return HTTP 500 responses for authentication failures.
+
+#### Current Behavior
+
+```java
+UnauthorizedException
+```
+
+returns:
+
+```http
+401 Unauthorized
+```
+
+#### Benefit
+
+More accurate API semantics and improved client handling.
+
+---
+
+### Dead Code Cleanup
+
+Removed duplicate:
+
+```java
+approveCreditCardApplication()
+```
+
+implementation.
+
+#### Benefits
+
+* Reduced maintenance overhead.
+* Cleaner service layer.
+
+---
+
+### Rate Limiting Restored
+
+Rate limiting protections have been re-enabled across protected endpoints.
+
+#### Benefits
+
+* Reduces abuse and brute-force attempts.
+* Improves API stability.
+* Enhances overall security posture.
+
+---
+
+## Summary
+
+### Security
+
+* Access token revocation on every logout.
+* AES/GCM encryption implementation.
+* Environment-based secret management.
+* IDOR vulnerability fixes.
+* Admin endpoint protection.
+* Session invalidation after password change.
+
+### Fixed
+
+* Dashboard pending count bug.
+* KYC approval customer lookup bug.
+* Session current-device detection bug.
+* Session cleanup scheduler issue.
+* BigDecimal comparison issue.
+* Async execution issue.
+
+### Improved
+
+* Exception handling.
+* Request validation.
+* DTO design.
+* Authentication error responses.
+* Rate limiting enforcement.
+* Codebase maintainability.
+
+## Final Notes
+
+* All tests are verified and core business logic is working successfully.
+* Thereby my assigned job and module is completed and verified successfully.

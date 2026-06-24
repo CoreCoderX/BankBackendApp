@@ -27,10 +27,14 @@ public class KycService {
     private final KycRepository kycRepository;
     private final CustomerRepository customerRepository;
 
+    // =========================================================================
+    // Customer self-service (userId based — user looks up their own KYC)
+    // =========================================================================
+
     @Transactional
     public KycStatusResponse submitKyc(Long userId, KycSubmissionRequest request) {
         Customer customer = customerRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userId", userId));
 
         Kyc kyc = kycRepository.findByCustomer(customer)
                 .orElse(Kyc.builder()
@@ -46,19 +50,18 @@ public class KycService {
         customer.setPostalCode(request.getPostalCode());
         customerRepository.save(customer);
 
-        // Update KYC status
         kyc.setStatus(KycStatus.SUBMITTED);
         kyc.setSubmittedAt(LocalDateTime.now());
         kyc = kycRepository.save(kyc);
 
-        log.info("KYC submitted for customer: {}", userId);
+        log.info("KYC submitted for userId: {}", userId);
 
         return mapToKycStatusResponse(kyc);
     }
 
     public KycStatusResponse getKycStatus(Long userId) {
         Customer customer = customerRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userId", userId));
 
         Kyc kyc = kycRepository.findByCustomer(customer)
                 .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", userId));
@@ -66,14 +69,30 @@ public class KycService {
         return mapToKycStatusResponse(kyc);
     }
 
+    // =========================================================================
+    // Admin flows (customerId based — admin operates on Customer.id, NOT User.id)
+    // =========================================================================
+
+    /**
+     * Admin: Approve KYC by Customer ID (Customer.id, NOT User.id).
+     * <p>
+     * This fixes the bug where the admin endpoint path variable {customerId}
+     * was incorrectly passed to findByUserId(), causing "Customer not found"
+     * errors when customerId != userId (e.g., admin has userId=1, first
+     * customer has customerId=1 but userId=2).
+     */
     @Transactional
-    @Audited(action = AuditAction.KYC_APPROVE, entityType = "KYC", description = "KYC approved")
-    public void approveKyc(Long userId, String approvedBy) {
-        Customer customer = customerRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
+    @Audited(action = AuditAction.KYC_APPROVE, entityType = "KYC", description = "KYC approved by admin")
+    public void approveKycByCustomerId(Long customerId, String approvedBy) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
 
         Kyc kyc = kycRepository.findByCustomer(customer)
-                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", userId));
+                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customerId", customerId));
+
+        if (kyc.getStatus() == KycStatus.VERIFIED) {
+            throw new InvalidRequestException("KYC is already approved");
+        }
 
         kyc.setStatus(KycStatus.VERIFIED);
         kyc.setApprovedAt(LocalDateTime.now());
@@ -81,25 +100,36 @@ public class KycService {
         kyc.setExpiryDate(LocalDate.now().plusYears(1));
         kycRepository.save(kyc);
 
-        log.info("KYC approved for customer: {} by {}", userId, approvedBy);
+        log.info("KYC approved for customerId: {} by admin: {}", customerId, approvedBy);
     }
 
+    /**
+     * Admin: Reject KYC by Customer ID (Customer.id, NOT User.id).
+     */
     @Transactional
-    @Audited(action = AuditAction.KYC_REJECT, entityType = "KYC", description = "KYC rejected")
-    public void rejectKyc(Long userId, String reason) {
-        Customer customer = customerRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "userid", userId));
+    @Audited(action = AuditAction.KYC_REJECT, entityType = "KYC", description = "KYC rejected by admin")
+    public void rejectKycByCustomerId(Long customerId, String reason) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
 
         Kyc kyc = kycRepository.findByCustomer(customer)
-                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customer", userId));
+                .orElseThrow(() -> new ResourceNotFoundException("KYC", "customerId", customerId));
+
+        if (kyc.getStatus() == KycStatus.VERIFIED) {
+            throw new InvalidRequestException("Cannot reject an already approved KYC");
+        }
 
         kyc.setStatus(KycStatus.REJECTED);
         kyc.setRejectionReason(reason);
         kyc.setRejectedAt(LocalDateTime.now());
         kycRepository.save(kyc);
 
-        log.info("KYC rejected for customer: {} - Reason: {}", userId, reason);
+        log.info("KYC rejected for customerId: {} - Reason: {}", customerId, reason);
     }
+
+    // =========================================================================
+    // Private mapping
+    // =========================================================================
 
     private KycStatusResponse mapToKycStatusResponse(Kyc kyc) {
         return KycStatusResponse.builder()

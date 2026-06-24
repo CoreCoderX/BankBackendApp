@@ -1,5 +1,6 @@
 package com.dvein.banking_backend.common.security;
 
+import com.dvein.banking_backend.common.exception.UnauthorizedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,11 +36,18 @@ public class SecurityContextHelper {
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_" + role));
     }
 
+    /**
+     * Returns the current user's email or throws {@link UnauthorizedException} (HTTP 401)
+     * if the request is not authenticated.
+     * <p>
+     * Prefer this over {@link #getCurrentUserEmail()} for secured endpoints to avoid
+     * accidentally returning HTTP 200 without performing the requested action.
+     */
     public String getCurrentUserEmailOrThrow() {
         String email = getCurrentUserEmail();
 
         if (email == null) {
-            throw new RuntimeException("No authenticated user found");
+            throw new UnauthorizedException("Authentication required");
         }
 
         return email;

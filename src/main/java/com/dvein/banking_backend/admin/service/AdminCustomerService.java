@@ -74,14 +74,17 @@ public class AdminCustomerService {
 
     @Transactional
     public void approveKyc(Long customerId, String approvedBy) {
-        kycService.approveKyc(customerId, approvedBy);
-        log.info("Admin approved KYC for customer: {} by {}", customerId, approvedBy);
+        // FIX: Use approveKycByCustomerId — the path variable is customerId (Customer.id),
+        // NOT userId (User.id). The old approveKyc(userId) caused "Customer not found" errors.
+        kycService.approveKycByCustomerId(customerId, approvedBy);
+        log.info("Admin approved KYC for customerId: {} by {}", customerId, approvedBy);
     }
 
     @Transactional
     public void rejectKyc(Long customerId, String reason) {
-        kycService.rejectKyc(customerId, reason);
-        log.info("Admin rejected KYC for customer: {} - Reason: {}", customerId, reason);
+        // FIX: Use rejectKycByCustomerId — same reason as approveKyc above
+        kycService.rejectKycByCustomerId(customerId, reason);
+        log.info("Admin rejected KYC for customerId: {} - Reason: {}", customerId, reason);
     }
 
     public CustomerProfileResponse getCustomerDetails(Long customerId) {

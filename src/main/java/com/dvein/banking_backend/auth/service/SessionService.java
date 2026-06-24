@@ -204,33 +204,35 @@ public class SessionService {
     public void cleanupExpiredSessions() {
         LocalDateTime now = LocalDateTime.now();
 
-        // Find all expired sessions
-        List<Session> expiredSessions = sessionRepository.findByUserAndActiveTrue(null).stream()
-                .filter(session -> session.isExpired() || !session.isActive())
-                .collect(Collectors.toList());
+        // FIX: Use the new scoped query instead of findByUserAndActiveTrue(null)
+        // The old query passed null as the User param, which always returned empty results
+        // (WHERE user = NULL AND active = true never matches any rows).
+        List<Session> expiredActiveSessions = sessionRepository.findExpiredActiveSessions(now);
 
-        // Invalidate and blacklist tokens
-        for (Session session : expiredSessions) {
-            if (session.isActive()) {
-                session.invalidate();
+        // Invalidate and blacklist tokens for genuinely active-but-expired sessions
+        for (Session session : expiredActiveSessions) {
+            session.invalidate();
 
-                // Blacklist expired refresh tokens
+            try {
                 tokenBlacklistService.blacklistToken(
                         session.getRefreshToken(),
                         session.getUser().getId(),
                         "SESSION_EXPIRED"
                 );
+            } catch (Exception e) {
+                log.warn("Could not blacklist token for expired session: {}", session.getId(), e);
             }
         }
 
-        if (!expiredSessions.isEmpty()) {
-            sessionRepository.saveAll(expiredSessions);
+        if (!expiredActiveSessions.isEmpty()) {
+            sessionRepository.saveAll(expiredActiveSessions);
+            log.info("Invalidated {} expired sessions", expiredActiveSessions.size());
         }
 
-        // Delete old inactive sessions (older than 30 days)
+        // Hard-delete sessions that are either expired or inactive and older than 30 days
         sessionRepository.deleteExpiredAndInactiveSessions(now.minusDays(30));
 
-        log.info("Cleaned up {} expired sessions", expiredSessions.size());
+        log.info("Session cleanup complete");
     }
 
     private SessionResponse mapToSessionResponse(Session session) {
@@ -238,11 +240,14 @@ public class SessionService {
                 .id(session.getId())
                 .deviceName(session.getDevice() != null ? session.getDevice().getDeviceName() : "Unknown Device")
                 .ipAddress(session.getIpAddress())
+                // FIX: Include userAgent so the SessionController can compare it against
+                // the current request's User-Agent to correctly set the 'current' flag.
+                .userAgent(session.getUserAgent())
                 .active(session.isActive())
                 .createdAt(session.getCreatedAt())
                 .lastActivityAt(session.getLastActivityAt())
                 .expiresAt(session.getExpiresAt())
-                .current(false) // Will be set by controller
+                .current(false) // Will be set by the controller after comparison
                 .build();
     }
 }

@@ -4,6 +4,7 @@ import com.dvein.banking_backend.common.constant.ErrorCodes;
 import com.dvein.banking_backend.common.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -158,7 +159,7 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex,
             HttpServletRequest request) {
 
-        log.error("Validation failed: {}", ex.getMessage());
+        log.warn("Validation failed on {}: {}", request.getRequestURI(), ex.getMessage());
 
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
@@ -176,6 +177,49 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidRequestException(
+            InvalidRequestException ex,
+            HttpServletRequest request) {
+
+        log.warn("Invalid request on {}: {}", request.getRequestURI(), ex.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .success(false)
+                .message(ex.getMessage())
+                .errorCode(ex.getErrorCode())
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+
+    /**
+     * Handles database unique constraint violations (e.g. duplicate email, phone).
+     * Returns a 409 Conflict without leaking internal DB column names.
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex,
+            HttpServletRequest request) {
+
+        log.error("Data integrity violation on {}: {}", request.getRequestURI(), ex.getMessage());
+
+        // Safe message — do NOT expose the underlying DB constraint name to the client
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .success(false)
+                .message("A resource with the provided details already exists")
+                .errorCode("DATA_INTEGRITY_001")
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(errorResponse);
     }
 

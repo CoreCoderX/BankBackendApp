@@ -112,14 +112,11 @@ public class AccountService {
         Customer customer = customerRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "userId", userId));
 
-        Account account = accountRepository.findById(accountId)
+        // FIX IDOR: use scoped query — only fetches if the account belongs to this customer
+        Account account = accountRepository.findByIdAndCustomerUserId(accountId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
-        if (!account.getCustomer().getId().equals(customer.getId())) {
-            throw new InvalidRequestException("Account does not belong to customer");
-        }
-
-        // Remove primary from all accounts
+        // Remove primary from all existing accounts
         List<Account> allAccounts = accountRepository.findByCustomer(customer);
         allAccounts.forEach(acc -> acc.setPrimary(false));
         accountRepository.saveAll(allAccounts);
@@ -136,7 +133,9 @@ public class AccountService {
         Account account = accountRepository.findByIdAndCustomerUserEmail(accountId, email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
 
-        if (!account.getBalance().equals(BigDecimal.ZERO)) {
+        // FIX: BigDecimal.equals() considers scale — 0.00 != 0 (ZERO has scale 0).
+        // Use compareTo instead, which only compares numeric value.
+        if (account.getBalance().compareTo(BigDecimal.ZERO) != 0) {
             throw new InvalidRequestException("Cannot close account with non-zero balance");
         }
 

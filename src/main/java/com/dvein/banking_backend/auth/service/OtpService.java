@@ -108,8 +108,13 @@ public class OtpService {
         log.info("OTP verified successfully for email: {} and type: {}", email, otpType);
     }
 
+    /**
+     * Sends OTP email asynchronously.
+     * NOTE: Must NOT be private — Spring AOP proxying cannot intercept private methods,
+     * so @Async is silently ignored on private methods.
+     */
     @Async
-    private void sendOtpEmail(String email, String code, OtpType otpType) {
+    void sendOtpEmail(String email, String code, OtpType otpType) {
         String subject = getEmailSubject(otpType);
         String message = getEmailMessage(code, otpType);
 

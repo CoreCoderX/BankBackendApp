@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -31,26 +32,29 @@ public class AdminDashboardService {
     private final SessionRepository sessionRepository;
 
     public AdminDashboardResponse getDashboardStats() {
-        long totalCustomers = userRepository.countByRole(UserRole.CUSTOMER);
-        long activeCustomers = customerRepository.countByStatus(CustomerStatus.ACTIVE);
-        long blockedCustomers = customerRepository.countByStatus(CustomerStatus.BLOCKED);
+        long totalCustomers    = userRepository.countByRole(UserRole.CUSTOMER);
+        long activeCustomers   = customerRepository.countByStatus(CustomerStatus.ACTIVE);
+        long blockedCustomers  = customerRepository.countByStatus(CustomerStatus.BLOCKED);
         long suspendedCustomers = customerRepository.countByStatus(CustomerStatus.SUSPENDED);
 
-        long totalAdmins = userRepository.countByRole(UserRole.ADMIN);
+        long totalAdmins  = userRepository.countByRole(UserRole.ADMIN);
         long activeAdmins = userRepository.countByActiveAndRole(true, UserRole.ADMIN);
 
         long totalAccounts = accountRepository.count();
-        BigDecimal totalBalance = calculateTotalBalance();
+
+        // FIX: Use aggregate SQL SUM — avoids loading all Account rows into memory
+        BigDecimal totalBalance = accountRepository.sumTotalBalance();
 
         long pendingKyc = kycRepository.countByStatus(KycStatus.SUBMITTED);
-        long pendingCreditCards = creditCardRepository.count(); // Filter by pending status
 
-        long totalDebitCards = debitCardRepository.count();
+        // FIX: Count only cards where approved=false AND rejectionReason IS NULL (true pending)
+        long pendingCreditCards = creditCardRepository.countByApprovedFalseAndRejectionReasonIsNull();
+
+        long totalDebitCards  = debitCardRepository.count();
         long totalCreditCards = creditCardRepository.count();
 
-        long activeSessions = sessionRepository.findAll().stream()
-                .filter(session -> session.isActive() && !session.isExpired())
-                .count();
+        // FIX: Use aggregate DB query — avoids loading all Session rows into memory
+        long activeSessions = sessionRepository.countActiveSessions(LocalDateTime.now());
 
         return AdminDashboardResponse.builder()
                 .totalCustomers(totalCustomers)
@@ -65,15 +69,9 @@ public class AdminDashboardService {
                 .pendingCreditCardApplications(pendingCreditCards)
                 .totalDebitCards(totalDebitCards)
                 .totalCreditCards(totalCreditCards)
-                .failedLoginAttemptsToday(0L) // Implement if needed
-                .newRegistrationsToday(0L) // Implement if needed
+                .failedLoginAttemptsToday(0L)  // TODO: implement audit-based counter
+                .newRegistrationsToday(0L)     // TODO: implement audit-based counter
                 .activeSessions(activeSessions)
                 .build();
     }
-
-    private BigDecimal calculateTotalBalance() {
-        return accountRepository.findAll().stream()
-                .map(account -> account.getBalance())
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-}
+}
