@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.dvein.banking_backend.account.model.Customer;
+import com.dvein.banking_backend.account.repository.CustomerRepository;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class AccountController {
     private final AccountService accountService;
     private final SecurityContextHelper securityContextHelper;
     private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     @PostMapping
     @Operation(summary = "Create account", description = "Create new bank account")
@@ -44,8 +47,12 @@ public class AccountController {
         String userEmail = securityContextHelper.getCurrentUserEmail();
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        Customer customer = customerRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        AccountResponse account = accountService.createAccount(user.getId(), request);
+        List<AccountResponse> accounts = accountService.getCustomerAccounts(customer.getId());
+
+        AccountResponse account = accountService.createAccount(customer.getId(), request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(SuccessMessages.ACCOUNT_CREATED, account));
     }
@@ -66,7 +73,10 @@ public class AccountController {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<AccountResponse> accounts = accountService.getCustomerAccounts(user.getId());
+        Customer customer = customerRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        List<AccountResponse> accounts = accountService.getCustomerAccounts(customer.getId());
         return ResponseEntity.ok(ApiResponse.success(accounts));
     }
 
@@ -79,7 +89,10 @@ public class AccountController {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        accountService.setPrimaryAccount(user.getId(), accountId);
+        Customer customer = customerRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        accountService.setPrimaryAccount(customer.getId(), accountId);
         return ResponseEntity.ok(ApiResponse.success("Primary account set successfully", null));
     }
 

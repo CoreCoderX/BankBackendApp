@@ -2,6 +2,8 @@ package com.dvein.banking_backend.account.controller;
 
 import com.dvein.banking_backend.account.dto.request.KycSubmissionRequest;
 import com.dvein.banking_backend.account.dto.response.KycStatusResponse;
+import com.dvein.banking_backend.account.model.Customer;
+import com.dvein.banking_backend.account.repository.CustomerRepository;
 import com.dvein.banking_backend.account.service.KycService;
 import com.dvein.banking_backend.auth.model.User;
 import com.dvein.banking_backend.auth.repository.UserRepository;
@@ -30,6 +32,7 @@ public class KycController {
     private final KycService kycService;
     private final SecurityContextHelper securityContextHelper;
     private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     @PostMapping("/submit")
     @Operation(summary = "Submit KYC", description = "Submit KYC documents and information")
@@ -41,8 +44,10 @@ public class KycController {
         String userEmail = securityContextHelper.getCurrentUserEmail();
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        Customer customer = customerRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        KycStatusResponse kycStatus = kycService.submitKyc(user.getId(), request);
+        KycStatusResponse kycStatus = kycService.submitKyc(customer.getId(), request);
         return ResponseEntity.ok(ApiResponse.success(SuccessMessages.KYC_SUBMITTED, kycStatus));
     }
 
@@ -53,8 +58,10 @@ public class KycController {
         String userEmail = securityContextHelper.getCurrentUserEmail();
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        Customer customer = customerRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        KycStatusResponse kycStatus = kycService.getKycStatus(user.getId());
+        KycStatusResponse kycStatus = kycService.getKycStatus(customer.getId());
         return ResponseEntity.ok(ApiResponse.success(kycStatus));
     }
 }

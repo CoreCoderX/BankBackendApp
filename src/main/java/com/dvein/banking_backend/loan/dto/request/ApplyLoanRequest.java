@@ -32,6 +32,7 @@ public class ApplyLoanRequest {
     private Integer tenureMonths;
 
     @NotNull(message = "Account ID is required")
+    @Positive(message = "Account ID must be a positive number")
     private Long accountId;
 
     @Size(max = 500, message = "Purpose cannot exceed 500 characters")

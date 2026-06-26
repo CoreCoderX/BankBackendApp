@@ -78,6 +78,17 @@ public class Customer {
     @Column(name = "suspended_at")
     private LocalDateTime suspendedAt;
 
+    // ✅ ADD KYC FIELDS
+    @Column(name = "is_kyc_verified", nullable = false)
+    @Builder.Default
+    private boolean kycVerified = false;
+
+    @Column(name = "kyc_verified_at")
+    private LocalDateTime kycVerifiedAt;
+
+    @Column(name = "kyc_rejected_reason", length = 500)
+    private String kycRejectedReason;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -90,5 +101,10 @@ public class Customer {
             return firstName + " " + middleName + " " + lastName;
         }
         return firstName + " " + lastName;
+    }
+
+    // ✅ GETTER METHOD (already exists, but make sure it's here)
+    public boolean isKycVerified() {
+        return kycVerified;
     }
 }

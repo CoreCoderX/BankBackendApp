@@ -12,8 +12,8 @@ public class BankingBackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BankingBackendApplication.class, args);
-		System.out.println("API Swagger UI Documentation: http://localhost:8081/api/v1/swagger-ui/index.html");
-		System.out.println("API JSON Documentation http://localhost:8081/api/v1/api-docs");
+		System.out.println("API Swagger UI Documentation: http://localhost:8080/api/v1/swagger-ui/index.html");
+		System.out.println("API JSON Documentation http://localhost:8080/api/v1/api-docs");
 	}
 
 }

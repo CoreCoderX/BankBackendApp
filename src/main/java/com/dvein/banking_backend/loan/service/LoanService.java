@@ -55,62 +55,94 @@ public class LoanService {
 
     @Transactional
     public ApiResponse<LoanResponse> applyLoan(ApplyLoanRequest request) {
-        Long userId = SecurityContextHelper.getCurrentUserId();
+        try {
+            // Use the static method
+            Long userId = SecurityContextHelper.getCurrentUserId();
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            if (userId == null) {
+                throw new ResourceNotFoundException("User ID not found in security context");
+            }
 
-        Account account = accountRepository.findById(request.getAccountId())
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+            log.info("Loan application received from user: {}", userId);
 
-        // Validate account ownership
-        loanValidator.validateAccountOwnership(account, userId);
+            // Validate account ID FIRST before using it
+            if (request == null || request.getAccountId() == null) {
+                throw new ResourceNotFoundException("Account ID is required");
+            }
 
-        // Check eligibility
-        loanEligibilityService.validateEligibilityForApplication(
-                userId, account, request.getPrincipalAmount()
-        );
+            if (request.getAccountId() <= 0) {
+                throw new ResourceNotFoundException("Invalid account ID. Please provide a valid account.");
+            }
 
-        // Calculate EMI
-        BigDecimal emi = emiCalculatorService.calculateEmi(
-                request.getPrincipalAmount(),
-                request.getInterestRate(),
-                request.getTenureMonths()
-        );
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            log.info("User found: {}", user.getEmail());
 
-        BigDecimal totalPayable = emi.multiply(BigDecimal.valueOf(request.getTenureMonths()));
-        BigDecimal totalInterest = totalPayable.subtract(request.getPrincipalAmount());
+            // Now safely find the account
+            Account account = accountRepository.findById(request.getAccountId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Account not found with ID: " + request.getAccountId()
+                    ));
+            log.info("Account found: {}", account.getId());
 
-        // Create loan application
-        Loan loan = Loan.builder()
-                .user(user)
-                .account(account)
-                .loanType(request.getLoanType())
-                .principalAmount(request.getPrincipalAmount())
-                .interestRate(request.getInterestRate())
-                .tenureMonths(request.getTenureMonths())
-                .emiAmount(emi)
-                .remainingPrincipal(request.getPrincipalAmount())
-                .totalInterest(totalInterest)
-                .totalPayable(totalPayable)
-                .amountPaid(BigDecimal.ZERO)
-                .status(LoanStatus.PENDING)
-                .appliedDate(LocalDate.now())
-                .purpose(request.getPurpose())
-                .createdBy(user.getEmail())
-                .build();
+            // Validate account ownership
+            loanValidator.validateAccountOwnership(account, userId);
+            log.info("Account ownership validated");
 
-        Loan savedLoan = loanRepository.save(loan);
+            // Check eligibility
+            loanEligibilityService.validateEligibilityForApplication(
+                    userId, account, request.getPrincipalAmount()
+            );
+            log.info("Loan eligibility validated");
 
-        log.info("Loan application created: {}", savedLoan.getLoanNumber());
+            // Calculate EMI
+            BigDecimal emi = emiCalculatorService.calculateEmi(
+                    request.getPrincipalAmount(),
+                    request.getInterestRate(),
+                    request.getTenureMonths()
+            );
+            log.info("EMI calculated: {}", emi);
 
-        // Send notification
-        loanNotificationService.sendLoanApplicationNotification(user, savedLoan);
+            BigDecimal totalPayable = emi.multiply(BigDecimal.valueOf(request.getTenureMonths()));
+            BigDecimal totalInterest = totalPayable.subtract(request.getPrincipalAmount());
 
-        return ApiResponse.success(
-                "Loan application submitted successfully",
-                loanMapper.toResponse(savedLoan)
-        );
+            // Create loan application
+            Loan loan = Loan.builder()
+                    .user(user)
+                    .account(account)
+                    .loanType(request.getLoanType())
+                    .principalAmount(request.getPrincipalAmount())
+                    .interestRate(request.getInterestRate())
+                    .tenureMonths(request.getTenureMonths())
+                    .emiAmount(emi)
+                    .remainingPrincipal(request.getPrincipalAmount())
+                    .totalInterest(totalInterest)
+                    .totalPayable(totalPayable)
+                    .amountPaid(BigDecimal.ZERO)
+                    .status(LoanStatus.PENDING)
+                    .appliedDate(LocalDate.now())
+                    .purpose(request.getPurpose())
+                    .createdBy(user.getEmail())
+                    .build();
+
+            log.info("Loan object created, saving to database");
+            Loan savedLoan = loanRepository.save(loan);
+            log.info("Loan saved successfully: {}", savedLoan.getLoanNumber());
+
+            // Send notification
+            loanNotificationService.sendLoanApplicationNotification(user, savedLoan);
+
+            return ApiResponse.success(
+                    "Loan application submitted successfully",
+                    loanMapper.toResponse(savedLoan)
+            );
+        } catch (ResourceNotFoundException e) {
+            log.warn("Validation error in applyLoan: {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("Unexpected error in applyLoan: ", e);
+            throw e;
+        }
     }
 
     public ApiResponse<LoanDetailResponse> getLoanById(Long loanId) {
