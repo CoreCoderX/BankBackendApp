@@ -51,69 +51,93 @@ public class LoanDisbursementService {
     }
 
     private ApiResponse<LoanResponse> approveLoan(Loan loan, LoanApprovalRequest request, String adminEmail) {
-        loan.setStatus(LoanStatus.APPROVED);
-        loan.setApprovedDate(LocalDate.now());
-        loan.setApprovedBy(adminEmail);
-        loan.setRemarks(request.getRemarks());
+        try {
+            loan.setStatus(LoanStatus.APPROVED);
+            loan.setApprovedDate(LocalDate.now());
+            loan.setApprovedBy(adminEmail);
+            loan.setRemarks(request.getRemarks());
 
-        Loan savedLoan = loanRepository.save(loan);
+            Loan savedLoan = loanRepository.save(loan);
+            log.info("Loan approved: {}", savedLoan.getLoanNumber());
 
-        log.info("Loan approved: {}", savedLoan.getLoanNumber());
+            // Auto disburse after approval
+            disburseLoan(savedLoan);
 
-        // Auto disburse after approval
-        disburseLoan(savedLoan);
+            // Refresh loan from database to get updated status
+            Loan refreshedLoan = loanRepository.findById(savedLoan.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Loan not found"));
 
-        // Send notification
-        loanNotificationService.sendLoanApprovalNotification(loan.getUser(), savedLoan);
+            // Send notification
+            loanNotificationService.sendLoanApprovalNotification(refreshedLoan.getUser(), refreshedLoan);
 
-        return ApiResponse.success(
-                "Loan approved and disbursed successfully",
-                loanMapper.toResponse(savedLoan)
-        );
+            return ApiResponse.success(
+                    "Loan approved and disbursed successfully",
+                    loanMapper.toResponse(refreshedLoan)
+            );
+        } catch (Exception e) {
+            log.error("Error approving loan: ", e);
+            throw e;
+        }
     }
 
     private ApiResponse<LoanResponse> rejectLoan(Loan loan, LoanApprovalRequest request, String adminEmail) {
-        loan.setStatus(LoanStatus.REJECTED);
-        loan.setRejectionReason(request.getRejectionReason());
-        loan.setApprovedBy(adminEmail);
+        try {
+            loan.setStatus(LoanStatus.REJECTED);
+            loan.setRejectionReason(request.getRejectionReason());
+            loan.setApprovedBy(adminEmail);
 
-        Loan savedLoan = loanRepository.save(loan);
+            Loan savedLoan = loanRepository.save(loan);
+            log.info("Loan rejected: {}", savedLoan.getLoanNumber());
 
-        log.info("Loan rejected: {}", savedLoan.getLoanNumber());
+            // Send notification
+            loanNotificationService.sendLoanRejectionNotification(loan.getUser(), savedLoan);
 
-        // Send notification
-        loanNotificationService.sendLoanRejectionNotification(loan.getUser(), savedLoan);
-
-        return ApiResponse.success(
-                "Loan rejected",
-                loanMapper.toResponse(savedLoan)
-        );
+            return ApiResponse.success(
+                    "Loan rejected",
+                    loanMapper.toResponse(savedLoan)
+            );
+        } catch (Exception e) {
+            log.error("Error rejecting loan: ", e);
+            throw e;
+        }
     }
 
     @Transactional
     public void disburseLoan(Loan loan) {
-        Account account = loan.getAccount();
+        try {
+            log.info("Starting loan disbursement for loan: {}", loan.getLoanNumber());
 
-        // Credit loan amount to account
-        BigDecimal newBalance = account.getBalance().add(loan.getPrincipalAmount());
-        account.setBalance(newBalance);
-        accountRepository.save(account);
+            // ✅ Step 1: Set disbursed date FIRST
+            loan.setDisbursedDate(LocalDate.now());
+            Loan updatedLoan = loanRepository.save(loan);
+            log.info("Disbursed date set: {}", updatedLoan.getDisbursedDate());
 
-        // Update loan status
-        loan.setStatus(LoanStatus.DISBURSED);
-        loan.setDisbursedDate(LocalDate.now());
-        loanRepository.save(loan);
+            // ✅ Step 2: Generate EMI schedule (needs disbursedDate to be set)
+            loanService.generateLoanSchedule(updatedLoan);
+            log.info("EMI schedule generated for loan: {}", loan.getLoanNumber());
 
-        // Generate EMI schedule
-        loanService.generateLoanSchedule(loan);
+            // ✅ Step 3: Credit loan amount to account
+            Account account = loan.getAccount();
+            if (account == null) {
+                throw new ResourceNotFoundException("Account not found for loan");
+            }
 
-        // Activate loan
-        loan.setStatus(LoanStatus.ACTIVE);
-        loanRepository.save(loan);
+            BigDecimal newBalance = account.getBalance().add(loan.getPrincipalAmount());
+            account.setBalance(newBalance);
+            accountRepository.save(account);
+            log.info("Amount credited to account. New balance: ₹{}", newBalance);
 
-        log.info("Loan disbursed: {} - Amount: ₹{}", loan.getLoanNumber(), loan.getPrincipalAmount());
+            // ✅ Step 4: Update loan status to ACTIVE
+            loan.setStatus(LoanStatus.ACTIVE);
+            Loan finalLoan = loanRepository.save(loan);
+            log.info("Loan status updated to ACTIVE: {}", finalLoan.getLoanNumber());
 
-        // Send disbursement notification
-        loanNotificationService.sendLoanDisbursementNotification(loan.getUser(), loan);
+            // ✅ Step 5: Send disbursement notification
+            loanNotificationService.sendLoanDisbursementNotification(finalLoan.getUser(), finalLoan);
+
+        } catch (Exception e) {
+            log.error("Error disbursing loan: {}", loan.getLoanNumber(), e);
+            throw new RuntimeException("Failed to disburse loan: " + e.getMessage(), e);
+        }
     }
 }

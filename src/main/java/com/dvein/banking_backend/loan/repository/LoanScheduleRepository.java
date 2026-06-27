@@ -23,6 +23,9 @@ public interface LoanScheduleRepository extends JpaRepository<LoanSchedule, Long
     );
 
     @Query("SELECT s FROM LoanSchedule s WHERE s.loan.id = :loanId AND s.status = 'PENDING' ORDER BY s.emiNumber ASC")
+    List<LoanSchedule> findNextPendingEmis(@Param("loanId") Long loanId);
+
+    @Query("SELECT s FROM LoanSchedule s WHERE s.loan.id = :loanId AND s.status = 'PENDING' ORDER BY s.emiNumber ASC")
     Optional<LoanSchedule> findNextPendingEmi(@Param("loanId") Long loanId);
 
     @Query("SELECT COUNT(s) FROM LoanSchedule s WHERE s.loan.id = :loanId AND s.status = 'PAID'")

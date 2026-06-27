@@ -56,7 +56,6 @@ public class LoanService {
     @Transactional
     public ApiResponse<LoanResponse> applyLoan(ApplyLoanRequest request) {
         try {
-            // Use the static method
             Long userId = SecurityContextHelper.getCurrentUserId();
 
             if (userId == null) {
@@ -65,7 +64,6 @@ public class LoanService {
 
             log.info("Loan application received from user: {}", userId);
 
-            // Validate account ID FIRST before using it
             if (request == null || request.getAccountId() == null) {
                 throw new ResourceNotFoundException("Account ID is required");
             }
@@ -78,24 +76,20 @@ public class LoanService {
                     .orElseThrow(() -> new ResourceNotFoundException("User not found"));
             log.info("User found: {}", user.getEmail());
 
-            // Now safely find the account
             Account account = accountRepository.findById(request.getAccountId())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Account not found with ID: " + request.getAccountId()
                     ));
             log.info("Account found: {}", account.getId());
 
-            // Validate account ownership
             loanValidator.validateAccountOwnership(account, userId);
             log.info("Account ownership validated");
 
-            // Check eligibility
             loanEligibilityService.validateEligibilityForApplication(
                     userId, account, request.getPrincipalAmount()
             );
             log.info("Loan eligibility validated");
 
-            // Calculate EMI
             BigDecimal emi = emiCalculatorService.calculateEmi(
                     request.getPrincipalAmount(),
                     request.getInterestRate(),
@@ -106,7 +100,6 @@ public class LoanService {
             BigDecimal totalPayable = emi.multiply(BigDecimal.valueOf(request.getTenureMonths()));
             BigDecimal totalInterest = totalPayable.subtract(request.getPrincipalAmount());
 
-            // Create loan application
             Loan loan = Loan.builder()
                     .user(user)
                     .account(account)
@@ -129,7 +122,6 @@ public class LoanService {
             Loan savedLoan = loanRepository.save(loan);
             log.info("Loan saved successfully: {}", savedLoan.getLoanNumber());
 
-            // Send notification
             loanNotificationService.sendLoanApplicationNotification(user, savedLoan);
 
             return ApiResponse.success(
@@ -202,9 +194,24 @@ public class LoanService {
                 .orElseThrow(() -> new ResourceNotFoundException("Loan not found"));
 
         Long emisPaid = loanScheduleRepository.countPaidEmis(loanId);
-        Long emisRemaining = loanScheduleRepository.countPendingEmis(loanId);
+        if (emisPaid == null) {
+            emisPaid = 0L;
+        }
 
-        LoanSchedule nextEmi = loanScheduleRepository.findNextPendingEmi(loanId).orElse(null);
+        Long emisRemaining = loanScheduleRepository.countPendingEmis(loanId);
+        if (emisRemaining == null) {
+            emisRemaining = 0L;
+        }
+
+        // ✅ FIXED: Use the new method that returns List instead of Optional
+        LoanSchedule nextEmi = null;
+        List<LoanSchedule> pendingEmis = loanScheduleRepository.findNextPendingEmis(loanId);
+        if (pendingEmis != null && !pendingEmis.isEmpty()) {
+            nextEmi = pendingEmis.get(0);
+            log.debug("Next EMI found: EMI #{}, Due Date: {}", nextEmi.getEmiNumber(), nextEmi.getDueDate());
+        } else {
+            log.debug("No pending EMIs found for loan: {}", loanId);
+        }
 
         BigDecimal penaltyDue = loanPenaltyRepository.getUnpaidPenaltyForLoan(loanId);
         if (penaltyDue == null) {
@@ -238,33 +245,46 @@ public class LoanService {
 
     @Transactional
     public void generateLoanSchedule(Loan loan) {
-        List<com.dvein.banking_backend.loan.dto.response.EmiCalculationResponse.AmortizationEntry> amortization =
-                emiCalculatorService.generateAmortizationSchedule(
-                        loan.getPrincipalAmount(),
-                        loan.getInterestRate(),
-                        loan.getTenureMonths(),
-                        loan.getEmiAmount()
-                );
+        try {
+            log.info("Generating loan schedule for loan: {}", loan.getLoanNumber());
 
-        LocalDate firstEmiDate = loan.getDisbursedDate().plusMonths(1);
-        loan.setFirstEmiDate(firstEmiDate);
+            if (loan.getDisbursedDate() == null) {
+                throw new RuntimeException("Loan disbursement date must be set before generating schedule");
+            }
 
-        for (var entry : amortization) {
-            LoanSchedule schedule = LoanSchedule.builder()
-                    .loan(loan)
-                    .emiNumber(entry.getEmiNumber())
-                    .dueDate(firstEmiDate.plusMonths(entry.getEmiNumber() - 1))
-                    .emiAmount(entry.getEmiAmount())
-                    .principalComponent(entry.getPrincipalComponent())
-                    .interestComponent(entry.getInterestComponent())
-                    .outstandingPrincipal(entry.getOutstandingBalance())
-                    .status(com.dvein.banking_backend.loan.enums.RepaymentStatus.PENDING)
-                    .build();
+            List<com.dvein.banking_backend.loan.dto.response.EmiCalculationResponse.AmortizationEntry> amortization =
+                    emiCalculatorService.generateAmortizationSchedule(
+                            loan.getPrincipalAmount(),
+                            loan.getInterestRate(),
+                            loan.getTenureMonths(),
+                            loan.getEmiAmount()
+                    );
 
-            loanScheduleRepository.save(schedule);
+            LocalDate firstEmiDate = loan.getDisbursedDate().plusMonths(1);
+            loan.setFirstEmiDate(firstEmiDate);
+            loanRepository.save(loan);
+            log.info("First EMI date set to: {}", firstEmiDate);
+
+            for (var entry : amortization) {
+                LoanSchedule schedule = LoanSchedule.builder()
+                        .loan(loan)
+                        .emiNumber(entry.getEmiNumber())
+                        .dueDate(firstEmiDate.plusMonths(entry.getEmiNumber() - 1))
+                        .emiAmount(entry.getEmiAmount())
+                        .principalComponent(entry.getPrincipalComponent())
+                        .interestComponent(entry.getInterestComponent())
+                        .outstandingPrincipal(entry.getOutstandingBalance())
+                        .status(com.dvein.banking_backend.loan.enums.RepaymentStatus.PENDING)
+                        .build();
+
+                loanScheduleRepository.save(schedule);
+                log.debug("EMI {} saved with due date: {}", entry.getEmiNumber(), schedule.getDueDate());
+            }
+
+            log.info("Loan schedule generated successfully for loan: {}", loan.getLoanNumber());
+        } catch (Exception e) {
+            log.error("Error generating loan schedule for loan: {}", loan.getLoanNumber(), e);
+            throw new RuntimeException("Failed to generate loan schedule: " + e.getMessage(), e);
         }
-
-        loanRepository.save(loan);
-        log.info("Loan schedule generated for loan: {}", loan.getLoanNumber());
     }
 }
