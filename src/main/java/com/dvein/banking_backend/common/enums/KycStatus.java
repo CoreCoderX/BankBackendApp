@@ -6,5 +6,6 @@ public enum KycStatus {
     UNDER_REVIEW,
     VERIFIED,
     REJECTED,
+    APPROVED,
     EXPIRED
 }

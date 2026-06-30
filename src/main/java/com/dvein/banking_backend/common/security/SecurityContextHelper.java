@@ -4,9 +4,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import com.dvein.banking_backend.auth.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class SecurityContextHelper {
+
+    private final UserRepository userRepository;
 
     public String getCurrentUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -17,6 +22,24 @@ public class SecurityContextHelper {
         }
 
         return null;
+    }
+
+    public String getCurrentUserEmailOrThrow() {
+        String email = getCurrentUserEmail();
+
+        if (email == null) {
+            throw new IllegalStateException("No authenticated user found.");
+        }
+
+        return email;
+    }
+
+    public Long getCurrentUserId() {
+        String email = getCurrentUserEmailOrThrow();
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("Authenticated user not found in database"))
+                .getId();
     }
 
     public boolean isAuthenticated() {
@@ -34,4 +57,6 @@ public class SecurityContextHelper {
         return authentication.getAuthorities().stream()
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_" + role));
     }
+
+
 }

@@ -75,4 +75,8 @@ public class Account {
 
     @Column(length = 200)
     private String closureReason;
+
+    @Column(name = "hold_balance", precision = 15, scale = 2)
+    @Builder.Default
+    private BigDecimal holdBalance = BigDecimal.ZERO;
 }

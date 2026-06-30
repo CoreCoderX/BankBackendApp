@@ -183,6 +183,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGeneralException(
             Exception ex,
             HttpServletRequest request) {
+        ex.printStackTrace();
 
         log.error("Unexpected error: ", ex);
 

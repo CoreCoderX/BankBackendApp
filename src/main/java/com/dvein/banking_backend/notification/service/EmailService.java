@@ -41,6 +41,24 @@ public class EmailService {
     }
 
     @Async
+    public void sendEmail(String to, String subject, String body) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(body);
+
+            mailSender.send(message);
+
+            log.info("Email sent to: {}", to);
+
+        } catch (Exception e) {
+            log.error("Failed to send email to: {}", to, e);
+        }
+    }
+
+    @Async
     public void sendVerificationEmail(String to, String verificationLink) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
