@@ -157,8 +157,8 @@ resources/db/migration/
 ```text
 PS $tree src /F > structure.txt    
 Folder PATH listing for volume Windows-SSD
-Volume serial number is 0000014E C20D:95B5
-C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
+Volume serial number is 0000021E C20D:95B5
+C:\USERS\SIVAP\DOWNLOADS\BANK-BACKEND\SRC
 +---main
 ª   +---java
 ª   ª   +---com
@@ -385,12 +385,15 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª   ª               ª   ª       CorsConfig.java
 ª   ª               ª   ª       JwtConfig.java
 ª   ª               ª   ª       OpenApiConfig.java
+ª   ª               ª   ª       SchedulingConfig.java
 ª   ª               ª   ª       SecurityConfig.java
 ª   ª               ª   ª       
 ª   ª               ª   +---constant
 ª   ª               ª   ª       AppConstants.java
 ª   ª               ª   ª       ErrorCodes.java
 ª   ª               ª   ª       SuccessMessages.java
+ª   ª               ª   ª       TransactionConstants.java
+ª   ª               ª   ª       TransactionMessages.java
 ª   ª               ª   ª       
 ª   ª               ª   +---dto
 ª   ª               ª   ª       ApiResponse.java
@@ -440,11 +443,206 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª   ª               ª           ValidationUtil.java
 ª   ª               ª           
 ª   ª               +---notification
-ª   ª                   +---service
-ª   ª                   ª       EmailService.java
+ª   ª               ª   +---service
+ª   ª               ª   ª       EmailService.java
+ª   ª               ª   ª       
+ª   ª               ª   +---template
+ª   ª               ª           EmailTemplates.java
+ª   ª               ª           TransactionEmailTemplates.java
+ª   ª               ª           
+ª   ª               +---transaction
+ª   ª                   +---controller
+ª   ª                   ª       AdminMerchantController.java
+ª   ª                   ª       AdminTransactionController.java
+ª   ª                   ª       BillPaymentController.java
+ª   ª                   ª       ExternalTransferController.java
+ª   ª                   ª       InternalTransferController.java
+ª   ª                   ª       MerchantPaymentController.java
+ª   ª                   ª       ScheduledPaymentController.java
+ª   ª                   ª       StandingInstructionController.java
+ª   ª                   ª       TransactionController.java
+ª   ª                   ª       TransactionLimitController.java
+ª   ª                   ª       TransactionReceiptController.java
+ª   ª                   ª       TransactionStatementController.java
+ª   ª                   ª       UpiController.java
 ª   ª                   ª       
-ª   ª                   +---template
-ª   ª                           EmailTemplates.java
+ª   ª                   +---dto
+ª   ª                   ª   +---request
+ª   ª                   ª   ª       BillPaymentRequest.java
+ª   ª                   ª   ª       ChangeUpiPinRequest.java
+ª   ª                   ª   ª       CreateMerchantRequest.java
+ª   ª                   ª   ª       CreateStandingInstructionRequest.java
+ª   ª                   ª   ª       CreateUpiIdRequest.java
+ª   ª                   ª   ª       CreateUpiPinRequest.java
+ª   ª                   ª   ª       EstimateChargeRequest.java
+ª   ª                   ª   ª       ExternalTransferRequest.java
+ª   ª                   ª   ª       GenerateQrRequest.java
+ª   ª                   ª   ª       ImpsTransferRequest.java
+ª   ª                   ª   ª       InternalTransferRequest.java
+ª   ª                   ª   ª       LinkAccountToUpiRequest.java
+ª   ª                   ª   ª       MerchantPaymentRequest.java
+ª   ª                   ª   ª       NeftTransferRequest.java
+ª   ª                   ª   ª       RaiseDisputeRequest.java
+ª   ª                   ª   ª       RefundRequest.java
+ª   ª                   ª   ª       ReversalRequest.java
+ª   ª                   ª   ª       RtgsTransferRequest.java
+ª   ª                   ª   ª       SaveBillerRequest.java
+ª   ª                   ª   ª       ScanQrRequest.java
+ª   ª                   ª   ª       SchedulePaymentRequest.java
+ª   ª                   ª   ª       TransactionSearchRequest.java
+ª   ª                   ª   ª       UpdateFeeConfigRequest.java
+ª   ª                   ª   ª       UpdateMerchantRequest.java
+ª   ª                   ª   ª       UpdateTransactionLimitRequest.java
+ª   ª                   ª   ª       UpdateUpiIdRequest.java
+ª   ª                   ª   ª       UpiCollectMoneyRequest.java
+ª   ª                   ª   ª       UpiSendMoneyRequest.java
+ª   ª                   ª   ª       VerifyUpiPinRequest.java
+ª   ª                   ª   ª       
+ª   ª                   ª   +---response
+ª   ª                   ª           BankResponse.java
+ª   ª                   ª           BillerResponse.java
+ª   ª                   ª           BillPaymentDetailsResponse.java
+ª   ª                   ª           BillPaymentResponse.java
+ª   ª                   ª           EstimatedChargeResponse.java
+ª   ª                   ª           FraudAlertResponse.java
+ª   ª                   ª           MerchantPaymentDetailsResponse.java
+ª   ª                   ª           MerchantResponse.java
+ª   ª                   ª           ScheduledPaymentResponse.java
+ª   ª                   ª           SpendingAnalysisResponse.java
+ª   ª                   ª           StandingInstructionResponse.java
+ª   ª                   ª           TransactionDetailsResponse.java
+ª   ª                   ª           TransactionDisputeDetailResponse.java
+ª   ª                   ª           TransactionDisputeResponse.java
+ª   ª                   ª           TransactionLimitResponse.java
+ª   ª                   ª           TransactionListResponse.java
+ª   ª                   ª           TransactionReceiptResponse.java
+ª   ª                   ª           TransactionResponse.java
+ª   ª                   ª           TransactionStatementResponse.java
+ª   ª                   ª           TransactionSummaryResponse.java
+ª   ª                   ª           UpiCollectRequestResponse.java
+ª   ª                   ª           UpiIdResponse.java
+ª   ª                   ª           UpiProfileResponse.java
+ª   ª                   ª           UpiQrResponse.java
+ª   ª                   ª           UpiTransactionResponse.java
+ª   ª                   ª           
+ª   ª                   +---enums
+ª   ª                   ª       BillCategory.java
+ª   ª                   ª       DisputeStatus.java
+ª   ª                   ª       ExecutionStatus.java
+ª   ª                   ª       FraudRiskLevel.java
+ª   ª                   ª       PaymentMethod.java
+ª   ª                   ª       QrType.java
+ª   ª                   ª       ScheduleFrequency.java
+ª   ª                   ª       TransactionMode.java
+ª   ª                   ª       TransactionStatus.java
+ª   ª                   ª       TransactionType.java
+ª   ª                   ª       UpiStatus.java
+ª   ª                   ª       
+ª   ª                   +---exception
+ª   ª                   ª       DuplicateTransactionException.java
+ª   ª                   ª       FraudDetectedException.java
+ª   ª                   ª       InsufficientBalanceException.java
+ª   ª                   ª       InvalidUpiIdException.java
+ª   ª                   ª       TransactionLimitExceededException.java
+ª   ª                   ª       UpiPinLockedException.java
+ª   ª                   ª       
+ª   ª                   +---job
+ª   ª                   ª       BillReminderJob.java
+ª   ª                   ª       DailyLimitResetJob.java
+ª   ª                   ª       ExpireCollectRequestJob.java
+ª   ª                   ª       ExpireQrCodesJob.java
+ª   ª                   ª       FailedTransactionRetryJob.java
+ª   ª                   ª       ReconciliationJob.java
+ª   ª                   ª       ScheduledPaymentExecutor.java
+ª   ª                   ª       StandingInstructionExecutor.java
+ª   ª                   ª       
+ª   ª                   +---model
+ª   ª                   ª       Bank.java
+ª   ª                   ª       Biller.java
+ª   ª                   ª       BillPayment.java
+ª   ª                   ª       DailyReconciliation.java
+ª   ª                   ª       FraudDetectionLog.java
+ª   ª                   ª       Merchant.java
+ª   ª                   ª       MerchantCategory.java
+ª   ª                   ª       MerchantPayment.java
+ª   ª                   ª       ScheduledPayment.java
+ª   ª                   ª       StandingInstruction.java
+ª   ª                   ª       Transaction.java
+ª   ª                   ª       TransactionApproval.java
+ª   ª                   ª       TransactionCategory.java
+ª   ª                   ª       TransactionDispute.java
+ª   ª                   ª       TransactionFeeConfig.java
+ª   ª                   ª       TransactionLimit.java
+ª   ª                   ª       TransactionMetadata.java
+ª   ª                   ª       TransactionReceipt.java
+ª   ª                   ª       UpiCollectRequest.java
+ª   ª                   ª       UpiId.java
+ª   ª                   ª       UpiPin.java
+ª   ª                   ª       UpiProfile.java
+ª   ª                   ª       UpiQrCode.java
+ª   ª                   ª       UpiTransaction.java
+ª   ª                   ª       
+ª   ª                   +---repository
+ª   ª                   ª       BankRepository.java
+ª   ª                   ª       BillerRepository.java
+ª   ª                   ª       BillPaymentRepository.java
+ª   ª                   ª       DailyReconciliationRepository.java
+ª   ª                   ª       FraudDetectionLogRepository.java
+ª   ª                   ª       MerchantCategoryRepository.java
+ª   ª                   ª       MerchantPaymentRepository.java
+ª   ª                   ª       MerchantRepository.java
+ª   ª                   ª       ScheduledPaymentRepository.java
+ª   ª                   ª       StandingInstructionRepository.java
+ª   ª                   ª       TransactionApprovalRepository.java
+ª   ª                   ª       TransactionCategoryRepository.java
+ª   ª                   ª       TransactionDisputeRepository.java
+ª   ª                   ª       TransactionFeeConfigRepository.java
+ª   ª                   ª       TransactionLimitRepository.java
+ª   ª                   ª       TransactionMetadataRepository.java
+ª   ª                   ª       TransactionReceiptRepository.java
+ª   ª                   ª       TransactionRepository.java
+ª   ª                   ª       UpiCollectRequestRepository.java
+ª   ª                   ª       UpiIdRepository.java
+ª   ª                   ª       UpiPinRepository.java
+ª   ª                   ª       UpiProfileRepository.java
+ª   ª                   ª       UpiQrCodeRepository.java
+ª   ª                   ª       UpiTransactionRepository.java
+ª   ª                   ª       
+ª   ª                   +---service
+ª   ª                   ª       AdminMerchantService.java
+ª   ª                   ª       AdminTransactionService.java
+ª   ª                   ª       BillPaymentService.java
+ª   ª                   ª       ExternalTransferService.java
+ª   ª                   ª       FraudDetectionService.java
+ª   ª                   ª       InternalTransferService.java
+ª   ª                   ª       MerchantPaymentService.java
+ª   ª                   ª       ReconciliationService.java
+ª   ª                   ª       ScheduledPaymentService.java
+ª   ª                   ª       StandingInstructionService.java
+ª   ª                   ª       TransactionApprovalService.java
+ª   ª                   ª       TransactionExecutionService.java
+ª   ª                   ª       TransactionFeeService.java
+ª   ª                   ª       TransactionLimitService.java
+ª   ª                   ª       TransactionNotificationService.java
+ª   ª                   ª       TransactionReceiptService.java
+ª   ª                   ª       TransactionReversalService.java
+ª   ª                   ª       TransactionService.java
+ª   ª                   ª       TransactionStatementService.java
+ª   ª                   ª       TransactionValidationService.java
+ª   ª                   ª       UpiCollectRequestService.java
+ª   ª                   ª       UpiPinService.java
+ª   ª                   ª       UpiQrService.java
+ª   ª                   ª       UpiService.java
+ª   ª                   ª       UpiTransactionService.java
+ª   ª                   ª       
+ª   ª                   +---util
+ª   ª                   ª       TransactionIdGenerator.java
+ª   ª                   ª       UpiQrCodeGenerator.java
+ª   ª                   ª       
+ª   ª                   +---validation
+ª   ª                           BeneficiaryValidator.java
+ª   ª                           TransactionValidator.java
+ª   ª                           UpiValidator.java
 ª   ª                           
 ª   +---resources
 ª       ª   application-dev.properties
@@ -456,8 +654,8 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
 ª       ª           V1__initial_schema.sql
 ª       ª           V2__add_authentication_enhancements.sql
 ª       ª           V3__fix_schema_constraints.sql
+ª       ª           V4__transaction_module.sql
 ª       ª           
-ª       +---static
 ª       +---templates
 ª           +---email
 ª                   otp.html
@@ -471,7 +669,7 @@ C:\USERS\SIVAP\DOWNLOADS\BANKING-BACKEND\SRC
             +---dvein
                 +---banking_backend
                         BankingBackendApplicationTests.java
-                        
+             
 ```
 
 > Complete detailed structure available in the source project.
