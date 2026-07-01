@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -11,8 +11,8 @@
 	<groupId>com.dvein</groupId>
 	<artifactId>banking-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>banking-backend</name>
+	<description>Banking Backend Application</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -28,21 +28,45 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
 	</properties>
+
+	<!-- Fixed Repositories -->
+	<repositories>
+		<repository>
+			<id>aliyun</id>
+			<name>Aliyun Repository</name>
+			<url>https://maven.aliyun.com/repository/public</url>
+		</repository>
+		<repository>
+			<id>central</id>
+			<name>Maven Central Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>aliyun</id>
+			<name>Aliyun Repository</name>
+			<url>https://maven.aliyun.com/repository/public</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<dependencies>
+		<!-- Spring Boot Starters -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-<<<<<<< HEAD
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-=======
->>>>>>> e5cef24 (Initial Spring Boot banking backend)
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
@@ -78,54 +102,106 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Source: https://mvnrepository.com/artifact/com.google.zxing/core -->
+
+		<!-- ==================== REPORT MODULE DEPENDENCIES ==================== -->
+
+		<!-- PDF Generation with OpenPDF -->
+		<dependency>
+			<groupId>com.github.librepdf</groupId>
+			<artifactId>openpdf</artifactId>
+			<version>1.3.31</version>
+		</dependency>
+
+		<!-- Excel Generation - Apache POI -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>5.2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-lite</artifactId>
+			<version>5.2.3</version>
+		</dependency>
+
+		<!-- CSV Generation -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.10.0</version>
+		</dependency>
+
+		<!-- Required by POI -->
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>5.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.26.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.14.0</version>
+		</dependency>
+
+		<!-- ==================== EXISTING DEPENDENCIES ==================== -->
+
+		<!-- QR Code Generation -->
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>
 			<version>3.5.4</version>
-			<scope>compile</scope>
 		</dependency>
-		<!-- Source: https://mvnrepository.com/artifact/com.google.zxing/javase -->
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>javase</artifactId>
 			<version>3.5.4</version>
-			<scope>compile</scope>
 		</dependency>
-		<!-- Source: https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
+
+		<!-- Password Hashing -->
 		<dependency>
 			<groupId>org.mindrot</groupId>
 			<artifactId>jbcrypt</artifactId>
 			<version>0.4</version>
-			<scope>compile</scope>
 		</dependency>
-		<!-- Source: https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+
+		<!-- JWT Authentication -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.11.5</version>
-			<scope>compile</scope>
 		</dependency>
-		<!-- Source: https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- Source: https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- Source: https://mvnrepository.com/artifact/dev.samstevens.totp/totp -->
+
+		<!-- TOTP (Two-Factor Authentication) -->
 		<dependency>
 			<groupId>dev.samstevens.totp</groupId>
 			<artifactId>totp</artifactId>
 			<version>1.7.1</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
@@ -146,6 +222,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
 				<executions>
 					<execution>
 						<id>default-compile</id>

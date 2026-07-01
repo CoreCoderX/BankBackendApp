@@ -23,14 +23,16 @@ public class EmiCalculatorService {
      * EMI = P × R × (1+R)^N / ((1+R)^N - 1)
      * Where:
      * P = Principal
-     * R = Monthly Interest Rate (annual/12/100)
+     * R = Monthly Interest Rate (annual/100/12)
      * N = Tenure in months
      */
     public BigDecimal calculateEmi(BigDecimal principal, BigDecimal annualInterestRate, Integer tenureMonths) {
-        // Monthly interest rate
+        // Monthly interest rate: (annual% / 100) / 12
         BigDecimal monthlyRate = annualInterestRate
-                .divide(BigDecimal.valueOf(12), 10, ROUNDING_MODE)
-                .divide(BigDecimal.valueOf(100), 10, ROUNDING_MODE);
+                .divide(BigDecimal.valueOf(100), 10, ROUNDING_MODE)
+                .divide(BigDecimal.valueOf(12), 10, ROUNDING_MODE);
+
+        log.debug("Principal: {}, Annual Rate: {}%, Monthly Rate: {}", principal, annualInterestRate, monthlyRate);
 
         // If interest rate is 0
         if (monthlyRate.compareTo(BigDecimal.ZERO) == 0) {
@@ -44,7 +46,10 @@ public class EmiCalculatorService {
         BigDecimal numerator = principal.multiply(monthlyRate).multiply(onePlusRPowerN);
         BigDecimal denominator = onePlusRPowerN.subtract(BigDecimal.ONE);
 
-        return numerator.divide(denominator, DECIMAL_SCALE, ROUNDING_MODE);
+        BigDecimal emi = numerator.divide(denominator, DECIMAL_SCALE, ROUNDING_MODE);
+        log.debug("Calculated EMI: {}", emi);
+
+        return emi;
     }
 
     private BigDecimal onePlusRatePower(BigDecimal monthlyRate, Integer tenureMonths) {
@@ -94,8 +99,8 @@ public class EmiCalculatorService {
         List<EmiCalculationResponse.AmortizationEntry> schedule = new ArrayList<>();
 
         BigDecimal monthlyRate = annualRate
-                .divide(BigDecimal.valueOf(12), 10, ROUNDING_MODE)
-                .divide(BigDecimal.valueOf(100), 10, ROUNDING_MODE);
+                .divide(BigDecimal.valueOf(100), 10, ROUNDING_MODE)
+                .divide(BigDecimal.valueOf(12), 10, ROUNDING_MODE);
 
         BigDecimal outstandingBalance = principal;
 
@@ -106,15 +111,21 @@ public class EmiCalculatorService {
                     .setScale(DECIMAL_SCALE, ROUNDING_MODE);
 
             // Principal component = EMI - interest
-            BigDecimal principalComponent = emi.subtract(interestComponent);
+            BigDecimal principalComponent = emi.subtract(interestComponent)
+                    .setScale(DECIMAL_SCALE, ROUNDING_MODE);
+
+            BigDecimal currentEmi = emi;
 
             // For last EMI, adjust to clear remaining balance
             if (i == tenure) {
-                principalComponent = outstandingBalance;
+                principalComponent = outstandingBalance.setScale(DECIMAL_SCALE, ROUNDING_MODE);
+                currentEmi = interestComponent.add(principalComponent);
             }
 
             // Update outstanding balance
-            outstandingBalance = outstandingBalance.subtract(principalComponent);
+            outstandingBalance = outstandingBalance
+                    .subtract(principalComponent)
+                    .setScale(DECIMAL_SCALE, ROUNDING_MODE);
 
             if (outstandingBalance.compareTo(BigDecimal.ZERO) < 0) {
                 outstandingBalance = BigDecimal.ZERO;
@@ -123,13 +134,16 @@ public class EmiCalculatorService {
             EmiCalculationResponse.AmortizationEntry entry =
                     EmiCalculationResponse.AmortizationEntry.builder()
                             .emiNumber(i)
-                            .emiAmount(emi)
+                            .emiAmount(currentEmi)
                             .principalComponent(principalComponent)
                             .interestComponent(interestComponent)
                             .outstandingBalance(outstandingBalance)
                             .build();
 
             schedule.add(entry);
+
+            log.debug("EMI {}: Interest={}, Principal={}, Balance={}",
+                    i, interestComponent, principalComponent, outstandingBalance);
         }
 
         return schedule;
