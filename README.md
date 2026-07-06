@@ -1,1378 +1,373 @@
-# Banking Backend Project
+# DVein Banking Backend
 
-## Module - 1 (Sivaprakash)
+### Enterprise-Grade Banking System REST API
 
-### Module Breakdown
+*A comprehensive, production-ready banking backend built with Spring Boot*
 
-### 1. Auth Module
+[![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/21/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.15-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Security](https://img.shields.io/badge/Spring_Security-6.x-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white)](https://spring.io/projects/spring-security)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Latest-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![JWT](https://img.shields.io/badge/JWT-0.11.5-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white)](https://jwt.io/)
+[![Flyway](https://img.shields.io/badge/Flyway-12.8.1-CC0200?style=for-the-badge&logo=flyway&logoColor=white)](https://flywaydb.org/)
+[![Swagger](https://img.shields.io/badge/Swagger-OpenAPI_3.1-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://swagger.io/)
+[![Lombok](https://img.shields.io/badge/Lombok-Latest-BC4521?style=for-the-badge&logo=lombok&logoColor=white)](https://projectlombok.org/)
+[![Maven](https://img.shields.io/badge/Maven-3.x-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
 
-```text
-auth/
-├── controller (6)
-├── dto/request (14)
-├── dto/response (6)
-├── model (12)
-├── repository (12)
-└── service (10)
-```
-
-#### Features
-
-* Registration & Login
-* PRE_AUTH Authentication Flow
-* Device Verification
-* OTP Verification
-* TOTP (MFA)
-* Password Reset
-* MPIN Management
-* Device Management
-* Session Management
-* Login History
-* Token Blacklisting
-* Authentication Cleanup Jobs
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Version](https://img.shields.io/badge/Version-1.0.0-green?style=flat-square)]()
+[![API Docs](https://img.shields.io/badge/API_Docs-Swagger_UI-85EA2D?style=flat-square&logo=swagger)](http://localhost:8080/swagger-ui/index.html)
 
 ---
 
-### 2. Account Module
+## About
 
-```text
-account/
-├── controller (7)
-├── dto/request (7)
-├── dto/response (7)
-├── model (7)
-├── repository (7)
-└── service (7)
-```
+**DVein Banking Backend** is a full-featured, enterprise-grade banking REST API built with **Spring Boot 3** and **Java 21**. It provides a robust, secure, and scalable backend infrastructure for modern digital banking applications — covering everything from user authentication and KYC to UPI payments, card management, transaction processing, and admin operations.
 
-#### Features
-
-* Customer Profile Management
-* Bank Account Management
-* Beneficiary Management
-* Nominee Management
-* Document Management
-* KYC Processing
-* Account Verification APIs
+The system is designed with **security-first** architecture, featuring multi-factor authentication (TOTP + device verification), JWT-based session management, fraud detection, and comprehensive audit logging — making it production-ready for real-world banking scenarios.
 
 ---
 
-### 3. Card Module
+## Screenshots
 
-```text
-card/
-├── controller (2)
-├── dto/request (5)
-├── dto/response (2)
-├── model (3)
-├── repository (3)
-└── service (2)
-```
+<div align="center">
 
-#### Features
-
-* Debit Card Management
-* Credit Card Management
-* Card PIN Management
-* Card Security Settings
+### API Documentation Interface
+![Swagger UI - API Overview](screenshots/swaggerbank_page-0001.jpg)
+</div>
 
 ---
 
-### 4. Admin Module
+## Key Highlights
 
-```text
-admin/
-├── controller (5)
-├── dto/request (8)
-├── dto/response (6)
-├── model (1)
-├── repository (1)
-└── service (4)
-```
-
-#### Features
-
-* Admin Authentication
-* Customer Management
-* KYC Approval & Rejection
-* Credit Card Approval & Rejection
-* Dashboard & Analytics
-* Audit Logs
+- **Multi-Layer Security** — JWT Auth + TOTP (Google Authenticator) + Device Verification + MPIN
+- **Complete Payment Ecosystem** — UPI, IMPS, NEFT, RTGS, Bill Payments, Merchant Payments
+- **Card Management** — Debit & Credit card lifecycle management with PIN security
+- **Smart Automation** — Scheduled payments, standing instructions, daily limit resets
+- **Fraud Detection** — Real-time transaction monitoring and flagging
+- **Admin Dashboard** — Full admin control panel with audit logs and analytics
+- **Auto Documentation** — Interactive Swagger UI with complete API documentation
+- **Schema Migrations** — Versioned database migrations via Flyway
 
 ---
 
-### 5. Common Module
+## Tech Stack
 
-```text
-common/
-├── annotation
-├── aspect
-├── config
-├── constant
-├── dto
-├── enums
-├── exception
-├── security
-└── util
-```
-
-#### Features
-
-* JWT Security
-* Role-Based Authorization
-* Device Fingerprinting
-* Global Exception Handling
-* Audit Logging Support
-* Rate Limiting
-* Utility Classes
-* Application Configuration
-* Common DTOs & Constants
-* Authentication State Management
+| Layer | Technology |
+|-------|-----------|
+| **Language** | Java 21 |
+| **Framework** | Spring Boot 3.5.15 |
+| **Security** | Spring Security 6, JWT (JJWT 0.11.5) |
+| **Database** | PostgreSQL |
+| **ORM** | Spring Data JPA / Hibernate |
+| **Migrations** | Flyway 12.8.1 |
+| **2FA** | TOTP via `dev.samstevens.totp` |
+| **QR Code** | ZXing (Google) 3.5.4 |
+| **Email** | Spring Boot Mail |
+| **Password Hashing** | jBCrypt 0.4 |
+| **API Docs** | SpringDoc OpenAPI 3.1 (Swagger UI) |
+| **Code Generation** | Lombok |
+| **Build Tool** | Apache Maven |
 
 ---
 
-### Database Migration
+## Project Structure
 
-```text
-resources/db/migration/
-├── V1__initial_schema.sql
-├── V2__add_authentication_enhancements.sql
-└── V3__fix_schema_constraints.sql
 ```
-
-#### Features
-
-* FlywayDB Integration
-* Versioned Database Migrations
-* Authentication Schema Enhancements
-* Database Constraint Fixes
-
-``` 
+src/main/java/com/dvein/banking_backend/
+│
+├── account/ → Accounts, KYC, Documents, Nominees, Beneficiaries
+├── admin/ → Admin Auth, Dashboard, Customer Mgmt, Audit Logs
+├── auth/ → Authentication, Sessions, Devices, TOTP, MPIN
+├── card/ → Debit & Credit Card Management
+├── transaction/ → Transfers, UPI, Bills, Merchants, Limits, Receipts
+├── notification/ → Email Service & Templates
+└── common/ → Config, Security, Enums, Utils, Exceptions
 ```
 
 ---
 
-## Final Folder Structure
+## Getting Started
 
-```text
-PS $tree src /F > structure.txt    
-Folder PATH listing for volume Windows-SSD
-Volume serial number is 0000021E C20D:95B5
-C:\USERS\SIVAP\DOWNLOADS\BANK-BACKEND\SRC
-+---main
-ª   +---java
-ª   ª   +---com
-ª   ª       +---dvein
-ª   ª           +---banking_backend
-ª   ª               ª   BankingBackendApplication.java
-ª   ª               ª   
-ª   ª               +---account
-ª   ª               ª   +---controller
-ª   ª               ª   ª       AccountController.java
-ª   ª               ª   ª       BeneficiaryController.java
-ª   ª               ª   ª       CustomerController.java
-ª   ª               ª   ª       DocumentController.java
-ª   ª               ª   ª       KycController.java
-ª   ª               ª   ª       NomineeController.java
-ª   ª               ª   ª       VerificationController.java
-ª   ª               ª   ª       
-ª   ª               ª   +---dto
-ª   ª               ª   ª   +---request
-ª   ª               ª   ª   ª       AddBeneficiaryRequest.java
-ª   ª               ª   ª   ª       AddNomineeRequest.java
-ª   ª               ª   ª   ª       ConsentRequest.java
-ª   ª               ª   ª   ª       CreateAccountRequest.java
-ª   ª               ª   ª   ª       KycSubmissionRequest.java
-ª   ª               ª   ª   ª       UpdateProfileRequest.java
-ª   ª               ª   ª   ª       UploadDocumentRequest.java
-ª   ª               ª   ª   ª       
-ª   ª               ª   ª   +---response
-ª   ª               ª   ª           AccountResponse.java
-ª   ª               ª   ª           AccountVerificationResponse.java
-ª   ª               ª   ª           BeneficiaryResponse.java
-ª   ª               ª   ª           CustomerProfileResponse.java
-ª   ª               ª   ª           DocumentResponse.java
-ª   ª               ª   ª           KycStatusResponse.java
-ª   ª               ª   ª           NomineeResponse.java
-ª   ª               ª   ª           
-ª   ª               ª   +---model
-ª   ª               ª   ª       Account.java
-ª   ª               ª   ª       Beneficiary.java
-ª   ª               ª   ª       Consent.java
-ª   ª               ª   ª       Customer.java
-ª   ª               ª   ª       Document.java
-ª   ª               ª   ª       Kyc.java
-ª   ª               ª   ª       Nominee.java
-ª   ª               ª   ª       
-ª   ª               ª   +---repository
-ª   ª               ª   ª       AccountRepository.java
-ª   ª               ª   ª       BeneficiaryRepository.java
-ª   ª               ª   ª       ConsentRepository.java
-ª   ª               ª   ª       CustomerRepository.java
-ª   ª               ª   ª       DocumentRepository.java
-ª   ª               ª   ª       KycRepository.java
-ª   ª               ª   ª       NomineeRepository.java
-ª   ª               ª   ª       
-ª   ª               ª   +---service
-ª   ª               ª           AccountService.java
-ª   ª               ª           BeneficiaryService.java
-ª   ª               ª           CustomerService.java
-ª   ª               ª           DocumentService.java
-ª   ª               ª           KycService.java
-ª   ª               ª           NomineeService.java
-ª   ª               ª           VerificationService.java
-ª   ª               ª           
-ª   ª               +---admin
-ª   ª               ª   +---controller
-ª   ª               ª   ª       AdminAuthController.java
-ª   ª               ª   ª       AdminCardController.java
-ª   ª               ª   ª       AdminCustomerController.java
-ª   ª               ª   ª       AdminDashboardController.java
-ª   ª               ª   ª       AuditController.java
-ª   ª               ª   ª       
-ª   ª               ª   +---dto
-ª   ª               ª   ª   +---request
-ª   ª               ª   ª   ª       AdminLoginRequest.java
-ª   ª               ª   ª   ª       ApproveCreditCardRequest.java
-ª   ª               ª   ª   ª       ApproveKycRequest.java
-ª   ª               ª   ª   ª       CreateAdminRequest.java
-ª   ª               ª   ª   ª       CustomerSearchRequest.java
-ª   ª               ª   ª   ª       RejectCreditCardRequest.java
-ª   ª               ª   ª   ª       RejectKycRequest.java
-ª   ª               ª   ª   ª       UpdateCustomerStatusRequest.java
-ª   ª               ª   ª   ª       
-ª   ª               ª   ª   +---response
-ª   ª               ª   ª           AdminDashboardResponse.java
-ª   ª               ª   ª           AdminProfileResponse.java
-ª   ª               ª   ª           AuditLogResponse.java
-ª   ª               ª   ª           CustomerListResponse.java
-ª   ª               ª   ª           PendingCreditCardResponse.java
-ª   ª               ª   ª           PendingKycResponse.java
-ª   ª               ª   ª           
-ª   ª               ª   +---model
-ª   ª               ª   ª       AuditLog.java
-ª   ª               ª   ª       
-ª   ª               ª   +---repository
-ª   ª               ª   ª       AuditLogRepository.java
-ª   ª               ª   ª       
-ª   ª               ª   +---service
-ª   ª               ª           AdminAuthService.java
-ª   ª               ª           AdminCustomerService.java
-ª   ª               ª           AdminDashboardService.java
-ª   ª               ª           AuditService.java
-ª   ª               ª           
-ª   ª               +---auth
-ª   ª               ª   +---controller
-ª   ª               ª   ª       AuthController.java
-ª   ª               ª   ª       BiometricController.java
-ª   ª               ª   ª       DeviceController.java
-ª   ª               ª   ª       MpinController.java
-ª   ª               ª   ª       SessionController.java
-ª   ª               ª   ª       TotpController.java
-ª   ª               ª   ª       
-ª   ª               ª   +---dto
-ª   ª               ª   ª   +---request
-ª   ª               ª   ª   ª       BiometricToggleRequest.java
-ª   ª               ª   ª   ª       ChangeMpinRequest.java
-ª   ª               ª   ª   ª       ChangePasswordRequest.java
-ª   ª               ª   ª   ª       CreateMpinRequest.java
-ª   ª               ª   ª   ª       EnableTotpRequest.java
-ª   ª               ª   ª   ª       ForgotPasswordRequest.java
-ª   ª               ª   ª   ª       LoginRequest.java
-ª   ª               ª   ª   ª       RefreshTokenRequest.java
-ª   ª               ª   ª   ª       RegisterDeviceRequest.java
-ª   ª               ª   ª   ª       RegisterRequest.java
-ª   ª               ª   ª   ª       ResendOtpRequest.java
-ª   ª               ª   ª   ª       ResetPasswordRequest.java
-ª   ª               ª   ª   ª       VerifyDeviceRequest.java
-ª   ª               ª   ª   ª       VerifyMpinRequest.java
-ª   ª               ª   ª   ª       VerifyOtpRequest.java
-ª   ª               ª   ª   ª       VerifyTotpRequest.java
-ª   ª               ª   ª   ª       
-ª   ª               ª   ª   +---response
-ª   ª               ª   ª           DeviceResponse.java
-ª   ª               ª   ª           LoginHistoryResponse.java
-ª   ª               ª   ª           LoginResponse.java
-ª   ª               ª   ª           RegisterResponse.java
-ª   ª               ª   ª           SessionResponse.java
-ª   ª               ª   ª           TotpSetupResponse.java
-ª   ª               ª   ª           
-ª   ª               ª   +---model
-ª   ª               ª   ª       Device.java
-ª   ª               ª   ª       LoginHistory.java
-ª   ª               ª   ª       Mpin.java
-ª   ª               ª   ª       Otp.java
-ª   ª               ª   ª       Permission.java
-ª   ª               ª   ª       PreAuthenticationSession.java
-ª   ª               ª   ª       Role.java
-ª   ª               ª   ª       RolePermission.java
-ª   ª               ª   ª       Session.java
-ª   ª               ª   ª       TokenBlacklist.java
-ª   ª               ª   ª       TotpSecret.java
-ª   ª               ª   ª       User.java
-ª   ª               ª   ª       
-ª   ª               ª   +---repository
-ª   ª               ª   ª       DeviceRepository.java
-ª   ª               ª   ª       LoginHistoryRepository.java
-ª   ª               ª   ª       MpinRepository.java
-ª   ª               ª   ª       OtpRepository.java
-ª   ª               ª   ª       PermissionRepository.java
-ª   ª               ª   ª       PreAuthenticationSessionRepository.java
-ª   ª               ª   ª       RolePermissionRepository.java
-ª   ª               ª   ª       RoleRepository.java
-ª   ª               ª   ª       SessionRepository.java
-ª   ª               ª   ª       TokenBlacklistRepository.java
-ª   ª               ª   ª       TotpSecretRepository.java
-ª   ª               ª   ª       UserRepository.java
-ª   ª               ª   ª       
-ª   ª               ª   +---service
-ª   ª               ª           AuthenticationCleanupService.java
-ª   ª               ª           AuthService.java
-ª   ª               ª           BiometricService.java
-ª   ª               ª           DeviceService.java
-ª   ª               ª           LoginHistoryService.java
-ª   ª               ª           MpinService.java
-ª   ª               ª           OtpService.java
-ª   ª               ª           SessionService.java
-ª   ª               ª           TokenBlacklistService.java
-ª   ª               ª           TotpService.java
-ª   ª               ª           
-ª   ª               +---card
-ª   ª               ª   +---controller
-ª   ª               ª   ª       CreditCardController.java
-ª   ª               ª   ª       DebitCardController.java
-ª   ª               ª   ª       
-ª   ª               ª   +---dto
-ª   ª               ª   ª   +---request
-ª   ª               ª   ª   ª       ApplyCreditCardRequest.java
-ª   ª               ª   ª   ª       BlockCardRequest.java
-ª   ª               ª   ª   ª       CardSecuritySettingsRequest.java
-ª   ª               ª   ª   ª       GenerateDebitCardRequest.java
-ª   ª               ª   ª   ª       SetCardPinRequest.java
-ª   ª               ª   ª   ª       
-ª   ª               ª   ª   +---response
-ª   ª               ª   ª           CreditCardResponse.java
-ª   ª               ª   ª           DebitCardResponse.java
-ª   ª               ª   ª           
-ª   ª               ª   +---model
-ª   ª               ª   ª       CardSecuritySettings.java
-ª   ª               ª   ª       CreditCard.java
-ª   ª               ª   ª       DebitCard.java
-ª   ª               ª   ª       
-ª   ª               ª   +---repository
-ª   ª               ª   ª       CardSecuritySettingsRepository.java
-ª   ª               ª   ª       CreditCardRepository.java
-ª   ª               ª   ª       DebitCardRepository.java
-ª   ª               ª   ª       
-ª   ª               ª   +---service
-ª   ª               ª           CreditCardService.java
-ª   ª               ª           DebitCardService.java
-ª   ª               ª           
-ª   ª               +---common
-ª   ª               ª   +---annotation
-ª   ª               ª   ª       Audited.java
-ª   ª               ª   ª       RateLimited.java
-ª   ª               ª   ª       RequireRole.java
-ª   ª               ª   ª       
-ª   ª               ª   +---aspect
-ª   ª               ª   ª       AuditAspect.java
-ª   ª               ª   ª       RateLimitAspect.java
-ª   ª               ª   ª       
-ª   ª               ª   +---config
-ª   ª               ª   ª       AdminSeeder.java
-ª   ª               ª   ª       AsyncConfig.java
-ª   ª               ª   ª       CookieConfig.java
-ª   ª               ª   ª       CorsConfig.java
-ª   ª               ª   ª       JwtConfig.java
-ª   ª               ª   ª       OpenApiConfig.java
-ª   ª               ª   ª       SchedulingConfig.java
-ª   ª               ª   ª       SecurityConfig.java
-ª   ª               ª   ª       
-ª   ª               ª   +---constant
-ª   ª               ª   ª       AppConstants.java
-ª   ª               ª   ª       ErrorCodes.java
-ª   ª               ª   ª       SuccessMessages.java
-ª   ª               ª   ª       TransactionConstants.java
-ª   ª               ª   ª       TransactionMessages.java
-ª   ª               ª   ª       
-ª   ª               ª   +---dto
-ª   ª               ª   ª       ApiResponse.java
-ª   ª               ª   ª       ErrorResponse.java
-ª   ª               ª   ª       PageResponse.java
-ª   ª               ª   ª       
-ª   ª               ª   +---enums
-ª   ª               ª   ª       AccountStatus.java
-ª   ª               ª   ª       AccountType.java
-ª   ª               ª   ª       AuditAction.java
-ª   ª               ª   ª       AuthenticationState.java
-ª   ª               ª   ª       CardStatus.java
-ª   ª               ª   ª       CustomerStatus.java
-ª   ª               ª   ª       DocumentType.java
-ª   ª               ª   ª       KycStatus.java
-ª   ª               ª   ª       OtpType.java
-ª   ª               ª   ª       TransactionType.java
-ª   ª               ª   ª       UserRole.java
-ª   ª               ª   ª       
-ª   ª               ª   +---exception
-ª   ª               ª   ª       AccountLockedException.java
-ª   ª               ª   ª       CustomException.java
-ª   ª               ª   ª       DuplicateResourceException.java
-ª   ª               ª   ª       GlobalExceptionHandler.java
-ª   ª               ª   ª       InvalidOtpException.java
-ª   ª               ª   ª       InvalidRequestException.java
-ª   ª               ª   ª       OtpExpiredException.java
-ª   ª               ª   ª       ResourceNotFoundException.java
-ª   ª               ª   ª       UnauthorizedException.java
-ª   ª               ª   ª       
-ª   ª               ª   +---security
-ª   ª               ª   ª       CookieUtil.java
-ª   ª               ª   ª       CustomUserDetailsService.java
-ª   ª               ª   ª       DeviceFingerprint.java
-ª   ª               ª   ª       JwtAuthenticationFilter.java
-ª   ª               ª   ª       JwtTokenProvider.java
-ª   ª               ª   ª       SecurityContextHelper.java
-ª   ª               ª   ª       
-ª   ª               ª   +---util
-ª   ª               ª           AccountNumberGenerator.java
-ª   ª               ª           CardNumberGenerator.java
-ª   ª               ª           DateUtil.java
-ª   ª               ª           EncryptionUtil.java
-ª   ª               ª           PasswordValidator.java
-ª   ª               ª           QrCodeGenerator.java
-ª   ª               ª           RandomUtil.java
-ª   ª               ª           ValidationUtil.java
-ª   ª               ª           
-ª   ª               +---notification
-ª   ª               ª   +---service
-ª   ª               ª   ª       EmailService.java
-ª   ª               ª   ª       
-ª   ª               ª   +---template
-ª   ª               ª           EmailTemplates.java
-ª   ª               ª           TransactionEmailTemplates.java
-ª   ª               ª           
-ª   ª               +---transaction
-ª   ª                   +---controller
-ª   ª                   ª       AdminMerchantController.java
-ª   ª                   ª       AdminTransactionController.java
-ª   ª                   ª       BillPaymentController.java
-ª   ª                   ª       ExternalTransferController.java
-ª   ª                   ª       InternalTransferController.java
-ª   ª                   ª       MerchantPaymentController.java
-ª   ª                   ª       ScheduledPaymentController.java
-ª   ª                   ª       StandingInstructionController.java
-ª   ª                   ª       TransactionController.java
-ª   ª                   ª       TransactionLimitController.java
-ª   ª                   ª       TransactionReceiptController.java
-ª   ª                   ª       TransactionStatementController.java
-ª   ª                   ª       UpiController.java
-ª   ª                   ª       
-ª   ª                   +---dto
-ª   ª                   ª   +---request
-ª   ª                   ª   ª       BillPaymentRequest.java
-ª   ª                   ª   ª       ChangeUpiPinRequest.java
-ª   ª                   ª   ª       CreateMerchantRequest.java
-ª   ª                   ª   ª       CreateStandingInstructionRequest.java
-ª   ª                   ª   ª       CreateUpiIdRequest.java
-ª   ª                   ª   ª       CreateUpiPinRequest.java
-ª   ª                   ª   ª       EstimateChargeRequest.java
-ª   ª                   ª   ª       ExternalTransferRequest.java
-ª   ª                   ª   ª       GenerateQrRequest.java
-ª   ª                   ª   ª       ImpsTransferRequest.java
-ª   ª                   ª   ª       InternalTransferRequest.java
-ª   ª                   ª   ª       LinkAccountToUpiRequest.java
-ª   ª                   ª   ª       MerchantPaymentRequest.java
-ª   ª                   ª   ª       NeftTransferRequest.java
-ª   ª                   ª   ª       RaiseDisputeRequest.java
-ª   ª                   ª   ª       RefundRequest.java
-ª   ª                   ª   ª       ReversalRequest.java
-ª   ª                   ª   ª       RtgsTransferRequest.java
-ª   ª                   ª   ª       SaveBillerRequest.java
-ª   ª                   ª   ª       ScanQrRequest.java
-ª   ª                   ª   ª       SchedulePaymentRequest.java
-ª   ª                   ª   ª       TransactionSearchRequest.java
-ª   ª                   ª   ª       UpdateFeeConfigRequest.java
-ª   ª                   ª   ª       UpdateMerchantRequest.java
-ª   ª                   ª   ª       UpdateTransactionLimitRequest.java
-ª   ª                   ª   ª       UpdateUpiIdRequest.java
-ª   ª                   ª   ª       UpiCollectMoneyRequest.java
-ª   ª                   ª   ª       UpiSendMoneyRequest.java
-ª   ª                   ª   ª       VerifyUpiPinRequest.java
-ª   ª                   ª   ª       
-ª   ª                   ª   +---response
-ª   ª                   ª           BankResponse.java
-ª   ª                   ª           BillerResponse.java
-ª   ª                   ª           BillPaymentDetailsResponse.java
-ª   ª                   ª           BillPaymentResponse.java
-ª   ª                   ª           EstimatedChargeResponse.java
-ª   ª                   ª           FraudAlertResponse.java
-ª   ª                   ª           MerchantPaymentDetailsResponse.java
-ª   ª                   ª           MerchantResponse.java
-ª   ª                   ª           ScheduledPaymentResponse.java
-ª   ª                   ª           SpendingAnalysisResponse.java
-ª   ª                   ª           StandingInstructionResponse.java
-ª   ª                   ª           TransactionDetailsResponse.java
-ª   ª                   ª           TransactionDisputeDetailResponse.java
-ª   ª                   ª           TransactionDisputeResponse.java
-ª   ª                   ª           TransactionLimitResponse.java
-ª   ª                   ª           TransactionListResponse.java
-ª   ª                   ª           TransactionReceiptResponse.java
-ª   ª                   ª           TransactionResponse.java
-ª   ª                   ª           TransactionStatementResponse.java
-ª   ª                   ª           TransactionSummaryResponse.java
-ª   ª                   ª           UpiCollectRequestResponse.java
-ª   ª                   ª           UpiIdResponse.java
-ª   ª                   ª           UpiProfileResponse.java
-ª   ª                   ª           UpiQrResponse.java
-ª   ª                   ª           UpiTransactionResponse.java
-ª   ª                   ª           
-ª   ª                   +---enums
-ª   ª                   ª       BillCategory.java
-ª   ª                   ª       DisputeStatus.java
-ª   ª                   ª       ExecutionStatus.java
-ª   ª                   ª       FraudRiskLevel.java
-ª   ª                   ª       PaymentMethod.java
-ª   ª                   ª       QrType.java
-ª   ª                   ª       ScheduleFrequency.java
-ª   ª                   ª       TransactionMode.java
-ª   ª                   ª       TransactionStatus.java
-ª   ª                   ª       TransactionType.java
-ª   ª                   ª       UpiStatus.java
-ª   ª                   ª       
-ª   ª                   +---exception
-ª   ª                   ª       DuplicateTransactionException.java
-ª   ª                   ª       FraudDetectedException.java
-ª   ª                   ª       InsufficientBalanceException.java
-ª   ª                   ª       InvalidUpiIdException.java
-ª   ª                   ª       TransactionLimitExceededException.java
-ª   ª                   ª       UpiPinLockedException.java
-ª   ª                   ª       
-ª   ª                   +---job
-ª   ª                   ª       BillReminderJob.java
-ª   ª                   ª       DailyLimitResetJob.java
-ª   ª                   ª       ExpireCollectRequestJob.java
-ª   ª                   ª       ExpireQrCodesJob.java
-ª   ª                   ª       FailedTransactionRetryJob.java
-ª   ª                   ª       ReconciliationJob.java
-ª   ª                   ª       ScheduledPaymentExecutor.java
-ª   ª                   ª       StandingInstructionExecutor.java
-ª   ª                   ª       
-ª   ª                   +---model
-ª   ª                   ª       Bank.java
-ª   ª                   ª       Biller.java
-ª   ª                   ª       BillPayment.java
-ª   ª                   ª       DailyReconciliation.java
-ª   ª                   ª       FraudDetectionLog.java
-ª   ª                   ª       Merchant.java
-ª   ª                   ª       MerchantCategory.java
-ª   ª                   ª       MerchantPayment.java
-ª   ª                   ª       ScheduledPayment.java
-ª   ª                   ª       StandingInstruction.java
-ª   ª                   ª       Transaction.java
-ª   ª                   ª       TransactionApproval.java
-ª   ª                   ª       TransactionCategory.java
-ª   ª                   ª       TransactionDispute.java
-ª   ª                   ª       TransactionFeeConfig.java
-ª   ª                   ª       TransactionLimit.java
-ª   ª                   ª       TransactionMetadata.java
-ª   ª                   ª       TransactionReceipt.java
-ª   ª                   ª       UpiCollectRequest.java
-ª   ª                   ª       UpiId.java
-ª   ª                   ª       UpiPin.java
-ª   ª                   ª       UpiProfile.java
-ª   ª                   ª       UpiQrCode.java
-ª   ª                   ª       UpiTransaction.java
-ª   ª                   ª       
-ª   ª                   +---repository
-ª   ª                   ª       BankRepository.java
-ª   ª                   ª       BillerRepository.java
-ª   ª                   ª       BillPaymentRepository.java
-ª   ª                   ª       DailyReconciliationRepository.java
-ª   ª                   ª       FraudDetectionLogRepository.java
-ª   ª                   ª       MerchantCategoryRepository.java
-ª   ª                   ª       MerchantPaymentRepository.java
-ª   ª                   ª       MerchantRepository.java
-ª   ª                   ª       ScheduledPaymentRepository.java
-ª   ª                   ª       StandingInstructionRepository.java
-ª   ª                   ª       TransactionApprovalRepository.java
-ª   ª                   ª       TransactionCategoryRepository.java
-ª   ª                   ª       TransactionDisputeRepository.java
-ª   ª                   ª       TransactionFeeConfigRepository.java
-ª   ª                   ª       TransactionLimitRepository.java
-ª   ª                   ª       TransactionMetadataRepository.java
-ª   ª                   ª       TransactionReceiptRepository.java
-ª   ª                   ª       TransactionRepository.java
-ª   ª                   ª       UpiCollectRequestRepository.java
-ª   ª                   ª       UpiIdRepository.java
-ª   ª                   ª       UpiPinRepository.java
-ª   ª                   ª       UpiProfileRepository.java
-ª   ª                   ª       UpiQrCodeRepository.java
-ª   ª                   ª       UpiTransactionRepository.java
-ª   ª                   ª       
-ª   ª                   +---service
-ª   ª                   ª       AdminMerchantService.java
-ª   ª                   ª       AdminTransactionService.java
-ª   ª                   ª       BillPaymentService.java
-ª   ª                   ª       ExternalTransferService.java
-ª   ª                   ª       FraudDetectionService.java
-ª   ª                   ª       InternalTransferService.java
-ª   ª                   ª       MerchantPaymentService.java
-ª   ª                   ª       ReconciliationService.java
-ª   ª                   ª       ScheduledPaymentService.java
-ª   ª                   ª       StandingInstructionService.java
-ª   ª                   ª       TransactionApprovalService.java
-ª   ª                   ª       TransactionExecutionService.java
-ª   ª                   ª       TransactionFeeService.java
-ª   ª                   ª       TransactionLimitService.java
-ª   ª                   ª       TransactionNotificationService.java
-ª   ª                   ª       TransactionReceiptService.java
-ª   ª                   ª       TransactionReversalService.java
-ª   ª                   ª       TransactionService.java
-ª   ª                   ª       TransactionStatementService.java
-ª   ª                   ª       TransactionValidationService.java
-ª   ª                   ª       UpiCollectRequestService.java
-ª   ª                   ª       UpiPinService.java
-ª   ª                   ª       UpiQrService.java
-ª   ª                   ª       UpiService.java
-ª   ª                   ª       UpiTransactionService.java
-ª   ª                   ª       
-ª   ª                   +---util
-ª   ª                   ª       TransactionIdGenerator.java
-ª   ª                   ª       UpiQrCodeGenerator.java
-ª   ª                   ª       
-ª   ª                   +---validation
-ª   ª                           BeneficiaryValidator.java
-ª   ª                           TransactionValidator.java
-ª   ª                           UpiValidator.java
-ª   ª                           
-ª   +---resources
-ª       ª   application-dev.properties
-ª       ª   application-prod.properties
-ª       ª   application.properties
-ª       ª   
-ª       +---db
-ª       ª   +---migration
-ª       ª           V1__initial_schema.sql
-ª       ª           V2__add_authentication_enhancements.sql
-ª       ª           V3__fix_schema_constraints.sql
-ª       ª           V4__transaction_module.sql
-ª       ª           
-ª       +---templates
-ª           +---email
-ª                   otp.html
-ª                   password-reset.html
-ª                   registration.html
-ª                   security-alert.html
-ª                   
-+---test
-    +---java
-        +---com
-            +---dvein
-                +---banking_backend
-                        BankingBackendApplicationTests.java
-             
+### Prerequisites
+
+Make sure you have the following installed:
+
+- **Java 21** — [Download](https://openjdk.org/projects/jdk/21/)
+- **PostgreSQL** (v14+) — [Download](https://www.postgresql.org/download/)
+- **Maven 3.x** — [Download](https://maven.apache.org/download.cgi)
+- **Git** — [Download](https://git-scm.com/)
+
+---
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/CoreCoderX/BankBackendApp.git
+cd BankBackendApp
 ```
 
-> Complete detailed structure available in the source project.
-
 ---
 
-### Pending Items
+### Configuration
 
-1. RateLimit (Bug)
-2. Session Device Status (Bug)
-3. Document Media Support - Yet to be developed
+#### 1. Create the PostgreSQL Database
 
----
+```sql
+CREATE DATABASE banking_db;
+CREATE USER banking_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE banking_db TO banking_user;
+```
 
-## Setup Guide
-
-### 1. Database Configuration
-
-Open:
+#### 2. Configure application-dev.properties
 
 ```properties
-src/main/resources/application.properties
+# Database
+spring.datasource.url=jdbc:postgresql://localhost:5432/banking_db
+spring.datasource.username=banking_user
+spring.datasource.password=your_password
+
+# JWT
+jwt.secret=your-256-bit-secret-key-here
+jwt.expiration=86400000
+jwt.refresh-expiration=604800000
+
+# Mail (for OTP)
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your-email@gmail.com
+spring.mail.password=your-app-password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
 ```
 
-Update your database credentials:
+#### 3. Set Active Profile
+
+In `application.properties`:
 
 ```properties
-spring.datasource.username=postgres
-spring.datasource.password=password
-
-```
-
-### Create database
-Open terminal:
-Run these commends
-```properties
->psql -U postgres
->postgres: CREATE DATABASE bankdb;
-```
-
-
----
-
-### 2. Email Configuration
-
-Open:
-
-```properties
-src/main/resources/application.properties
-```
-
-Update:
-
-```properties
-spring.mail.username=onodaemailpodu123@gmail.com
-spring.mail.password=onodapasswordpodu
-```
-
-#### Generate Gmail App Password
-
-1. Enable **2-Step Verification** on your Google Account.
-2. Visit:
-
-https://myaccount.google.com/apppasswords
-
-3. Generate a 16-digit App Password.
-4. Replace:
-
-```properties
-spring.mail.password=YOUR_16_DIGIT_APP_PASSWORD
+spring.profiles.active=dev
 ```
 
 ---
 
-### 3. Postman API Documentation
+### Run the Application
 
-#### Step 1
+**Using Maven:**
 
-Run the backend application successfully.
-
-#### Step 2
-
-Open:
-
-```text
-http://localhost:8080/api/v1/api-docs
+```bash
+.\mvnw spring-boot:run
 ```
 
-#### Step 3
+**Build & Run JAR:**
 
-Copy the entire JSON response.
+```bash
+.\mvnw clean package -DskipTests
+java -jar target/banking-backend-0.0.1-SNAPSHOT.jar
+```
 
-#### Step 4
+The application starts at: `http://localhost:8080`
 
-Open Postman:
-
-- Click **Import**
-- Paste the copied JSON
-
-Postman will automatically generate all available API endpoints.
+**Note:** Flyway automatically runs all database migrations on startup — no manual schema setup needed.
 
 ---
 
-### 4. TOTP Testing
+## API Documentation
 
-#### Prerequisites
+Once running, access the interactive Swagger UI:
 
-Install **Google Authenticator** from Play Store.
-
-#### Setup Process
-
-##### Step 1
-
-Call:
-
-```http
-POST http://localhost:8080/api/v1/totp/setup
+```
+http://localhost:8080/swagger-ui/index.html
 ```
 
-##### Step 2
+OpenAPI JSON spec:
 
-Response contains:
-
-- Setup Key
-- QR Code (Base64)
-
-##### Step 3
-
-Decode QR Base64:
-
-https://base64.guru/converter/decode/image
-
-##### Step 4
-
-Scan QR using Google Authenticator.
-
-##### Step 5
-
-Use generated TOTP codes for verification APIs.
+```
+http://localhost:8080/v3/api-docs
+```
 
 ---
 
-# Second Push Updates
+## Authentication Flow
 
-## Database Improvements
+```
+1. POST /api/v1/auth/register        → Register & receive email OTP
+2. POST /api/v1/auth/verify-email    → Verify email with OTP
+3. POST /api/v1/auth/login           → Login (returns JWT or pre-auth token)
+4. POST /api/v1/auth/verify-device   → [If new device] Verify via email OTP
+5. POST /api/v1/auth/verify-totp     → [If 2FA enabled] Verify TOTP code
+6. Use Bearer <accessToken>          → Authenticate all subsequent requests
+7. POST /api/v1/auth/refresh-token   → Refresh expired access token
+8. POST /api/v1/auth/logout          → Invalidate session
+```
 
-* Integrated **FlywayDB** for database schema versioning and migration management.
-* Ensures consistent database structure across development, testing, and production environments.
-* Supports controlled and trackable database changes.
+**All protected endpoints require:** `Authorization: Bearer <your_jwt_token>`
 
 ---
 
-## Authentication Flow Redesign
+## API Modules Overview
 
-### Previous Flow
+### Authentication & Security
 
-```text
-Login
-↓
-JWT Issued
-↓
-TOTP Verification
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /auth/register | Register new customer |
+| POST | /auth/login | Customer login |
+| POST | /auth/verify-email | Verify email OTP |
+| POST | /auth/verify-device | Verify new device |
+| POST | /auth/verify-totp | Verify TOTP for login |
+| POST | /auth/forgot-password | Request password reset |
+| POST | /auth/reset-password | Reset with OTP |
+| POST | /auth/change-password | Change password |
+| POST | /auth/refresh-token | Refresh access token |
+| POST | /auth/logout | Logout session |
 
-**Issue:**
-A user could potentially receive an access token before completing Multi-Factor Authentication (MFA).
+### Account Management
 
-### New Secure Authentication Flow
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /accounts | Get all accounts |
+| POST | /accounts | Create new account |
+| GET | /accounts/{accountId} | Get account details |
+| POST | /accounts/{accountId}/set-primary | Set primary account |
+| POST | /accounts/{accountId}/close | Close account |
 
-#### Known Device
+### Transactions & Transfers
 
-```text
-Email + Password
-↓
-TOTP Verification
-↓
-Access Token Issued
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /transactions/internal | Internal bank transfer |
+| POST | /transactions/external | IMPS / NEFT / RTGS transfer |
+| GET | /transactions/{id} | Get transaction by ID |
+| GET | /transactions/account/{accountId} | Get account transactions |
+| POST | /transactions/search | Advanced transaction search |
+| POST | /transactions/{id}/dispute | Raise a dispute |
+| GET | /transactions/statement/{accountId} | Get account statement |
+| GET | /transactions/statement/{accountId}/download | Download CSV statement |
 
-#### New Device
+### UPI Payments
 
-```text
-Email + Password
-↓
-Device Verification
-↓
-TOTP Verification
-↓
-Access Token Issued
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /upi/profile | Create UPI profile |
+| GET | /upi/profile | Get UPI profile |
+| POST | /upi/id | Create UPI ID |
+| POST | /upi/send-money | Send money via UPI |
+| POST | /upi/qr/generate | Generate QR code |
+| POST | /upi/qr/pay | Pay via QR code |
+| POST | /upi/collect-request | Request money |
+| POST | /upi/pin/create | Create UPI PIN |
+| POST | /upi/pin/change | Change UPI PIN |
 
-### Authentication State Flow
+### Card Management
 
-```text
-Login
-↓
-PRE_AUTH Token
-↓
-Device Verification
-↓
-TOTP Verification
-↓
-FULLY_AUTHENTICATED
-↓
-Access Token Issued
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /cards/debit/generate | Generate debit card |
+| POST | /cards/debit/{cardId}/activate | Activate debit card |
+| POST | /cards/debit/{cardId}/block | Block debit card |
+| POST | /cards/debit/{cardId}/set-pin | Set debit card PIN |
+| POST | /cards/credit/apply | Apply for credit card |
+| POST | /cards/credit/{cardId}/activate | Activate credit card |
+| POST | /cards/credit/{cardId}/block | Block credit card |
 
-### Security Benefits
+### 2FA & MPIN
 
-* Access tokens are no longer issued before MFA completion.
-* Introduced **PRE_AUTH** authentication state.
-* Device trust verification is enforced for new devices.
-* Reduced risk of unauthorized account access.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /totp/setup | Generate TOTP QR code |
+| POST | /totp/enable | Enable TOTP 2FA |
+| POST | /totp/disable | Disable TOTP 2FA |
+| POST | /mpin/create | Create MPIN |
+| POST | /mpin/change | Change MPIN |
+| POST | /mpin/verify | Verify MPIN |
 
----
+### Admin Panel
 
-## Enhanced Authentication Validation
-
-### Previous Implementation
-
-* Authentication relied primarily on **userId** validation.
-
-### Current Implementation
-
-* Authentication now validates both:
-
-    * **Email**
-    * **User ID**
-
-### Benefits
-
-* Additional identity verification layer.
-* Reduced risk of user impersonation.
-* Stronger authentication integrity.
-
----
-
-## Bug Fixes
-
-### User & Customer Mapping Fix
-
-Resolved issues where:
-
-* `userId`
-* `customerId`
-
-were not consistently handled across services and authentication flows.
-
-Both identifiers now behave correctly throughout the application.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /admin/auth/login | Admin login |
+| GET | /admin/dashboard/stats | Dashboard statistics |
+| POST | /admin/customers/search | Search customers |
+| PUT | /admin/customers/{id}/status | Update customer status |
+| POST | /admin/customers/{id}/kyc/approve | Approve KYC |
+| POST | /admin/customers/{id}/kyc/reject | Reject KYC |
+| POST | /admin/cards/credit/{id}/approve | Approve credit card |
+| POST | /admin/transactions/{id}/reverse | Reverse transaction |
+| GET | /admin/audit | View audit logs |
 
 ---
 
-## Additional Service Layer Validation
+## Database Migrations
 
-Implemented extra validation checks across service-layer operations to:
+Flyway manages all schema versions automatically:
 
-* Prevent invalid request processing.
-* Improve data integrity.
-* Enforce stricter business rules.
-* Enhance application security and reliability.
-
----
-
-## Summary
-
-### Added
-
-* FlywayDB migration support.
-* PRE_AUTH authentication mechanism.
-* Device verification workflow.
-* Additional service-layer validations.
-
-### Improved
-
-* MFA authentication flow.
-* Identity verification using Email + User ID.
-* Overall application security.
-* Pre-Auth Token is Implemented
-* RefreshToken is added in separate endpoint
-
-### Fixed
-
-* User ID and Customer ID mapping inconsistencies.
-
+| Version | File | Description |
+|---------|------|-------------|
+| V1 | V1__initial_schema.sql | Core schema (users, accounts, customers) |
+| V2 | V2__add_authentication_enhancements.sql | Auth enhancements (sessions, devices, TOTP) |
+| V3 | V3__fix_schema_constraints.sql | Constraint fixes & indexes |
+| V4 | V4__transaction_module.sql | Full transaction module schema |
 
 ---
 
-# Third Push Updates
+## Email Notifications
 
-## Security Hardening & Critical Bug Fixes
+The system sends automated emails for:
 
-This update focuses on security improvements, authentication hardening, authorization fixes, session management enhancements, and multiple production bug fixes discovered during testing and review.
-
----
-
-## Critical Security Fixes
-
-### Secure Logout & Token Revocation
-
-#### Issue
-
-Previously, access tokens were blacklisted only when a valid `sessionId` was provided during logout.
-
-#### Risk
-
-Users could remain authenticated after logout under certain conditions.
-
-#### Fix
-
-* Logout now always blacklists the active access token.
-* Token revocation is enforced regardless of session state.
-* Eliminates token reuse after logout.
+- Registration & email verification OTP
+- Password reset OTP
+- Security alerts (new device login)
+- Transaction confirmations & receipts
+- Account statements
 
 ---
 
-### Encryption Upgrade
+## Security Features
 
-#### Previous Implementation
-
-```text
-AES/ECB
-```
-
-#### Current Implementation
-
-```text
-AES/GCM
-```
-
-#### Improvements
-
-* Authenticated encryption support.
-* Random IV generated for every encryption operation.
-* Protection against ciphertext manipulation.
-* Eliminates ECB pattern leakage vulnerabilities.
+| Feature | Implementation |
+|---------|----------------|
+| Password Hashing | BCrypt via jBCrypt |
+| Access Tokens | JWT (JJWT) with configurable expiry |
+| Refresh Tokens | Secure rotation with blacklisting |
+| 2FA | TOTP (RFC 6238) — Google Authenticator compatible |
+| Device Trust | OTP-based device verification & trust management |
+| MPIN | Encrypted 4-digit PIN for transaction authorization |
+| Token Blacklist | DB-backed token invalidation on logout |
+| Rate Limiting | Custom annotation-based rate limiting |
+| Audit Logging | AOP-based automatic audit trail |
 
 ---
 
+## Server URLs
 
-### Authorization Hardening
-
-#### IDOR (Insecure Direct Object Reference) Fixes
-
-Resolved multiple authorization bypass vulnerabilities across:
-
-* Account Services
-* Credit Card Services
-
-#### Improvements
-
-* Ownership validation enforced.
-* Database queries scoped to authenticated users.
-* Prevents unauthorized access to other customer resources.
+| Environment | URL |
+|-------------|-----|
+| Development | http://localhost:8080/api/v1 |
+| Production | https://api.dveinbanking.com/api/v1 |
 
 ---
 
-### Admin Endpoint Protection
+## Contributing
 
-#### Issue
-
-`AdminCardController` endpoints were missing role enforcement.
-
-#### Risk
-
-Authenticated customers could potentially access card approval operations.
-
-#### Fix
-
-* Added `@RequireRole(ADMIN)` protection.
-* Restricted approval and rejection workflows to administrators only.
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
 ---
 
-### Password Change Security
+## License
 
-#### Improvements
-
-Changing a password now:
-
-* Invalidates all active sessions.
-* Revokes existing authentication tokens.
-* Forces re-authentication on every device.
-
-#### Benefit
-
-Protects users from stolen or previously compromised sessions.
+This project is licensed under the Apache License 2.0 — see the LICENSE file for details.
 
 ---
 
-## Logic Bug Fixes
+<div align="center">
 
-### Dashboard Metrics Correction
+**Built with care by DVein Banking Team**
 
-#### Issue
+If you find this project useful, please consider giving it a star!
 
-Approved credit card applications were incorrectly counted as pending.
-
-#### Root Cause
-
-Dashboard used:
-
-```java
-count()
-```
-
-instead of pending-only filtering.
-
-#### Fix
-
-```java
-countByApprovedFalseAndRejectionReasonIsNull()
-```
-
-#### Result
-
-Pending application statistics now display correctly.
-
----
-
-### KYC Approval Workflow Fix
-
-#### Issue
-
-KYC approval could return:
-
-```text
-Customer not found
-```
-
-even for valid requests.
-
-#### Root Cause
-
-Admin `customerId` was incorrectly passed to:
-
-```java
-findByUserId()
-```
-
-#### Fix
-
-Introduced:
-
-```java
-approveKycByCustomerId()
-```
-
-which correctly uses:
-
-```java
-findById(customerId)
-```
-
-#### Result
-
-KYC approval process now works reliably.
-
----
-
-### Session Response Fix
-
-#### Issue
-
-All sessions were incorrectly reported as:
-
-```json
-{
-  "current": false
-}
-```
-
-#### Root Cause
-
-`userAgent` was not mapped into session responses.
-
-#### Fix
-
-Added:
-
-```java
-.userAgent(session.getUserAgent())
-```
-
-#### Result
-
-Current device/session detection works correctly.
-
----
-
-### Session Cleanup Scheduler Fix
-
-#### Issue
-
-Expired session cleanup job executed successfully but never removed sessions.
-
-#### Root Cause
-
-The scheduler queried:
-
-```java
-findByUserAndActiveTrue(null)
-```
-
-which always returned an empty result set.
-
-#### Fix
-
-Updated cleanup logic to correctly target active expired sessions.
-
-#### Result
-
-Expired sessions are now removed as expected.
-
----
-
-### Monetary Validation Fix
-
-#### Issue
-
-`BigDecimal.equals(BigDecimal.ZERO)` failed when scales differed.
-
-Example:
-
-```java
-new BigDecimal("0.00")
-```
-
-is not equal to:
-
-```java
-BigDecimal.ZERO
-```
-
-#### Fix
-
-Replaced with:
-
-```java
-compareTo(BigDecimal.ZERO) != 0
-```
-
-#### Result
-
-Reliable monetary comparisons regardless of scale.
-
----
-
-### Async Processing Fix
-
-#### Issue
-
-`@Async` was applied to a private method.
-
-#### Impact
-
-Method execution remained synchronous and could block request threads.
-
-#### Fix
-
-Method visibility updated to allow Spring proxy interception.
-
-#### Result
-
-Async execution now functions correctly.
-
----
-
-## Code Quality Improvements
-
-### OTP Request Refactoring
-
-Added dedicated DTO:
-
-```java
-ResendOtpRequest
-```
-
-#### Benefit
-
-Removes misuse of unrelated request models and improves API clarity.
-
----
-
-### Profile Update Validation
-
-Added phone number uniqueness validation before database updates.
-
-#### Benefits
-
-* Prevents duplicate phone numbers.
-* Avoids unnecessary database writes.
-* Improves validation feedback.
-
----
-
-### Exception Handling Enhancements
-
-Added global handling for:
-
-```java
-DataIntegrityViolationException
-```
-
-and
-
-```java
-InvalidRequestException
-```
-
-#### Benefits
-
-* Consistent API error responses.
-* Improved debugging and client-side handling.
-
----
-
-### Authentication Error Handling
-
-#### Previous Behavior
-
-```java
-RuntimeException
-```
-
-could return HTTP 500 responses for authentication failures.
-
-#### Current Behavior
-
-```java
-UnauthorizedException
-```
-
-returns:
-
-```http
-401 Unauthorized
-```
-
-#### Benefit
-
-More accurate API semantics and improved client handling.
-
----
-
-### Dead Code Cleanup
-
-Removed duplicate:
-
-```java
-approveCreditCardApplication()
-```
-
-implementation.
-
-#### Benefits
-
-* Reduced maintenance overhead.
-* Cleaner service layer.
-
----
-
-### Rate Limiting Restored
-
-Rate limiting protections have been re-enabled across protected endpoints.
-
-#### Benefits
-
-* Reduces abuse and brute-force attempts.
-* Improves API stability.
-* Enhances overall security posture.
-
----
-
-## Summary
-
-### Security
-
-* Access token revocation on every logout.
-* AES/GCM encryption implementation.
-* Environment-based secret management.
-* IDOR vulnerability fixes.
-* Admin endpoint protection.
-* Session invalidation after password change.
-
-### Fixed
-
-* Dashboard pending count bug.
-* KYC approval customer lookup bug.
-* Session current-device detection bug.
-* Session cleanup scheduler issue.
-* BigDecimal comparison issue.
-* Async execution issue.
-
-### Improved
-
-* Exception handling.
-* Request validation.
-* DTO design.
-* Authentication error responses.
-* Rate limiting enforcement.
-* Codebase maintainability.
-
-## Final Notes
-
-* All tests are verified and core business logic is working successfully.
-* Thereby my assigned job and module is completed and verified successfully.
+</div>
