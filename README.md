@@ -14,7 +14,7 @@
 [![Lombok](https://img.shields.io/badge/Lombok-Latest-BC4521?style=for-the-badge&logo=lombok&logoColor=white)](https://projectlombok.org/)
 [![Maven](https://img.shields.io/badge/Maven-3.x-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/Version-1.0.0-green?style=flat-square)]()
 [![API Docs](https://img.shields.io/badge/API_Docs-Swagger_UI-85EA2D?style=flat-square&logo=swagger)](http://localhost:8080/swagger-ui/index.html)
 
